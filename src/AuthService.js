@@ -4,41 +4,71 @@ import $ from 'jquery'
 import Session from './Session'
 import swal from 'sweetalert2'
 import { apiHost } from "./variables";
+import axios from 'axios'
 
 export default {
 
     sendRequest (type, url, data, callback, contentType, async) {
-        var request = {
-            type: type,
+    //     var request = {
+    //         type: type,
+    //         url: url,
+    //         async: async,
+    //         contentType: contentType || 'application/json; charset=utf-8',
+    //         dataType: 'json',
+    //         success: data => {
+    //             if (callback) callback(null, data)
+    //         },
+    //         error: data => {
+    //             if (data && (data.status == 401 || data.status == 403) && Session.loggedIn() && !url.includes('changePassword')) {
+    //                 this.logout(null, 'Permission error occurred. Please login again.')
+    //             }
+    //
+    //             if (!'error' in data) {
+    //                 data['error'] = 'Something went wrong'
+    //             }
+    //
+    //             if (callback) callback(data)
+    //         }
+    //     };
+        axios({
+            method: type,
             url: url,
-            async: async,
-            contentType: contentType || 'application/json; charset=utf-8',
-            dataType: 'json',
-            success: data => {
-                if (callback) callback(null, data)
-            },
-            error: data => {
-                if (data && (data.status == 401 || data.status == 403) && Session.loggedIn() && !url.includes('changePassword')) {
-                    this.logout(null, 'Permission error occurred. Please login again.')
-                }
-
-                if (!'error' in data) {
-                    data['error'] = 'Something went wrong'
-                }
-
-                if (callback) callback(data)
+            data: data,
+            headers: {
+                'x-access-token': Session.getToken(),
+                'content-type': contentType
             }
-        };
+        }).then(response => {
+            console.log(response)
+            if (callback) {
+                callback(null, response.data)
+            }
+        }).catch(error => {
+            console.log(error)
+            if (error.data && (error.data.status == 401 || error.data.status == 403) && Session.loggedIn() && !url.includes('changePassword')) {
+                this.logout(null, 'Permission error occurred. Please login again.')
+            }
 
-        if (data) {
-            request['data'] = type == 'POST' ? JSON.stringify(data) : data
-        }
+            callback(error, {'error': 'This message is deprecated.'})
 
-        if (Session.loggedIn() || Session.getToken()) {
-            request['beforeSend'] = xhr => {xhr.setRequestHeader('x-access-token', Session.getToken())}
-        }
+            // if (!('error' in error.data)) {
+            //     error.data['error'] = 'Something went wrong'
+            // }
+            //
+            // if (callback) {
+            //     callback(error.data)
+            // }
+        });
 
-        $.ajax(request)
+        // if (data) {
+        //     request['data'] = type == 'POST' ? JSON.stringify(data) : data
+        // }
+        //
+        // if (Session.loggedIn() || Session.getToken()) {
+        //     request['beforeSend'] = xhr => {xhr.setRequestHeader('x-access-token', Session.getToken())}
+        // }
+        //
+        // $.ajax(request)
     },
     
     skillTest(callback) {
