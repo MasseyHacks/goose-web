@@ -1,15 +1,23 @@
 {
   "name": "goose-web",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "description": "A fast and extendable event registration system.",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build"
   },
   "dependencies": {
     "core-js": "^2.6.5",
+    "file-saver": "^2.0.2",
+    "jquery": "^3.4.1",
+    "quill": "^1.3.6",
+    "sweetalert2": "^8.16.4",
     "vue": "^2.6.10",
-    "vue-router": "^3.0.3"
+    "vue-context": "^4.0.3",
+    "vue-json-tree": "^0.4.1",
+    "vue-moment": "^4.0.0",
+    "vue-router": "^3.0.3",
+    "vue-select": "^3.1.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.11.0",
