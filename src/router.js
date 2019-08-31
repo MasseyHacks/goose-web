@@ -28,11 +28,18 @@ import UserView from './views/UserView.vue'
 import TeamTable from './views/TeamTable.vue'
 import MagicLogin from './views/Magic.vue'
 import TeamManage from './views/AdminTeamView.vue'
+import Swal from 'sweetalert2'
+import axios from 'axios'
+import {apiHost} from "./variables";
 
 Vue.use(Router);
 
 Vue.use(require('vue-moment'));
 Vue.component('v-select', vSelect);
+
+axios.get(apiHost + '/api/settings').then(result => {
+  Session.setSettings(result.data)
+}).catch(() => console.log("wow this should never have failed!"));
 
 // Refresh every 24HRs
 setInterval(() => {
@@ -238,7 +245,7 @@ const router = new Router({
     {
       path: '/logout',
       beforeEnter (to, from, next) {
-        swal({
+        Swal.fire({
           title: 'Just to be safe',
           text: 'Are you sure you want to logout?',
           type: 'warning',

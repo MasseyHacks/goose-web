@@ -129,7 +129,7 @@
 <script>
 
     import Session from '../Session'
-    import swal from 'sweetalert2'
+    import Swal from 'sweetalert2'
     import AuthService from '../AuthService'
     import ApiService from '../ApiService'
     import $ from 'jquery'
@@ -346,13 +346,13 @@
                 var parsedForm = this.parseForm(this.applications.confirmation, true)
 
                 if (parsedForm.doNotSubmit) {
-                    swal({
+                    Swal.fire({
                         title: 'Error',
                         html: '<p style="text-align: left"><b>' + (parsedForm.submissionErrors.length ? parsedForm.submissionErrors.join('<br>') + ' <br>' : '') + "</b></p> Please check all the required fields and try again.",
                         type: 'error'
                     })
                 } else {
-                    swal({
+                    Swal.fire({
                         title: "Confirm?",
                         text: "Are you sure you want to confirm?",
                         type: "question",
@@ -366,13 +366,13 @@
                                 confirmation: parsedForm.profile
                             }, (err, data) => {
                                 if (err || !data) {
-                                    swal("Error", err.error, "error");
+                                    Swal.fire("Error", err.error, "error");
                                 } else {
                                     this.user = data
                                     Session.setUser(data)
                                     console.log(this.user.status.name);
 
-                                    swal({
+                                    Swal.fire({
                                         title: "Success",
                                         text: "You have confirmed your spot!",
                                         type: "success"
@@ -390,7 +390,7 @@
                 }
             },
             denyInvitation() {
-                swal({
+                Swal.fire({
                     title: "Decline invitation?",
                     html: "Are you sure you want to decline your invitation? You <b>CANNOT</b> undo this action!",
                     type: "question",
@@ -405,9 +405,9 @@
 
                         }, (err, data) => {
                             if (err || !data) {
-                                swal("Error", err.error, "error");
+                                Swal.fire("Error", err.error, "error");
                             } else {
-                                swal({
+                                Swal.fire({
                                     title: "Success",
                                     text: "You have declined your invitation.",
                                     type: "success"

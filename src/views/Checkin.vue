@@ -69,7 +69,7 @@
 <script>
     import ApiService from '../ApiService'
     import AuthService from '../AuthService'
-    import swal from 'sweetalert2'
+    import Swal from 'sweetalert2'
     import {VueContext} from 'vue-context'
     import Vue from 'vue'
     import {apiHost} from "../variables";
@@ -139,7 +139,7 @@
                 })
             },
             checkin: function(user, index) {
-                swal({
+                Swal.fire({
                     title: 'Are you sure?',
                     text: 'This action(Check-in) will be recorded!',
                     type: 'warning',
@@ -149,13 +149,13 @@
                     confirmButtonText: 'Confirm'
                 }).then((result) => {
                     if (result.value) {
-                        swal.showLoading();
+                        Swal.showLoading();
                         AuthService.sendRequest('POST', apiHost + '/api/checkIn', {userID: user.id, appPage: 'checkin'}, (err, data) => {
                             if(err) {
                                 console.log(err);
-                                swal('Error', 'An error has occured, please contact an organizer immediately', 'error')
+                                Swal.fire('Error', 'An error has occured, please contact an organizer immediately', 'error')
                             } else {
-                                swal('Success', 'Hacker ' + data.name + ' has been successfully checked in.', 'success');
+                                Swal.fire('Success', 'Hacker ' + data.name + ' has been successfully checked in.', 'success');
                                 Vue.set(this.users, index, data)
                             }
                         })
@@ -163,7 +163,7 @@
                 })
             },
             checkout: function(user, index) {
-                swal({
+                Swal.fire({
                     title: 'Are you sure?',
                     text: 'This action(Check-out) will be recorded!',
                     type: 'warning',
@@ -173,13 +173,13 @@
                     confirmButtonText: 'Confirm'
                 }).then((result) => {
                     if (result.value) {
-                        swal.showLoading();
+                        Swal.showLoading();
                         AuthService.sendRequest('POST', apiHost + '/api/checkOut', {userID: user.id, appPage: 'checkin'}, (err, data) => {
                             if(err) {
                                 console.log(err);
-                                swal('Error', 'An error has occured, please contact an organizer immediately', 'error')
+                                Swal.fire('Error', 'An error has occured, please contact an organizer immediately', 'error')
                             } else {
-                                swal('Success', 'Hacker ' + data.name + ' has been successfully checked out.', 'success');
+                                Swal.fire('Success', 'Hacker ' + data.name + ' has been successfully checked out.', 'success');
                                 Vue.set(this.users, index, data)
                             }
                         })
@@ -187,7 +187,7 @@
                 })
             },
             inputwaiver: function(user, index) {
-                swal({
+                Swal.fire({
                     title: 'Are you sure?',
                     text: 'Please confirm waiver is filled and all fields are correct',
                     type: 'warning',
@@ -197,12 +197,12 @@
                     confirmButtonText: 'Confirm'
                 }).then((result) => {
                     if (result.value) {
-                        swal.showLoading();
+                        Swal.showLoading();
                         AuthService.sendRequest('POST', apiHost + '/api/waiverIn', {'userID': user.id, appPage: 'checkin'}, (err, data) => {
                             if (err || !data) {
-                                swal('Error', err.error, 'error')
+                                Swal.fire('Error', err.error, 'error')
                             } else {
-                                swal('Success', 'Waiver accepted', 'success');
+                                Swal.fire('Success', 'Waiver accepted', 'success');
                                 Vue.set(this.users, index, data)
                             }
                         })
@@ -210,7 +210,7 @@
                 })
             },
             onClick: function(text, data) {
-                swal('Hello')
+                Swal.fire('Hello')
             },
             updateSearch: function(resetPage) {
                 if (!resetPage) {

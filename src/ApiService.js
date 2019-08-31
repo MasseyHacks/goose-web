@@ -1,13 +1,13 @@
 /* globals localStorage */
 
 import AuthService from './AuthService'
-import swal from 'sweetalert2'
+import Swal from 'sweetalert2'
 import {apiHost} from "./variables";
 
 export default {
 
     hideStatus(userName, userID, callback) {
-        swal({
+        Swal.fire({
             title: "Hide status for user?",
             html: '<span style="color:#FF0000; font-weight:bold;">HIDE STATUS</span> for '+ userName +
             '? THEY WILL NOT BE ABLE TO SEE THEIR ADMISSION STATUS!',
@@ -28,7 +28,7 @@ export default {
                             userID: userID
                         }, (err, data) => {
                             if (err) {
-                                swal("Error", "Unable to perform action", "error");
+                                Swal.fire("Error", "Unable to perform action", "error");
                             }
                             else if (!err && data) {
                                 if (callback) callback(data);
@@ -38,11 +38,11 @@ export default {
                     }
                 });
             },
-            allowOutsideClick: () => !swal.isLoading()
+            allowOutsideClick: () => !Swal.isLoading()
         })
     },
     releaseStatus(userName, userID, callback) {
-        swal({
+        Swal.fire({
             title: "Release status?",
             html: '<span style="color:#00FF00; font-weight:bold;">RELEASE STATUS</span> FOR '+ userName +
             '? THEY WILL SEE THEIR ADMISSION STATE!',
@@ -63,7 +63,7 @@ export default {
                             userID: userID
                         }, (err, data) => {
                             if (err) {
-                                swal("Error", "Unable to perform action", "error");
+                                Swal.fire("Error", "Unable to perform action", "error");
                             }
                             else if (!err && data) {
                                 if (callback) callback(data);
@@ -73,12 +73,12 @@ export default {
 
                 }
             },
-            allowOutsideClick: () => !swal.isLoading()
+            allowOutsideClick: () => !Swal.isLoading()
         })
     },
 
     deactivate(userName, userID, callback) {
-        swal({
+        Swal.fire({
             title: "Deactivate account?",
             html: '<span style="color:#FF0000; font-weight:bold;">DEACTIVATE</span> '+ userName +
             '\'s ACCOUNT?',
@@ -99,7 +99,7 @@ export default {
                             userID: userID
                         }, (err, data) => {
                             if (err) {
-                                swal("Error", "Unable to perform action", "error");
+                                Swal.fire("Error", "Unable to perform action", "error");
                             }
                             else if (!err && data) {
                                 if (callback) callback(data);
@@ -109,11 +109,11 @@ export default {
                     }
                 });
             },
-            allowOutsideClick: () => !swal.isLoading()
+            allowOutsideClick: () => !Swal.isLoading()
         })
     },
     activate(userName, userID, callback) {
-        swal({
+        Swal.fire({
             title: "Activate account?",
             html: '<span style="color:#00FF00; font-weight:bold;">ACTIVATE</span> '+ userName +
             '\'s ACCOUNT?',
@@ -134,7 +134,7 @@ export default {
                             userID: userID
                         }, (err, data) => {
                             if (err) {
-                                swal("Error", "Unable to perform action", "error");
+                                Swal.fire("Error", "Unable to perform action", "error");
                             }
                             else if (!err && data) {
                                 if (callback) callback(data);
@@ -144,11 +144,11 @@ export default {
 
                 }
             },
-            allowOutsideClick: () => !swal.isLoading()
+            allowOutsideClick: () => !Swal.isLoading()
         })
     },
     deleteUser(userName, userID, callback) {
-        swal({
+        Swal.fire({
             title: "DELETE USER?",
             html: 'ARE YOU SURE YOU WANT TO <span style="color:#FF0000; font-weight:bold;">DELETE</span> '+ userName +
             '??????<br>You LITERALLY <span style="color:#d33; font-weight:bold;">CANNOT</span> undo this decision.',
@@ -169,7 +169,7 @@ export default {
                             userID: userID
                         }, (err, data) => {
                             if (err) {
-                                swal("Error", "Unable to perform action", "error");
+                                Swal.fire("Error", "Unable to perform action", "error");
                             }
                             else if (!err) {
                                 if (callback) callback(data);
@@ -179,11 +179,11 @@ export default {
 
                 }
             },
-            allowOutsideClick: () => !swal.isLoading()
+            allowOutsideClick: () => !Swal.isLoading()
         })
     },
     flushEmailQueue(userName, userID, callback) {
-        swal({
+        Swal.fire({
             title: "Flush Email Queue?",
             html: 'ARE YOU SURE YOU WANT TO <span style="color:#FF0000; font-weight:bold;">FLUSH EMAIL QUEUE</span> '+ userName +
             '?<br>You <span style="color:#d33; font-weight:bold;">CANNOT</span> undo this decision.',
@@ -204,7 +204,7 @@ export default {
                             userID: userID
                         }, (err, data) => {
                             if (err) {
-                                swal("Error", "Unable to perform action", "error");
+                                Swal.fire("Error", "Unable to perform action", "error");
                             }
                             else if (!err && data) {
                                 if (callback) callback(data);
@@ -214,11 +214,11 @@ export default {
 
                 }
             },
-            allowOutsideClick: () => !swal.isLoading()
+            allowOutsideClick: () => !Swal.isLoading()
         })
     },
     resetVotes(userName, userID, callback) {
-        swal({
+        Swal.fire({
             title: "Reset votes?",
             html: 'RESET <span style="color:#FF0000; font-weight:bold;">ALL VOTES</span> FOR '+ userName +
             '?<br>You <span style="color:#d33; font-weight:bold;">CANNOT</span> undo this decision.',
@@ -239,7 +239,7 @@ export default {
                             userID: userID
                         }, (err, data) => {
                             if (err) {
-                                swal("Error", "Unable to perform action", "error");
+                                Swal.fire("Error", "Unable to perform action", "error");
                             }
                             else if (!err && data) {
                                 if (callback) callback(data);
@@ -249,11 +249,11 @@ export default {
 
                 }
             },
-            allowOutsideClick: () => !swal.isLoading()
+            allowOutsideClick: () => !Swal.isLoading()
         })
     },
     resetInvitation(userName, userID, callback) {
-        swal({
+        Swal.fire({
             title: "Reset invitation status?",
             html: 'RESET <span style="color:#FF0000; font-weight:bold;">INVITATION</span> FOR '+ userName +
             '?<br>This will rollback user to an unconfirmed state.<br>You <span style="color:#d33; font-weight:bold;">CANNOT</span> undo this decision.',
@@ -274,7 +274,7 @@ export default {
                             userID: userID
                         }, (err, data) => {
                             if (err) {
-                                swal("Error", "Unable to perform action", "error");
+                                Swal.fire("Error", "Unable to perform action", "error");
                             }
                             else if (!err && data) {
                                 if (callback) callback(data);
@@ -284,11 +284,11 @@ export default {
 
                 }
             },
-            allowOutsideClick: () => !swal.isLoading()
+            allowOutsideClick: () => !Swal.isLoading()
         })
     },
     resetAdmissionState(userName, userID, callback) {
-        swal({
+        Swal.fire({
             title: "Reset admission state?",
             html: 'RESET <span style="color:#FF0000; font-weight:bold;">ADMISSION STATE</span> FOR '+ userName +
             '?<br>This will rollback user to an unreviewed state.<br>You <span style="color:#d33; font-weight:bold;">CANNOT</span> undo this decision.',
@@ -309,7 +309,7 @@ export default {
                             userID: userID
                         }, (err, data) => {
                             if (err) {
-                                swal("Error", "Unable to perform action", "error");
+                                Swal.fire("Error", "Unable to perform action", "error");
                             }
                             else if (!err && data) {
                                 if (callback) callback(data);
@@ -319,11 +319,11 @@ export default {
 
                 }
             },
-            allowOutsideClick: () => !swal.isLoading()
+            allowOutsideClick: () => !Swal.isLoading()
         })
     },
     voteAdmit(userName, userID, callback) {
-        swal({
+        Swal.fire({
             title: "Confirm Your Vote [ADMIT]",
             html: 'Vote to <span style="color:#00FF00; font-weight:bold;">ADMIT</span> this user?<br>You <span style="color:#d33; font-weight:bold;">CANNOT</span> undo this decision.',
             type: "warning",
@@ -341,7 +341,7 @@ export default {
                         userID: userID
                     }, (err,data) =>{
                         if(err){
-                            swal("Error","Unable to perform action","error");
+                            Swal.fire("Error","Unable to perform action","error");
                         }
                         else if(!err && data){
                             if (callback) callback(data);
@@ -350,12 +350,12 @@ export default {
 
                 }
             },
-            allowOutsideClick: () => !swal.isLoading()
+            allowOutsideClick: () => !Swal.isLoading()
         })
     },
 
     voteReject(userName, userID, callback) {
-        swal({
+        Swal.fire({
             title: "Confirm Your Vote [REJECT]",
             html: 'Vote to <span style="color:#d33; font-weight:bold;">REJECT</span> this user?<br>You <span style="color:#d33; font-weight:bold;">CANNOT</span> undo this decision.',
             type: "warning",
@@ -373,7 +373,7 @@ export default {
                         userID: userID
                     }, (err,data) =>{
                         if(err){
-                            swal("Error","Unable to perform action","error");
+                            Swal.fire("Error","Unable to perform action","error");
                         }
                         else if(!err && data){
                             if (callback) callback(data);
@@ -382,12 +382,12 @@ export default {
 
                 }
             },
-            allowOutsideClick: () => !swal.isLoading()
+            allowOutsideClick: () => !Swal.isLoading()
         })
     },
 
     forceAdmit(userName, userID, callback) {
-        swal({
+        Swal.fire({
             title: "Whoa, wait a minute!<br>[FORCE ACTION]",
             html: 'You are about to <span style="color:#d33; font-weight:bold;">FORCE</span> <span style="color:#00FF00; font-weight:bold;">ADMIT</span> ' + userName + '!',
             type: "warning",
@@ -406,7 +406,7 @@ export default {
                             userID: userID
                         }, (err, data) => {
                             if (err) {
-                                swal("Error", "Unable to perform action", "error");
+                                Swal.fire("Error", "Unable to perform action", "error");
                             }
                             else if (!err && data) {
                                 if (callback) callback(data);
@@ -416,12 +416,12 @@ export default {
 
                 }
             },
-            allowOutsideClick: () => !swal.isLoading()
+            allowOutsideClick: () => !Swal.isLoading()
         })
     },
 
     forceReject(userName, userID, callback) {
-        swal({
+        Swal.fire({
             title: "Whoa, wait a minute!<br>[FORCE ACTION]",
             html: 'You are about to <span style="color:#d33; font-weight:bold;">FORCE REJECT</span> ' + userName + '!',
             type: "warning",
@@ -441,7 +441,7 @@ export default {
                             userID: userID
                         }, (err, data) => {
                             if (err) {
-                                swal("Error", "Unable to perform action", "error");
+                                Swal.fire("Error", "Unable to perform action", "error");
                             }
                             else if (!err && data) {
                                 if (callback) callback(data);
@@ -450,7 +450,7 @@ export default {
                     });
                 }
             },
-            allowOutsideClick: () => !swal.isLoading()
+            allowOutsideClick: () => !Swal.isLoading()
         })
     },
 
@@ -520,7 +520,7 @@ export default {
     },
 
     getUsers(query, callback) {
-        AuthService.sendRequest('GET', apiHost + '/api/users', query, callback)
+        AuthService.sendRequest('POST', apiHost + '/api/users', query, callback)
     },
 
     getUser(id, callback) {
@@ -532,11 +532,11 @@ export default {
     },
 
     getTeams(query, callback) {
-        AuthService.sendRequest('GET', apiHost + '/api/teams', query, callback)
+        AuthService.sendRequest('POST', apiHost + '/api/teams', query, callback)
     },
 
     getLog(query, callback) {
-        AuthService.sendRequest('GET', apiHost + '/api/systemLog', query, callback)
+        AuthService.sendRequest('POST', apiHost + '/api/systemLog', query, callback)
     },
 
     getPendingSchools(callback) {

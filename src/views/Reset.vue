@@ -110,7 +110,7 @@
 
 <script>
     import AuthService from '../AuthService'
-    import swal from 'sweetalert2'
+    import Swal from 'sweetalert2'
     import Session from '../Session'
 
     export default {
@@ -136,7 +136,7 @@
                     } else {
                         this.error = null;
 
-                        swal({
+                        Swal.fire({
                             title: 'Success!',
                             text: 'An email was sent to ' + this.email + '!',
                             type: 'success'
@@ -157,7 +157,7 @@
                         } else {
                             this.error = null;
 
-                            swal({
+                            Swal.fire({
                                 title: 'Success!',
                                 text: 'Password changed!',
                                 type: 'success'

@@ -113,7 +113,7 @@
 <script>
     import Session from '../Session'
     import AuthService from '../AuthService'
-    import swal from 'sweetalert2'
+    import Swal from 'sweetalert2'
     import moment from 'vue-moment'
     import {apiHost} from "../variables";
 
@@ -127,7 +127,7 @@
         },
         methods: {
             declineInvitation() {
-                swal({
+                Swal.fire({
                     title: "Decline invitation?",
                     html: "Are you sure you want to decline your invitation? You <b>CANNOT</b> undo this action!",
                     type: "question",
@@ -142,9 +142,9 @@
 
                         }, (err, data) => {
                             if (err || !data) {
-                                swal("Error", err.error, "error");
+                                Swal.fire("Error", err.error, "error");
                             } else {
-                                swal({
+                                Swal.fire({
                                     title: "Success",
                                     text: "You have declined your invitation.",
                                     type: "success"
@@ -165,7 +165,7 @@
                 AuthService.requestVerify((err,data) => {
                     if (err) {
                         this.error = err;
-                        swal({
+                        Swal.fire({
                             title: 'Sorry!',
                             text: 'There was an error!',
                             type: 'error'
@@ -173,7 +173,7 @@
                     }
                     else {
                         this.error = null;
-                        swal({
+                        Swal.fire({
                             title: 'Success!',
                             text: 'Another email was sent to ' + this.user.email + '!',
                             type: 'success'

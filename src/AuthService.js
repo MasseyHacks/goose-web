@@ -2,7 +2,7 @@
 
 import $ from 'jquery'
 import Session from './Session'
-import swal from 'sweetalert2'
+import Swal from 'sweetalert2'
 import { apiHost } from "./variables";
 import axios from 'axios'
 
@@ -37,7 +37,8 @@ export default {
             headers: {
                 'x-access-token': Session.getToken(),
                 'content-type': contentType
-            }
+            },
+            params: type === 'GET' ? data : null
         }).then(response => {
             console.log(response)
             if (callback) {
@@ -72,14 +73,14 @@ export default {
     },
     
     skillTest(callback) {
-        swal.showLoading();
+        Swal.showLoading();
 
         var sudoMode = sessionStorage.getItem('sudoMode') ? sessionStorage.getItem('sudoMode') : false;
 
         this.sendRequest('GET', apiHost + '/api/skill', {}, (err, data) => {
 
             if (err || sudoMode) {
-                swal({
+                Swal.fire({
                     title: (sudoMode ? '[SUDO MODE]\n' : '') + 'Disastrous Action Final Confirmation',
                     html: 'Security policy requires that all \'disastrous\' actions be confirmed with a skill test. By proceeding, you understand and assume full responsibility of all risks and/or damage (potentially) incurred.<br><br>To promote mathematics and STEM, MasseyHacks Platform Department will issue a SkillTest Fail Bad no good point if you bypass using SUDO mode. K thx bye.<br><br>',
                     showCancelButton: true,
@@ -94,18 +95,18 @@ export default {
 
                         callback()
                     } else {
-                        swal({
+                        Swal.fire({
                             title: 'Action aborted',
                             type: 'error'
                         })
                     }
                 });
 
-                swal.showValidationError(
+                Swal.showValidationError(
                     sudoMode ? 'SUDO MODE ENABLED' : `Unable to get skill question`
                 )
             } else {
-                swal({
+                Swal.fire({
                     title: 'Disastrous Action Final Confirmation',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -120,7 +121,7 @@ export default {
 
                             this.sendRequest('POST', apiHost + '/api/skillFail', {}, (err, data) => {});
 
-                            swal.showValidationError(
+                            Swal.showValidationError(
                                 `Wrong answer!`
                             )
 
@@ -134,7 +135,7 @@ export default {
                     if (result.value) {
                         callback()
                     } else {
-                        swal({
+                        Swal.fire({
                             title: 'Action aborted',
                             type: 'error'
                         })
@@ -146,7 +147,7 @@ export default {
     },
 
     adminChangePassword(fullName, userID, callback) {
-        swal({
+        Swal.fire({
             title: 'Change user password',
             html: 'Enter a new password for ' + fullName,
             showCancelButton: true,
@@ -158,7 +159,7 @@ export default {
             preConfirm: (pw) => {
 
                 if (pw.length < 6) {
-                    swal.showValidationError(
+                    Swal.showValidationError(
                         `Must be at least 6 characters long!`
                     )
                 } else {

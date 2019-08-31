@@ -44,7 +44,7 @@
 <script>
     import Session from '../Session'
     import ApiService from '../ApiService'
-    import swal from 'sweetalert2'
+    import Swal from 'sweetalert2'
 
     export default {
         data() {
@@ -95,7 +95,7 @@
         },
         methods : {
             startReview: function(){
-                swal({
+                Swal.fire({
                     title: "Notice",
                     html: "All votes are final and are immediately taken into<br>consideration. The next application will be displayed<br>immediately after the previous is processed.<br><br>Remember that this power is a privilege.",
                     type: "warning",
@@ -135,7 +135,7 @@
             nextApplication: function(start = false,skipped = true){
 
                 if(skipped){
-                    swal({
+                    Swal.fire({
                         title: "Tsk tsk!",
                         html: "As a reviewer, your job is to review applications!<br>Are you sure you want to pass?",
                         type: "warning",
@@ -165,10 +165,10 @@
             displayApplication: function(){
                 if(this.userTimes.length < 1){
                     if(this.voted){
-                        swal("Information","There are no more applications","info");
+                        Swal.fire("Information","There are no more applications","info");
                     }
                     else{
-                        swal({
+                        Swal.fire({
                             title: "Good Job!",
                             text: "You literally passed every single application!",
                             type: "success"

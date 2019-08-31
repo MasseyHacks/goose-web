@@ -146,7 +146,7 @@
     import Session from '../Session'
     import ApiService from '../ApiService'
     import {saveAs} from 'file-saver'
-    import swal from 'sweetalert2'
+    import Swal from 'sweetalert2'
     import {VueContext} from 'vue-context'
 
     export default {
@@ -254,7 +254,7 @@
             },
 
             onClick: function (text, data) {
-                swal('Hello')
+                Swal.fire('Hello')
             },
 
             deleteFilter: function (logical, filter) {
@@ -311,7 +311,7 @@
                     if (!this.filters[this.queryLogical].map(x => JSON.stringify(x)).includes(JSON.stringify(query))) { // Figure out why this doesn't work
                         this.filters[this.queryLogical].push(query)
                     } else {
-                        swal('This filter already exists!')
+                        Swal.fire('This filter already exists!')
                     }
                 } else {
                     this.filters[this.queryLogical] = [query]

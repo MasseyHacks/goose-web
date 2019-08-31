@@ -82,7 +82,7 @@
 </template>
 
 <script>
-    import swal from 'sweetalert2'
+    import Swal from 'sweetalert2'
     import ApiService from '../ApiService'
 
     export default {
@@ -142,7 +142,7 @@
                 })
             },
             leaveTeam() {
-                swal({
+                Swal.fire({
                     title: 'Please Confirm',
                     text: 'Are you sure you want to leave this team? (' + this.team.name + ')',
                     type: 'warning',
@@ -152,7 +152,7 @@
                     confirmButtonText: 'Confirm'
                 }).then((result) => {
                     if (result.value) {
-                        swal.showLoading();
+                        Swal.showLoading();
                         ApiService.leaveTeam((err, team) => {
                             if (err) {
                                 this.error = err.responseJSON.error

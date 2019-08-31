@@ -124,7 +124,7 @@
     import ApiService from '../ApiService'
     import Session from '../Session'
     import moment from 'moment'
-    import swal from 'sweetalert2'
+    import Swal from 'sweetalert2'
 
     import hljs from 'highlight.js'
     import 'highlight.js/styles/monokai-sublime.css'
@@ -163,7 +163,7 @@
 
             ApiService.getPendingSchools((err, data) => {
                 if (err) {
-                    swal('Error', err, 'error')
+                    Swal.fire('Error', err, 'error')
                 } else {
                     this.pendingSchools = data
                 }
@@ -191,7 +191,7 @@
 
             AuthService.sendRequest('GET', apiHost + '/api/email/get/base', null, (err, data) => {
                 if (err) {
-                    swal('Error', err, 'error')
+                    Swal.fire('Error', err, 'error')
                 } else {
                     let base = data.email.split('{{emailData}}');
                     this.baseHTMLFront = base[0];
@@ -221,7 +221,7 @@
         methods: {
             async reviewSchools() {
                 while (this.pendingSchools.length) {
-                    const {value: decision} = await swal({
+                    const {value: decision} = await Swal.fire({
                         title: 'Review School',
                         html: `If approved, it will be immediately added to the school database.<br><br>School Name: ${this.pendingSchools[0]}`,
                         input: 'radio',
@@ -240,7 +240,7 @@
                                 this.pendingSchools.splice(0, 1);
 
                                 if (!this.pendingSchools.length) {
-                                    swal({
+                                    Swal.fire({
                                         title: 'Review complete!',
                                         type: 'success'
                                     })
@@ -257,7 +257,7 @@
                                 this.pendingSchools.splice(0, 1);
 
                                 if (!this.pendingSchools.length) {
-                                    swal({
+                                    Swal.fire({
                                         title: 'Review complete!',
                                         type: 'success'
                                     })
@@ -279,7 +279,7 @@
                 }
             },
             checkAllTeams() {
-                swal({
+                Swal.fire({
                     title: 'Are you sure you?',
                     text: 'YOU ARE ABOUT TO RECHECK ADMISSION STATUS FOR ALL TEAMS!',
                     type: 'warning',
@@ -290,14 +290,14 @@
                 }).then((result) => {
                     if (result.value) {
                         AuthService.skillTest(() => {
-                            swal.showLoading();
+                            Swal.showLoading();
                             AuthService.sendRequest('POST', apiHost + '/api/checkAllTeams', {
 
                             }, (err, msg) => {
                                 if (err) {
-                                    swal('Error', err ? err.error : 'Something went wrong...', 'error')
+                                    Swal.fire('Error', err ? err.error : 'Something went wrong...', 'error')
                                 } else {
-                                    swal('Success', `Successfully checked ${msg} teams!`, 'success');
+                                    Swal.fire('Success', `Successfully checked ${msg} teams!`, 'success');
                                 }
                             })
                         })
@@ -305,7 +305,7 @@
                 })
             },
             pushBackRejected() {
-                swal({
+                Swal.fire({
                     title: 'Are you sure you?',
                     text: 'YOU ARE ABOUT TO PUSH BACK (to unreviewed) FOR ALL REJECTED USERS!',
                     type: 'warning',
@@ -316,14 +316,14 @@
                 }).then((result) => {
                     if (result.value) {
                         AuthService.skillTest(() => {
-                            swal.showLoading();
+                            Swal.showLoading();
                             AuthService.sendRequest('POST', apiHost + '/api/pushBackRejected', {
 
                             }, (err, msg) => {
                                 if (err) {
-                                    swal('Error', err ? err.error : 'Something went wrong...', 'error')
+                                    Swal.fire('Error', err ? err.error : 'Something went wrong...', 'error')
                                 } else {
-                                    swal('Success', `Successfully unrejected ${msg} users!`, 'success');
+                                    Swal.fire('Success', `Successfully unrejected ${msg} users!`, 'success');
                                 }
                             })
                         })
@@ -331,7 +331,7 @@
                 })
             },
             rejectNoState() {
-                swal({
+                Swal.fire({
                     title: 'Are you sure you?',
                     text: 'YOU ARE ABOUT TO REJECT ALL USERS WITHOUT AN APPLICATION STATE! ARE YOU SURE YOU WANT TO PROCEED?',
                     type: 'warning',
@@ -342,14 +342,14 @@
                 }).then((result) => {
                     if (result.value) {
                         AuthService.skillTest(() => {
-                            swal.showLoading();
+                            Swal.showLoading();
                             AuthService.sendRequest('POST', apiHost + '/api/rejectNoState', {
 
                             }, (err, msg) => {
                                 if (err) {
-                                    swal('Error', err ? err.error : 'Something went wrong...', 'error')
+                                    Swal.fire('Error', err ? err.error : 'Something went wrong...', 'error')
                                 } else {
-                                    swal('Success', `Successfully rejected ${msg} users!`, 'success');
+                                    Swal.fire('Success', `Successfully rejected ${msg} users!`, 'success');
                                 }
                             })
                         })
@@ -357,7 +357,7 @@
                 })
             },
             releaseAll() {
-                swal({
+                Swal.fire({
                     title: 'Are you sure you?',
                     text: 'YOU ARE ABOUT TO RELEASE THE STATUS FOR ALL USERS REGARDLESS OF APPLICATION STATE! ARE YOU SURE YOU WANT TO PROCEED?',
                     type: 'warning',
@@ -368,14 +368,14 @@
                 }).then((result) => {
                     if (result.value) {
                         AuthService.skillTest(() => {
-                            swal.showLoading();
+                            Swal.showLoading();
                             AuthService.sendRequest('POST', apiHost + '/api/releaseAllStatus', {
 
                             }, (err, msg) => {
                                 if (err) {
-                                    swal('Error', err ? err.error : 'Something went wrong...', 'error')
+                                    Swal.fire('Error', err ? err.error : 'Something went wrong...', 'error')
                                 } else {
-                                    swal('Success', `Successfully released status for ${msg} users!`, 'success');
+                                    Swal.fire('Success', `Successfully released status for ${msg} users!`, 'success');
                                 }
                             })
                         })
@@ -384,7 +384,7 @@
             },
 
             releaseAccepted() {
-                swal({
+                Swal.fire({
                     title: 'Are you sure you?',
                     text: 'YOU ARE ABOUT TO RELEASE THE STATUS FOR ALL ACCEPTED USERS! ARE YOU SURE YOU WANT TO PROCEED?',
                     type: 'warning',
@@ -395,14 +395,14 @@
                 }).then((result) => {
                     if (result.value) {
                         AuthService.skillTest(() => {
-                            swal.showLoading();
+                            Swal.showLoading();
                             AuthService.sendRequest('POST', apiHost + '/api/releaseAllAccepted', {
 
                             }, (err, msg) => {
                                 if (err) {
-                                    swal('Error', err ? err.error : 'Something went wrong...', 'error')
+                                    Swal.fire('Error', err ? err.error : 'Something went wrong...', 'error')
                                 } else {
-                                    swal('Success', `Successfully released status for ${msg} users!`, 'success');
+                                    Swal.fire('Success', `Successfully released status for ${msg} users!`, 'success');
                                 }
                             })
                         })
@@ -411,7 +411,7 @@
             },
 
             releaseWaitlisted() {
-                swal({
+                Swal.fire({
                     title: 'Are you sure you?',
                     text: 'YOU ARE ABOUT TO RELEASE THE STATUS FOR ALL WAITLISTED USERS! ARE YOU SURE YOU WANT TO PROCEED?',
                     type: 'warning',
@@ -422,14 +422,14 @@
                 }).then((result) => {
                     if (result.value) {
                         AuthService.skillTest(() => {
-                            swal.showLoading();
+                            Swal.showLoading();
                             AuthService.sendRequest('POST', apiHost + '/api/releaseAllWaitlisted', {
 
                             }, (err, msg) => {
                                 if (err) {
-                                    swal('Error', err ? err.error : 'Something went wrong...', 'error')
+                                    Swal.fire('Error', err ? err.error : 'Something went wrong...', 'error')
                                 } else {
-                                    swal('Success', `Successfully released status for ${msg} users!`, 'success');
+                                    Swal.fire('Success', `Successfully released status for ${msg} users!`, 'success');
                                 }
                             })
                         })
@@ -439,7 +439,7 @@
 
 
             queueLagger() {
-                swal({
+                Swal.fire({
                     title: 'Are you sure you?',
                     text: 'YOU ARE ABOUT TO QUEUE LAGGER EMAILS! ARE YOU SURE YOU WANT TO PROCEED?',
                     type: 'warning',
@@ -450,14 +450,14 @@
                 }).then((result) => {
                     if (result.value) {
                         AuthService.skillTest(() => {
-                            swal.showLoading();
+                            Swal.showLoading();
                             AuthService.sendRequest('POST', apiHost + '/api/queueLagger', {
 
                             }, (err, msg) => {
                                 if (err) {
-                                    swal('Error', err ? err.error : 'Something went wrong...', 'error')
+                                    Swal.fire('Error', err ? err.error : 'Something went wrong...', 'error')
                                 } else {
-                                    swal('Success', `Successfully queued lagger emails!`, 'success');
+                                    Swal.fire('Success', `Successfully queued lagger emails!`, 'success');
                                 }
                             })
                         })
@@ -467,7 +467,7 @@
 
 
             releaseRejected() {
-                swal({
+                Swal.fire({
                     title: 'Are you sure you?',
                     text: 'YOU ARE ABOUT TO RELEASE THE STATUS FOR ALL REJECTED USERS! ARE YOU SURE YOU WANT TO PROCEED?',
                     type: 'warning',
@@ -478,14 +478,14 @@
                 }).then((result) => {
                     if (result.value) {
                         AuthService.skillTest(() => {
-                            swal.showLoading();
+                            Swal.showLoading();
                             AuthService.sendRequest('POST', apiHost + '/api/releaseAllRejected', {
 
                             }, (err, msg) => {
                                 if (err) {
-                                    swal('Error', err ? err.error : 'Something went wrong...', 'error')
+                                    Swal.fire('Error', err ? err.error : 'Something went wrong...', 'error')
                                 } else {
-                                    swal('Success', `Successfully released status for ${msg} users!`, 'success');
+                                    Swal.fire('Success', `Successfully released status for ${msg} users!`, 'success');
                                 }
                             })
                         })
@@ -494,7 +494,7 @@
             },
 
             hideAll() {
-                swal({
+                Swal.fire({
                     title: 'Are you sure you?',
                     text: 'YOU ARE ABOUT TO HIDE THE STATUS FOR ALL USERS REGARDLESS OF STATUS! ARE YOU SURE YOU WANT TO PROCEED?',
                     type: 'warning',
@@ -505,14 +505,14 @@
                 }).then((result) => {
                     if (result.value) {
                         AuthService.skillTest(() => {
-                            swal.showLoading();
+                            Swal.showLoading();
                             AuthService.sendRequest('POST', apiHost + '/api/hideAllStatus', {
 
                             }, (err, msg) => {
                                 if (err) {
-                                    swal('Error', err ? err.error : 'Something went wrong...', 'error')
+                                    Swal.fire('Error', err ? err.error : 'Something went wrong...', 'error')
                                 } else {
-                                    swal('Success', `Successfully hid status for ${msg} users!`, 'success');
+                                    Swal.fire('Success', `Successfully hid status for ${msg} users!`, 'success');
                                 }
                             })
                         })
@@ -521,7 +521,7 @@
             },
 
             flushAllEmails() {
-                swal({
+                Swal.fire({
                     title: 'Are you sure you?',
                     text: 'YOU ARE ABOUT TO FLUSH THE EMAIL QUEUE FOR ALL USERS REGARDLESS OF STATUS! ARE YOU SURE YOU WANT TO PROCEED?',
                     type: 'warning',
@@ -532,14 +532,14 @@
                 }).then((result) => {
                     if (result.value) {
                         AuthService.skillTest(() => {
-                            swal.showLoading();
+                            Swal.showLoading();
                             AuthService.sendRequest('POST', apiHost + '/api/flushAllEmails', {
 
                             }, (err, msg) => {
                                 if (err) {
-                                    swal('Error', err ? err.error : 'Something went wrong...', 'error')
+                                    Swal.fire('Error', err ? err.error : 'Something went wrong...', 'error')
                                 } else {
-                                    swal('Success', `Successfully flushed email queue for ${msg} users!`, 'success');
+                                    Swal.fire('Success', `Successfully flushed email queue for ${msg} users!`, 'success');
                                 }
                             })
                         })
@@ -558,7 +558,7 @@
                 return moment(date).format('LLLL')
             },
             changeLimit() {
-                swal({
+                Swal.fire({
                     title: 'Are you sure?',
                     text: 'This edit could have devastating effects!',
                     type: 'warning',
@@ -569,14 +569,14 @@
                 }).then((result) => {
                     if (result.value) {
                         AuthService.skillTest(() => {
-                            swal.showLoading();
+                            Swal.showLoading();
                             AuthService.sendRequest('POST', apiHost + '/api/updateParticipantLimit', {
                                 'maxParticipants': this.maxParticipants
                             }, (err, setting) => {
                                 if (err || !setting) {
-                                    swal('Error', err.error, 'error')
+                                    Swal.fire('Error', err.error, 'error')
                                 } else {
-                                    swal('Success', 'Limit has been changed successfully', 'success');
+                                    Swal.fire('Success', 'Limit has been changed successfully', 'success');
                                     Session.setSettings(setting);
                                     this.convertTimes()
                                 }
@@ -586,7 +586,7 @@
                 })
             },
             changeTimes () {
-                swal({
+                Swal.fire({
                     title: 'Are you sure?',
                     text: 'This edit will affect all hackers!',
                     type: 'warning',
@@ -597,16 +597,16 @@
                 }).then((result) => {
                     if (result.value) {
                         AuthService.skillTest(() => {
-                            swal.showLoading();
+                            Swal.showLoading();
                             AuthService.sendRequest('POST', apiHost + '/api/updateRegistrationTime', {
                                 timeOpen: moment(this.timeOpen).unix() * 1000,
                                 timeClose: moment(this.timeClose).unix() * 1000,
                                 timeConfirm: moment(this.timeConfirm).unix() * 1000
                             }, (err, setting) => {
                                 if (err || !setting) {
-                                    swal('Error', err.error, 'error')
+                                    Swal.fire('Error', err.error, 'error')
                                 } else {
-                                    swal('Success', 'Application times has been changed', 'success');
+                                    Swal.fire('Success', 'Application times has been changed', 'success');
                                     Session.setSettings(setting);
                                     this.convertTimes()
                                 }
@@ -617,16 +617,16 @@
             },
             getTemplate () {
                 if (this.selected == '') {
-                    swal('Error', 'You must select an email first', 'error')
+                    Swal.fire('Error', 'You must select an email first', 'error')
                 } else {
-                    swal('Fetching email...')
-                    swal.showLoading();
+                    Swal.fire('Fetching email...')
+                    Swal.showLoading();
 
                     AuthService.sendRequest('GET', apiHost + '/api/email/get/' + this.selected, null, (err, data) => {
                         if (err) {
-                            swal('Error', err, 'error')
+                            Swal.fire('Error', err, 'error')
                         } else {
-                            swal('Success', 'Your Preview and Editor has been updated', 'success');
+                            Swal.fire('Success', 'Your Preview and Editor has been updated', 'success');
                             this.emailHTML = data.email;
                             this.editor.setText(this.emailHTML);
                             this.editor.formatLine(0, this.editor.getLength(), { 'code-block': true });
@@ -635,7 +635,7 @@
                 }
             },
             saveTemplate() {
-                swal({
+                Swal.fire({
                     title: 'Are you sure?',
                     text: 'This edit will affect the template permanently!',
                     type: 'warning',
@@ -646,15 +646,15 @@
                 }).then((result) => {
                     if (result.value) {
                         AuthService.skillTest(() => {
-                            swal.showLoading();
+                            Swal.showLoading();
                             AuthService.sendRequest('POST', 'api/email/set/' + this.selected, {
                                 templateHTML: this.emailHTML,
                                 templateName: this.selected
                             }, (err, data) => {
                                 if (err || !data) {
-                                    swal('Error', err.error, 'error')
+                                    Swal.fire('Error', err.error, 'error')
                                 } else {
-                                    swal('Success', 'Template set', 'success')
+                                    Swal.fire('Success', 'Template set', 'success')
                                 }
                             })
                         })

@@ -111,7 +111,7 @@
     // Max length (If applicable)
 
     import Session from '../Session'
-    import swal from 'sweetalert2'
+    import Swal from 'sweetalert2'
     import AuthService from '../AuthService'
     import ApiService from '../ApiService'
     import $ from 'jquery'
@@ -150,7 +150,7 @@
 
             if (this.modified()) {
 
-                swal({
+                Swal.fire({
                     title: 'Are you sure you want to leave?',
                     html: 'Changes you made have not been saved!<br>Do you want to continue?',
                     showCancelButton: true,
@@ -436,14 +436,14 @@
                 var parsedForm = this.parseForm(this.applications.hacker, true)
 
                 if (parsedForm.doNotSubmit) {
-                    swal({
+                    Swal.fire({
                         title: 'Error',
                         html: '<p style="text-align: left"><b>' + (parsedForm.submissionErrors.length ? parsedForm.submissionErrors.join('<br>') + ' <br>' : '') + "</b></p> Please check all the required fields and try again.",
                         type: 'error'
                     })
                 } else {
 
-                    swal({
+                    Swal.fire({
                         title: 'Submit Application',
                         html: 'Are you sure you want to submit your application?<br><br>You <b>CANNOT</b> modify your application after you submit!',
                         showCancelButton: true,
@@ -463,7 +463,7 @@
                             console.log(data)
                             AuthService.sendRequest('POST', apiHost + '/api/updateProfile', data, (err, user) => {
                                 if (err) {
-                                    swal("Error", err.responseJSON['error'], "error");
+                                    Swal.fire("Error", err.responseJSON['error'], "error");
                                 } else {
                                     Session.setUser(user);
 
@@ -471,7 +471,7 @@
                                     this.oldApplication = user.profile.hacker;
 
                                     this.checkEditState();
-                                    swal("Success", "Your application has been submitted!", "success");
+                                    Swal.fire("Success", "Your application has been submitted!", "success");
                                 }
                             });
                         }
@@ -520,7 +520,7 @@
             saveApplication(auto) {
                 var parsedForm = this.parseForm(this.applications.hacker, false)
                 if (!auto) {
-                    swal.showLoading()
+                    Swal.showLoading()
                 }
                 //ajax submit code
                 var data = {};
@@ -531,9 +531,9 @@
                 AuthService.sendRequest('POST', apiHost + '/api/updateProfile', data, (err, user) => {
                     if (!auto) {
                         if (err) {
-                            swal("Error", err.responseJSON['error'], "error");
+                            Swal.fire("Error", err.responseJSON['error'], "error");
                         } else {
-                            swal("Success", "Your application has been saved!", "success");
+                            Swal.fire("Success", "Your application has been saved!", "success");
                             Session.setUser(user);
 
                             this.user = user;

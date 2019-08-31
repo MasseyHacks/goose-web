@@ -77,7 +77,7 @@
 <script type="text/javascript">
     import Session from '../Session'
     import AuthService from '../AuthService'
-    import swal from 'sweetalert2'
+    import Swal from 'sweetalert2'
     import ApiService from '../ApiService'
     import moment from 'moment'
     import JsonTree from 'vue-json-tree'
@@ -162,7 +162,7 @@
             changePassword: function() {
 
                 AuthService.adminChangePassword(this.userObj.fullName, this.userID, () => {
-                    swal('Success!', 'Successfully changed password', 'success');
+                    Swal.fire('Success!', 'Successfully changed password', 'success');
                 });
 
             },
@@ -171,12 +171,12 @@
                 if (this.userObj.status.active) {
                     ApiService.deactivate(this.userObj.fullName, this.userID, (data) => {
                         this.userObj = data;
-                        swal('Success!', 'Successfully deactivated user', 'success');
+                        Swal.fire('Success!', 'Successfully deactivated user', 'success');
                     });
                 } else {
                     ApiService.activate(this.userObj.fullName, this.userID, (data) => {
                         this.userObj = data;
-                        swal('Success!', 'Successfully activated user', 'success');
+                        Swal.fire('Success!', 'Successfully activated user', 'success');
                     });
                 }
 
@@ -186,12 +186,12 @@
                 if (this.userObj.status.statusReleased) {
                     ApiService.hideStatus(this.userObj.fullName, this.userID, (data) => {
                         this.userObj = data;
-                        swal('Success!', 'Successfully hid status for user', 'success');
+                        Swal.fire('Success!', 'Successfully hid status for user', 'success');
                     });
                 } else {
                     ApiService.releaseStatus(this.userObj.fullName, this.userID, (data) => {
                         this.userObj = data;
-                        swal('Success!', 'Successfully released status for user', 'success');
+                        Swal.fire('Success!', 'Successfully released status for user', 'success');
                     });
                 }
 
@@ -199,7 +199,7 @@
             deleteUser: function () {
                 ApiService.deleteUser(this.userObj.fullName, this.userID, (data) => {
                     this.userObj = data;
-                    swal('Success!', 'Successfully deleted user', 'success').then(function () {
+                    Swal.fire('Success!', 'Successfully deleted user', 'success').then(function () {
                         window.location.href = this.returnPath;
                     });
 
@@ -208,49 +208,49 @@
             flushEmailQueue: function () {
                 ApiService.flushEmailQueue(this.userObj.fullName, this.userID, (data) => {
                     this.userObj = data;
-                    swal('Success!', 'Successfully flushed email queue', 'success');
+                    Swal.fire('Success!', 'Successfully flushed email queue', 'success');
                 });
             },
             resetVotes: function () {
                 ApiService.resetVotes(this.userObj.fullName, this.userID, (data) => {
                     this.userObj = data;
-                    swal('Success!', 'Successfully reset votes', 'success');
+                    Swal.fire('Success!', 'Successfully reset votes', 'success');
                 });
             },
             resetInvitation: function () {
                 ApiService.resetInvitation(this.userObj.fullName, this.userID, (data) => {
                     this.userObj = data;
-                    swal('Success!', 'Successfully reset invitation status', 'success');
+                    Swal.fire('Success!', 'Successfully reset invitation status', 'success');
                 });
             },
             resetAdmissionState: function () {
                 ApiService.resetAdmissionState(this.userObj.fullName, this.userID, (data) => {
                     this.userObj = data;
-                    swal('Success!', 'Successfully reset admission state', 'success');
+                    Swal.fire('Success!', 'Successfully reset admission state', 'success');
                 });
             },
             forceAdmit: function () {
                 ApiService.forceAdmit(this.userObj.fullName, this.userID, (data) => {
                     this.userObj = data;
-                    swal('Success!', 'Successfully force admitted user', 'success');
+                    Swal.fire('Success!', 'Successfully force admitted user', 'success');
                 });
             },
             forceReject: function () {
                 ApiService.forceReject(this.userObj.fullName, this.userID, (data) => {
                     this.userObj = data;
-                    swal('Success!', 'Successfully force rejected user', 'success');
+                    Swal.fire('Success!', 'Successfully force rejected user', 'success');
                 });
             },
             voteAdmit: function () {
                 ApiService.voteAdmit(this.userObj.fullName, this.userID, (data) => {
                     this.userObj = data;
-                    swal('Success!', 'Successfully voted to admit user', 'success');
+                    Swal.fire('Success!', 'Successfully voted to admit user', 'success');
                 });
             },
             voteReject: function () {
                 ApiService.voteReject(this.userObj.fullName, this.userID, (data) => {
                     this.userObj = data;
-                    swal('Success!', 'Successfully voted to reject user', 'success');
+                    Swal.fire('Success!', 'Successfully voted to reject user', 'success');
                 });
             },
             flatten: function (obj, includeApplication = true, depth = 0) {
@@ -289,9 +289,9 @@
                         id: this.userID
                     }, (err, data) => {
                         if (err) {
-                            swal("Error", "This action has been logged", "error")
+                            Swal.fire("Error", "This action has been logged", "error")
                         } else {
-                            swal({
+                            Swal.fire({
                                 title: "PEI TOKEN ISSUED!",
                                 html: "<a href=\"" + data.url + "\">" + data.url + "</a>",
                                 type: "success"
@@ -307,9 +307,9 @@
                         data: {"profile.signature": "-1"}
                     }, (err, data) => {
                         if (err) {
-                            swal('Error', err.error, 'error')
+                            Swal.fire('Error', err.error, 'error')
                         } else {
-                            swal('Success', 'Application has been unlocked', 'success').then((result) => {
+                            Swal.fire('Success', 'Application has been unlocked', 'success').then((result) => {
                                 ApiService.getUser(this.userID, (err, data) => {
                                     if (err || !data) {
                                         console.log("ERROR")
@@ -339,7 +339,7 @@
                 keys.splice(keys.indexOf('lowerCaseName'), 1);
                 console.log(keys);
 
-                swal({
+                Swal.fire({
                     title: 'Warning',
                     type: 'warning',
                     text: 'Updating a user should be done through the appropriate function. This editor will not check for any errors or update any dependent fields. Continue?',
@@ -349,7 +349,7 @@
                     confirmButtonText: 'Yes!'
                 }).then(async (result) => {
                     if (result.value) {
-                        const {value: field} = await swal({
+                        const {value: field} = await Swal.fire({
                             title: 'Select a field',
                             input: 'select',
                             inputOptions: keys,
@@ -363,7 +363,7 @@
                         });
 
                         if (field) {
-                            const {value: newValue} = await swal({
+                            const {value: newValue} = await Swal.fire({
                                 title: 'Enter a value for ' + keys[field],
                                 input: 'text',
                                 inputValue: flatWithHistory[keys[field]],
@@ -373,7 +373,7 @@
                                 }*/
                             });
 
-                            swal({
+                            Swal.fire({
                                 title: 'Are you sure?',
                                 type: 'warning',
                                 html: `You are directly modifying ${this.userObj.fullName}!<br>` +
@@ -389,7 +389,7 @@
                             }).then((result) => {
                                 if (result.value) {
                                     AuthService.skillTest(() => {
-                                        swal.showLoading();
+                                        Swal.showLoading();
 
                                         var postData = {};
                                         postData[keys[field]] = newValue;
@@ -399,9 +399,9 @@
                                             data: postData
                                         }, (err, data) => {
                                             if (err) {
-                                                swal('Error', err.error, 'error')
+                                                Swal.fire('Error', err.error, 'error')
                                             } else {
-                                                swal('Success', 'Field has been changed', 'success').then((result) => {
+                                                Swal.fire('Success', 'Field has been changed', 'success').then((result) => {
                                                     ApiService.getUser(this.userID, (err, data) => {
                                                         if (err || !data) {
                                                             console.log("ERROR")

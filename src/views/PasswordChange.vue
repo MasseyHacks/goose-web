@@ -37,7 +37,7 @@
 
 <script>
     import AuthService from '../AuthService'
-    import swal from 'sweetalert2'
+    import Swal from 'sweetalert2'
 
     export default {
         data() {
@@ -59,7 +59,7 @@
                         } else {
                             this.error = null;
 
-                            swal({
+                            Swal.fire({
                                 title: 'Success!',
                                 text: 'Password changed!',
                                 type: 'success'

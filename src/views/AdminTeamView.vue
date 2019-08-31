@@ -53,7 +53,7 @@
 
 <script type="text/javascript">
     import Session from '../Session'
-    import swal from 'sweetalert2'
+    import Swal from 'sweetalert2'
     import ApiService from '../ApiService'
 
     export default {
@@ -124,7 +124,7 @@
 
             },
             removeUser(user) {
-                swal({
+                Swal.fire({
                     title: 'Warning',
                     type: 'warning',
                     text: 'This action is irreversible! Are you sure you want to delete ' + user.name +' from this team (If this is the last member, the team will be deleted as well)',
@@ -134,17 +134,17 @@
                     confirmButtonText: 'Yes!'
                 }).then((result) => {
                     if (result.value) {
-                        swal.showLoading();
+                        Swal.showLoading();
 
                         ApiService.removeFromTeam(user.id, this.teamCode, (err, data) => {
                             if (err) {
-                                swal({
+                                Swal.fire({
                                     title: "Warning",
                                     type: 'danger',
                                     text: 'Unable to remove user'
                                 })
                             } else {
-                                swal({
+                                Swal.fire({
                                     title: "Success",
                                     type: 'success',
                                     text: 'User has been removed'
@@ -166,7 +166,7 @@
                 })
             },
             deleteTeam() {
-                swal({
+                Swal.fire({
                     title: 'Warning',
                     type: 'warning',
                     text: 'This action is irreversible! Are you sure you want to delete this team',
@@ -176,17 +176,17 @@
                     confirmButtonText: 'Yes!'
                 }).then((result) => {
                     if (result.value) {
-                        swal.showLoading();
+                        Swal.showLoading();
 
                         ApiService.deleteTeam(this.teamCode, (err, data) => {
                             if (err) {
-                                swal({
+                                Swal.fire({
                                     title: "Warning",
                                     type: 'danger',
                                     text: 'Unable to delete team'
                                 })
                             } else {
-                                swal({
+                                Swal.fire({
                                     title: "Success",
                                     type: 'success',
                                     text: 'Team has been deleted'
@@ -199,7 +199,7 @@
                 })
             },
             acceptTeam() {
-                swal({
+                Swal.fire({
                     title: 'Warning',
                     type: 'warning',
                     text: 'Are you sure you want to admit this team',
@@ -209,17 +209,17 @@
                     confirmButtonText: 'Yes!'
                 }).then((result) => {
                     if (result.value) {
-                        swal.showLoading();
+                        Swal.showLoading();
 
                         ApiService.acceptTeam(this.teamCode, (err, data) => {
                             if (err) {
-                                swal({
+                                Swal.fire({
                                     title: "Warning",
                                     type: 'danger',
                                     text: 'Unable to admit team'
                                 })
                             } else {
-                                swal({
+                                Swal.fire({
                                     title: "Success",
                                     type: 'success',
                                     text: 'Team has been admitted'
@@ -230,7 +230,7 @@
                 })
             },
             rejectTeam() {
-                swal({
+                Swal.fire({
                     title: 'Warning',
                     type: 'warning',
                     text: 'Are you sure you want to reject this team',
@@ -240,17 +240,17 @@
                     confirmButtonText: 'Yes!'
                 }).then((result) => {
                     if (result.value) {
-                        swal.showLoading();
+                        Swal.showLoading();
 
                         ApiService.rejectTeam(this.teamCode, (err, data) => {
                             if (err) {
-                                swal({
+                                Swal.fire({
                                     title: "Warning",
                                     type: 'danger',
                                     text: 'Unable to reject team'
                                 })
                             } else {
-                                swal({
+                                Swal.fire({
                                     title: "Success",
                                     type: 'success',
                                     text: 'Team has been rejected'

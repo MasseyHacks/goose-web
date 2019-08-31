@@ -126,7 +126,7 @@
 <script>
     import AuthService from '../AuthService'
     import ApiService from '../ApiService'
-    import swal from 'sweetalert2'
+    import Swal from 'sweetalert2'
     import moment from 'moment'
     import $ from 'jquery';
     import {apiHost} from "../variables";
@@ -179,7 +179,7 @@
               intentional.crash
             },
             sudoMode: function() {
-                swal({
+                Swal.fire({
                     title: 'Enter SUDO MODE?',
                     html: 'You won\'t be prompted to solve a puzzle when you perform a dangerous action. As a developer, we trust that you won\'t blaze through all the warnings.<br><br>By proceeding, you understand and assume full responsibility of all risks and/or damage (potentially) incurred.<br><br>SUDO MODE will be disabled at the end of this session.',
                     showCancelButton: true,
@@ -189,14 +189,14 @@
                     footer: 'MasseyHacks | Platform Division',
                 }).then((result) => {
                     if (result.value) {
-                        swal({
+                        Swal.fire({
                             title: 'SUDO MODE enabled!',
                             type: 'success'
                         });
 
                         sessionStorage.setItem('sudoMode', 'true');
                     } else {
-                        swal({
+                        Swal.fire({
                             title: 'Action aborted',
                             type: 'error'
                         })
