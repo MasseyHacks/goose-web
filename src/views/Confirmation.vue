@@ -120,7 +120,7 @@
                         Confirm
                     </span>
                 </button>
-                <button class="generic-button less-wide" v-on:click="denyInvitation">Decline</button>
+                <button class="generic-button less-wide" v-on:click="declineInvitation">Decline</button>
             </div>
         </div>
     </div>
@@ -362,7 +362,7 @@
                         confirmButtonText: 'Yes!'
                     }).then((result) => {
                         if (result.value) {
-                            AuthService.sendRequest('POST', apiHost + '/api/acceptInvitation', {
+                            ApiService.acceptInvitation({
                                 confirmation: parsedForm.profile
                             }, (err, data) => {
                                 if (err || !data) {
@@ -389,7 +389,7 @@
                     })
                 }
             },
-            denyInvitation() {
+            declineInvitation() {
                 Swal.fire({
                     title: "Decline invitation?",
                     html: "Are you sure you want to decline your invitation? You <b>CANNOT</b> undo this action!",
@@ -401,9 +401,7 @@
                     confirmButtonText: 'Yes!'
                 }).then((result) => {
                     if (result.value) {
-                        AuthService.sendRequest('POST', apiHost + '/api/declineInvitation', {
-
-                        }, (err, data) => {
+                        ApiService.declineInvitation({}, (err, data) => {
                             if (err || !data) {
                                 Swal.fire("Error", err.error, "error");
                             } else {

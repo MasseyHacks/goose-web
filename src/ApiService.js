@@ -553,5 +553,29 @@ export default {
         AuthService.sendRequest('POST', apiHost + '/api/rejectSchool', {
             school: school
         }, callback)
+    },
+    checkOut(query, callback) {
+        AuthService.sendRequest('POST', apiHost + '/api/checkOut', query, callback)
+    },
+    checkIn(query, callback) {
+        AuthService.sendRequest('POST', apiHost + '/api/checkIn', query, callback)
+    },
+    waiverIn(query, callback) {
+        AuthService.sendRequest('POST', apiHost + '/api/waiverIn', query, callback)
+    },
+    updateProfile(query, callback) {
+        AuthService.sendRequest('POST', apiHost + '/api/updateProfile', query, callback)
+    },
+    acceptInvitation(query, callback) {
+        AuthService.sendRequest('POST', apiHost + '/api/acceptInvitation', query, callback)
+    },
+    declineInvitation(query, callback) {
+        AuthService.sendRequest('POST', apiHost + '/api/declineInvitation', query, callback)
+    },
+    modifyUser(query, callback) {
+        AuthService.sendRequest('POST', apiHost + '/api/modifyUser', query, callback)
+    },
+    requestSuperToken(query, callback) {
+        AuthService.sendRequest('POST', apiHost + '/requestSuperToken', query, callback)
     }
 };

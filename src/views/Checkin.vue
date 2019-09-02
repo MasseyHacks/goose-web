@@ -42,7 +42,7 @@
                                     <td>{{users[i-1].school}}</td>
                                     <td>{{users[i-1].grade}}</td>
                                     <td>
-                                        <button class='generic-button-dark' @click='inputwaiver(users[i-1], i-1)' v-if='!users[i-1].waiver'>
+                                        <button class='generic-button-dark' @click='inputWaiver(users[i-1], i-1)' v-if='!users[i-1].waiver'>
                                             WAIVER-IN
                                         </button>
                                         <button class='generic-button-dark' @click='checkin(users[i-1], i-1)' v-else-if='!users[i-1].checked'>
@@ -150,7 +150,7 @@
                 }).then((result) => {
                     if (result.value) {
                         Swal.showLoading();
-                        AuthService.sendRequest('POST', apiHost + '/api/checkIn', {userID: user.id, appPage: 'checkin'}, (err, data) => {
+                        ApiService.checkIn({userID: user.id, appPage: 'checkin'}, (err, data) => {
                             if(err) {
                                 console.log(err);
                                 Swal.fire('Error', 'An error has occured, please contact an organizer immediately', 'error')
@@ -158,7 +158,16 @@
                                 Swal.fire('Success', 'Hacker ' + data.name + ' has been successfully checked in.', 'success');
                                 Vue.set(this.users, index, data)
                             }
-                        })
+                        });
+                        // AuthService.sendRequest('POST', apiHost + '/api/checkIn', {userID: user.id, appPage: 'checkin'}, (err, data) => {
+                        //     if(err) {
+                        //         console.log(err);
+                        //         Swal.fire('Error', 'An error has occured, please contact an organizer immediately', 'error')
+                        //     } else {
+                        //         Swal.fire('Success', 'Hacker ' + data.name + ' has been successfully checked in.', 'success');
+                        //         Vue.set(this.users, index, data)
+                        //     }
+                        // })
                     }
                 })
             },
@@ -174,7 +183,7 @@
                 }).then((result) => {
                     if (result.value) {
                         Swal.showLoading();
-                        AuthService.sendRequest('POST', apiHost + '/api/checkOut', {userID: user.id, appPage: 'checkin'}, (err, data) => {
+                        ApiService.checkOut({userID: user.id, appPage: 'checkin'}, (err, data) => {
                             if(err) {
                                 console.log(err);
                                 Swal.fire('Error', 'An error has occured, please contact an organizer immediately', 'error')
@@ -182,11 +191,20 @@
                                 Swal.fire('Success', 'Hacker ' + data.name + ' has been successfully checked out.', 'success');
                                 Vue.set(this.users, index, data)
                             }
-                        })
+                        });
+                        // AuthService.sendRequest('POST', apiHost + '/api/checkOut', {userID: user.id, appPage: 'checkin'}, (err, data) => {
+                        //     if(err) {
+                        //         console.log(err);
+                        //         Swal.fire('Error', 'An error has occured, please contact an organizer immediately', 'error')
+                        //     } else {
+                        //         Swal.fire('Success', 'Hacker ' + data.name + ' has been successfully checked out.', 'success');
+                        //         Vue.set(this.users, index, data)
+                        //     }
+                        // })
                     }
                 })
             },
-            inputwaiver: function(user, index) {
+            inputWaiver: function(user, index) {
                 Swal.fire({
                     title: 'Are you sure?',
                     text: 'Please confirm waiver is filled and all fields are correct',
@@ -198,7 +216,7 @@
                 }).then((result) => {
                     if (result.value) {
                         Swal.showLoading();
-                        AuthService.sendRequest('POST', apiHost + '/api/waiverIn', {'userID': user.id, appPage: 'checkin'}, (err, data) => {
+                        ApiService.waiverIn({'userID': user.id, appPage: 'checkin'}, (err, data) => {
                             if (err || !data) {
                                 Swal.fire('Error', err.error, 'error')
                             } else {

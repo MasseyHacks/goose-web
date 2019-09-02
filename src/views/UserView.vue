@@ -285,7 +285,7 @@
             },
             requestSuperToken: function () {
                 AuthService.skillTest(() => {
-                    AuthService.sendRequest('POST', '/auth/requestSuperToken', {
+                    ApiService.requestSuperToken({
                         id: this.userID
                     }, (err, data) => {
                         if (err) {
@@ -302,7 +302,7 @@
             },
             unlockApplication: function() {
                 AuthService.skillTest(() => {
-                    AuthService.sendRequest('POST', apiHost + '/api/modifyUser', {
+                    ApiService.modifyUser({
                         userID: this.userObj._id,
                         data: {"profile.signature": "-1"}
                     }, (err, data) => {
@@ -394,7 +394,7 @@
                                         var postData = {};
                                         postData[keys[field]] = newValue;
 
-                                        AuthService.sendRequest('POST', apiHost + '/api/modifyUser', {
+                                        ApiService.modifyUser({
                                             userID: this.userObj._id,
                                             data: postData
                                         }, (err, data) => {

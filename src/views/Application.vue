@@ -461,7 +461,7 @@
                             data.profile.hacker = parsedForm.profile;
                             data.profile.signature = 1;
                             console.log(data)
-                            AuthService.sendRequest('POST', apiHost + '/api/updateProfile', data, (err, user) => {
+                            ApiService.updateProfile(data, (err, user) => {
                                 if (err) {
                                     Swal.fire("Error", err.responseJSON['error'], "error");
                                 } else {
@@ -528,7 +528,7 @@
                 data.profile = {};
                 data.profile.hacker = parsedForm.profile;
                 data.profile.signature = -1;
-                AuthService.sendRequest('POST', apiHost + '/api/updateProfile', data, (err, user) => {
+                ApiService.updateProfile(data, (err, user) => {
                     if (!auto) {
                         if (err) {
                             Swal.fire("Error", err.responseJSON['error'], "error");

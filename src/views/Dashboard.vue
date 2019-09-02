@@ -116,6 +116,7 @@
     import Swal from 'sweetalert2'
     import moment from 'vue-moment'
     import {apiHost} from "../variables";
+    import ApiService from "../ApiService";
 
     export default {
         data() {
@@ -138,9 +139,7 @@
                     confirmButtonText: 'Yes!'
                 }).then((result) => {
                     if (result.value) {
-                        AuthService.sendRequest('POST', apiHost + '/api/declineInvitation', {
-
-                        }, (err, data) => {
+                        ApiService.declineInvitation({}, (err, data) => {
                             if (err || !data) {
                                 Swal.fire("Error", err.error, "error");
                             } else {
@@ -149,7 +148,7 @@
                                     text: "You have declined your invitation.",
                                     type: "success"
                                 });
-                                this.user = data
+                                this.user = data;
                                 Session.setUser(data)
                             }
 
