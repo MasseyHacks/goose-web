@@ -37,6 +37,46 @@ Vue.use(Router);
 Vue.use(require('vue-moment'));
 Vue.component('v-select', vSelect);
 
+console.log(`                               ,-""   \`.
+                             ,'  _   e )\`-._
+                            /  ,' \`-._<.===-'
+                           /  /
+                          /  ;
+              _          /   ;
+ (\`._    _.-"" ""--..__,'    |
+ <_  \`-""                     \\
+  <\`-                          :
+   (__   <__.                  ;
+     \`-.   '-.__.      _.'    /
+        \\      \`-.__,-'    _,'
+         \`._    ,    /__,-'
+            ""._\\__,'< <____
+                 | |  \`----.\`.
+                 | |        \\ \`.
+                 ; |___      \\-\`\`
+                 \\   --<
+                  \`.\`.<
+             hjw    \`-'
+
+ ██████╗  ██████╗  ██████╗ ███████╗███████╗
+██╔════╝ ██╔═══██╗██╔═══██╗██╔════╝██╔════╝
+██║  ███╗██║   ██║██║   ██║███████╗█████╗  
+██║   ██║██║   ██║██║   ██║╚════██║██╔══╝  
+╚██████╔╝╚██████╔╝╚██████╔╝███████║███████╗
+ ╚═════╝  ╚═════╝  ╚═════╝ ╚══════╝╚══════╝
+                                           
+"The comprehensive event registration system designed by hackers for hackers"
+
+Copyright (c) 2019 MasseyHacks.
+Website text and code licensed under MIT. Audiovisual assets are not to be used on other sites without written permission from MasseyHacks.
+github.com/MasseyHacks
+
+Developed by:
+Henry Tu (github.com/henrytwo)
+Ryan Zhang (github.com/ryanz34)
+David Hui (github.com/BlazingAsher)
+James Xu (github.com/JamesXu123)`)
+
 axios.get(apiHost + '/api/settings').then(result => {
   Session.setSettings(result.data)
 }).catch(() => console.log("wow this should never have failed!"));
