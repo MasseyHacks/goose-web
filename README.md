@@ -1,29 +1,7 @@
-# goose-web
+# MasseyHacks Registration System (CODENAME: GOOSE) - Web interface
 
-## Project setup
-```
-npm install
-```
+This is the web interface portion of the MasseyHacks registration system. It requires a working version of [GOOSE-Server](https://github.com/MasseyHacks/GOOSE-Server) to work.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+To get started, simply edit the `apiHost` variable in `src/variables.js`, install packages via npm, and run with `npm run serve`. Run `npm run build` to build files for production.
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+This project is licensed under the MIT license.
