@@ -3,7 +3,7 @@
 
     <!-- Common elements -->
     <div id="main-sidebar" v-if="loggedIn" v-bind:style="sidebarStyle">
-      <img height="150px" src="/logo/logo-white.svg"
+      <img height="150px" src="./logo/logo-white.svg"
            style="margin-top: 40px; margin-bottom: 40px; margin-left: auto; margin-right: auto; text-align: center"
            width="150px">
       <ul>
