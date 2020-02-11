@@ -42,15 +42,15 @@ export default {
         }).then(response => {
             console.log(response)
             if (callback) {
-                callback(null, response.data)
+                return callback(null, response.data)
             }
         }).catch(error => {
-            console.log(error)
+            console.log(error, data);
             if (error.data && (error.data.status == 401 || error.data.status == 403) && Session.loggedIn() && !url.includes('changePassword')) {
                 this.logout(null, 'Permission error occurred. Please login again.')
             }
 
-            callback(error, {'error': 'This message is deprecated.'})
+            callback({responseJSON: {error: error}}, {'error': 'This message is deprecated.'})
 
             // if (!('error' in error.data)) {
             //     error.data['error'] = 'Something went wrong'
@@ -231,7 +231,7 @@ export default {
             if (err) {
                 if (callback) callback(err.responseJSON.error)
             } else {
-                console.log(data);
+                console.log('data', data);
                 if (data['user']['2FA']) {
                     Session.create2FA(data['token'], data['user']);
                     return callback(null, data['user'])
@@ -314,6 +314,7 @@ export default {
             email: email
         }, (err, data) => {
             if (err) {
+                console.log('hakjsgdaijsd', err);
                 if (callback) callback(err.responseJSON.error)
             } else {
                 if (callback) callback(null, data)

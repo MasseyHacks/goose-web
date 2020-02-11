@@ -62,6 +62,7 @@ export default {
     },
 
     getUser() {
+        console.log('getUser!!!', this.loggedIn());
         return this.loggedIn() ? JSON.parse(localStorage.user) : null
     },
 
