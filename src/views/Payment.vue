@@ -10,12 +10,14 @@
                 :successUrl="successUrl"
                 :cancelUrl="cancelUrl"
                 :customerEmail="customerEmail"
+                v-if="!user.status.paid"
         >
 
             <template slot="checkout-button">
                 <button class="generic-button-dark" @click="startPayment">Pay now</button>
             </template>
         </stripe-checkout>
+        <div v-else>paid already</div>
     </div>
 </template>
 
@@ -25,6 +27,7 @@
     export default {
         data() {
             return {
+                user: Session.getUser(),
                 publishableKey: 'pk_test_F2FfQD6ncmZsEucwmK9ctT1O00TJYElSif',
                 items: [
                     {

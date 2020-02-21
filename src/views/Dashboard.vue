@@ -126,6 +126,10 @@
                 error: ''
             }
         },
+        beforeMount() {
+            AuthService.loginWithToken();
+            this.user = Session.getUser();
+        },
         methods: {
             declineInvitation() {
                 Swal.fire({
