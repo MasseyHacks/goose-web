@@ -18,7 +18,8 @@
     "vue-json-tree": "^0.4.1",
     "vue-moment": "^4.1.0",
     "vue-router": "^3.1.5",
-    "vue-select": "^3.4.0"
+    "vue-select": "^3.4.0",
+    "vue-stripe-checkout": "^3.1.6"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.2.2",

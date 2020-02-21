@@ -28,6 +28,7 @@ import UserView from './views/UserView.vue'
 import TeamTable from './views/TeamTable.vue'
 import MagicLogin from './views/Magic.vue'
 import TeamManage from './views/AdminTeamView.vue'
+import Payment from "./views/Payment";
 import Swal from 'sweetalert2'
 import axios from 'axios'
 import {apiHost} from "./variables";
@@ -317,6 +318,15 @@ const router = new Router({
     {
       path: '/error',
       component: Error
+    },
+    {
+      path: '/payment',
+      component: Payment
+    },
+    {
+      path: '/payment/:status',
+      component: Payment,
+      props: true
     },
     {
       path: '*',
