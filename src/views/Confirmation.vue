@@ -37,9 +37,9 @@
                 </div>
 
                 <br>
-
-
-                <!-- Copied froom application -->
+                <payment></payment>
+    
+                <!-- Copied from application -->
                 <div class="form-group" v-for="(question,questionName) in applications.confirmation" style="text-align: left">
 
                     <h4 v-if="question.precaption">
@@ -99,13 +99,11 @@
                     <br>
 
                 </div>
-
-
+    
                 Don’t forget, you <b>MUST</b> have your waiver signed to attend MasseyHacks.<br> You can either give us the hard copy at the front desk during registration or email a copy to <a href="mailto:hello@masseyhacks.ca" target="_blank">hello@masseyhacks.ca</a>.
 
                 <br>
                 <br>
-
                 <a href="https://docs.google.com/document/d/10BuXfp0PlrNDA7DY6fx_T13VZLbQh1FMUbDYAdZyOYo/edit?usp=sharing" target="_blank">
                     <button class="generic-button-dark less-wide">
                         Waiver
@@ -136,7 +134,7 @@
     import moment from 'moment'
     import vSelect from 'vue-select'
     import {apiHost} from "../variables";
-
+    import payment from './Payment'
     export default {
         data() {
             return {
@@ -147,7 +145,8 @@
             }
         },
         components: {
-            vSelect
+            vSelect,
+            payment
         },
         beforeMount() {
             console.log(this.settings);
@@ -185,6 +184,9 @@
         methods: {
             moment (date) {
                 return moment(date).format('LLLL')
+            },
+            cannotDeclineIfPaid() {
+                Swal.fire('Sorry', "You can't decline your information if you have already paid!", 'info')
             },
             populateApplication() {
                 if (this.user.status.confirmed && this.user.profile.confirmation != null) {
@@ -342,45 +344,91 @@
 
             },
             acceptInvitation() {
-
-                var parsedForm = this.parseForm(this.applications.confirmation, true)
-
-                if (parsedForm.doNotSubmit) {
+                if (!this.user.status.paid) {
                     Swal.fire({
                         title: 'Error',
-                        html: '<p style="text-align: left"><b>' + (parsedForm.submissionErrors.length ? parsedForm.submissionErrors.join('<br>') + ' <br>' : '') + "</b></p> Please check all the required fields and try again.",
+                        text: 'You must pay before you can confirm!',
                         type: 'error'
                     })
                 } else {
+                    var parsedForm = this.parseForm(this.applications.confirmation, true)
+
+                    if (parsedForm.doNotSubmit) {
+                        Swal.fire({
+                            title: 'Error',
+                            html: '<p style="text-align: left"><b>' + (parsedForm.submissionErrors.length ? parsedForm.submissionErrors.join('<br>') + ' <br>' : '') + "</b></p> Please check all the required fields and try again.",
+                            type: 'error'
+                        })
+                    } else {
+                        Swal.fire({
+                            title: "Confirm?",
+                            text: "Are you sure you want to confirm?",
+                            type: "question",
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes!'
+                        }).then((result) => {
+                            if (result.value) {
+                                ApiService.acceptInvitation({
+                                    confirmation: parsedForm.profile
+                                }, (err, data) => {
+                                    if (err || !data) {
+                                        Swal.fire("Error", err.error, "error");
+                                    } else {
+                                        this.user = data
+                                        Session.setUser(data)
+                                        console.log(this.user.status.name);
+
+                                        Swal.fire({
+                                            title: "Success",
+                                            text: "You have confirmed your spot!",
+                                            type: "success"
+                                        });
+
+                                        this.$router.replace('/dashboard');
+
+
+                                    }
+
+                                })
+                            }
+
+                        })
+                    }
+                }
+                
+            },
+            declineInvitation() {
+                if (this.user.status.paid) {
                     Swal.fire({
-                        title: "Confirm?",
-                        text: "Are you sure you want to confirm?",
+                        title: 'Sorry!',
+                        text: `You can't decline your confirmation if you have already paid. Unfortunately, tickets are NON-REFUNDABLE.`,
+                        type: 'info'
+                    })
+                } else {
+                    Swal.fire({
+                        title: "Decline invitation?",
+                        html: "Are you sure you want to decline your invitation? You <b>CANNOT</b> undo this action!",
                         type: "question",
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
+                        focusCancel: true,
                         confirmButtonText: 'Yes!'
                     }).then((result) => {
                         if (result.value) {
-                            ApiService.acceptInvitation({
-                                confirmation: parsedForm.profile
-                            }, (err, data) => {
+                            ApiService.declineInvitation({}, (err, data) => {
                                 if (err || !data) {
                                     Swal.fire("Error", err.error, "error");
                                 } else {
-                                    this.user = data
-                                    Session.setUser(data)
-                                    console.log(this.user.status.name);
-
                                     Swal.fire({
                                         title: "Success",
-                                        text: "You have confirmed your spot!",
+                                        text: "You have declined your invitation.",
                                         type: "success"
                                     });
-
-                                    this.$router.replace('/dashboard');
-
-                                    
+                                    this.user = data
+                                    Session.setUser(data)
                                 }
 
                             })
@@ -388,36 +436,7 @@
 
                     })
                 }
-            },
-            declineInvitation() {
-                Swal.fire({
-                    title: "Decline invitation?",
-                    html: "Are you sure you want to decline your invitation? You <b>CANNOT</b> undo this action!",
-                    type: "question",
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    focusCancel: true,
-                    confirmButtonText: 'Yes!'
-                }).then((result) => {
-                    if (result.value) {
-                        ApiService.declineInvitation({}, (err, data) => {
-                            if (err || !data) {
-                                Swal.fire("Error", err.error, "error");
-                            } else {
-                                Swal.fire({
-                                    title: "Success",
-                                    text: "You have declined your invitation.",
-                                    type: "success"
-                                });
-                                this.user = data
-                                Session.setUser(data)
-                            }
 
-                        })
-                    }
-
-                })
             }
         }
     }

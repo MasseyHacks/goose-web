@@ -757,6 +757,14 @@ h4 {
     transition: background-color 0.1s;
 }
 
+.generic-button:disabled {
+    background-color: rgba(0,0,0,0.2);
+}
+
+.generic-button:disabled:hover {
+    background-color: rgba(0,0,0,0.2);
+}
+
 .generic-button-small {
 
 }

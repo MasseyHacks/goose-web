@@ -27,7 +27,7 @@
 
                     </div>
 
-                    <div v-else-if="user.status.name == 'organizer'">
+                    <div v-else-if="user.status.name === 'organizer'">
                         <p><b>Hello there fellow organizer, welcome to your administrative dashboard.</b><br>
                             Remember, with great power, comes great responsibility.</p>
 
@@ -36,17 +36,17 @@
                         <router-link to="/organizer/statistics"><button class="generic-button-dark less-wide">Organizer Dashboard</button></router-link>
 
                     </div>
-                    <div v-else-if="user.status.name == 'incomplete'">
+                    <div v-else-if="user.status.name === 'incomplete'">
                         <p>
                             Your application is still incomplete.<br><br><b>You must complete your application before the submission deadline of {{moment(settings.timeClose)}} to be considered.</b>
                         </p>
                     </div>
-                    <div v-else-if="user.status.name == 'submitted'">
+                    <div v-else-if="user.status.name === 'submitted'">
                         <p>
                             You have successfully submitted your application! Our team is working hard on reviewing applications, so please be patient and check your email (including spam) often for updates!
                         </p>
                     </div>
-                    <div v-else-if="user.status.name == 'admitted'">
+                    <div v-else-if="user.status.name === 'admitted'">
                         <p>
                             You have been accepted! Don't get excited just yet, you still need to confirm here, or your chance will fly away!<br><br><b>You must confirm before {{moment(user.status.confirmBy)}}.</b>
                         </p>
@@ -57,7 +57,7 @@
                         </router-link>
                         <button class="generic-button-dark less-wide" v-on:click="declineInvitation">Sorry, I can't make it</button>
                     </div>
-                    <div v-else-if="user.status.name == 'confirmed'">
+                    <div v-else-if="user.status.name === 'confirmed'">
                         <p>
                             Your spot has been confirmed! We hope to see you on  March 23rd, ready and excited for 24 hours of hard work and fun! It's never too early to start thinking about your hack! <a href="https://masseyhacks4.devpost.com" target="_blank">Here</a> are some of last year's hacks for inspiration.<br><br>Don’t forget, you <b>MUST</b> have your waiver signed to attend MasseyHacks.<br> You can either give us the hard copy at the front desk during registration or email a copy to <a href="mailto:hello@masseyhacks.ca" target="_blank">hello@masseyhacks.ca</a>.<br><br>
                             We've sent a Slack invitation to <b>{{user.email}}</b>. Be sure to check your spam/junk folder if you don't see it! If you have any problems, please email us at hello@masseyhacks.ca for assistance.
@@ -75,17 +75,17 @@
                         </router-link>
                         <button class="generic-button-dark less-wide" v-on:click="declineInvitation">Sorry, I can't make it</button>
                     </div>
-                    <div v-else-if="user.status.name == 'rejected'">
+                    <div v-else-if="user.status.name === 'rejected'">
                         <p>
                             Your application was strong, but unfortunately we are unable to offer you a spot at MasseyHacks. Thank you for applying to MasseyHacks V.
                         </p>
                     </div>
-                    <div v-else-if="user.status.name == 'waitlisted'">
+                    <div v-else-if="user.status.name === 'waitlisted'">
                         <p>
                             Your application for MasseyHacks was strong, but unfortunately, due to overwhelming interest in the event, you have been placed on the waiting list. Don’t worry; we will notify you immediately when a spot opens up for you. Thank you for applying to MasseyHacks V!
                         </p>
                     </div>
-                    <div v-else-if="user.status.name == 'declined'">
+                    <div v-else-if="user.status.name === 'declined'">
                         <p>
                             We’re sorry to hear that you won’t be attending, but don’t worry, we won’t take it personally. Or will we?
                             <br>
@@ -93,7 +93,7 @@
                             All jokes aside, we thank you for applying, and we hope that you will be able to make it next time.
                         </p>
                     </div>
-                    <div v-else-if="user.status.name == 'checkedin'">
+                    <div v-else-if="user.status.name === 'checkedin'">
                         <p>
                             Welcome to MasseyHacks! If you have any questions or concerns, feel free to speak to an organizer.
                         </p>
@@ -114,7 +114,7 @@
     import Session from '../Session'
     import AuthService from '../AuthService'
     import Swal from 'sweetalert2'
-    import moment from 'vue-moment'
+    import moment from 'moment'
     import {apiHost} from "../variables";
     import ApiService from "../ApiService";
 

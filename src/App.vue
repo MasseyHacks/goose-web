@@ -27,11 +27,11 @@
             <button class="menu-button" v-on:click="retractSidebar">Confirmation</button>
           </router-link>
         </li>
-        <li v-if="!user.status.declined && user.status.admitted && (user.permissions.developer || !user.permissions.admin)">
-          <router-link tag="a" to="/payment">
-            <button class="menu-button" v-on:click="retractSidebar">Payment</button>
-          </router-link>
-        </li>
+<!--        <li v-if="!user.status.declined && user.status.admitted && (user.permissions.developer || !user.permissions.admin)">-->
+<!--          <router-link tag="a" to="/payment">-->
+<!--            <button class="menu-button" v-on:click="retractSidebar">Payment</button>-->
+<!--          </router-link>-->
+<!--        </li>-->
         <li v-if="user.permissions.checkin">
           <router-link tag="a" to="/checkin">
             <button class="menu-button" v-on:click="retractSidebar">Check In</button>
