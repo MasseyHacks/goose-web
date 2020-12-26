@@ -103,6 +103,7 @@
                                 </tr>
                                 <router-link type="tr" v-for="user in users"
                                              :to="{path: '/organizer/userview?username='+user.id, params: {username: user.fullName}}"
+                                             v-bind:key="user.id"
                                              tag="tr">
                                     <td style="max-width: 150px;">
                                         {{user.fullName}}

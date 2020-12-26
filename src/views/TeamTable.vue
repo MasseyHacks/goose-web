@@ -102,16 +102,18 @@
                                     <td>Members</td>
                                     <td>Count</td>
                                     <td>Code</td>
+                                    <td>Status</td>
                                 </tr>
                                 <router-link v-for="team in teams"
                                              :to="{path: '/organizer/teammanage?code='+team.code+'&returnPath=/organizer/teamview', params: {code: team.code}}"
+                                             v-bind:key="team.id"
                                              tag="tr">
                                     <td>
                                         {{team.name}}
                                     </td>
                                     <td style="align-items: center">
                                         <router-link v-for="user in team.memberNames"
-                                                     :to="{path: '/organizer/userview?username='+user[1]+'&returnPath=/organizer/teamview', params: {username: user[1]}}">
+                                                     :to="{path: '/organizer/userview?username='+user[1]+'&returnPath=/organizer/teamview', params: {username: user[1]}}" v-bind:key="user[1]">
                                             {{user[0]}}<br>
                                         </router-link>
                                     </td>
@@ -120,6 +122,9 @@
                                     </td>
                                     <td>
                                         {{team.code}}
+                                    </td>
+                                    <td>
+                                        {{team.active ? "Active" : "Deactivated"}}
                                     </td>
                                 </router-link>
                             </table>
@@ -133,12 +138,6 @@
                 </div>
             </div>
         </div>
-        <vue-context ref="menu" style="position: absolute;">
-            <ul>
-                <li @click="onClick($event.target.innerText, child.data)">Option 1</li>
-                <li @click="onClick($event.target.innerText, child.data)">Option 2</li>
-            </ul>
-        </vue-context>
     </div>
 </template>
 
@@ -158,7 +157,13 @@
 
                 displayOrganizers: false,
                 advancedQueryContent: '{}',
-                filters: {},
+                filters: {
+                  '$and': [
+                    {
+                      'active': 'true'
+                    }
+                  ]
+                },
                 searchQuery: '',
 
                 fields: {},
@@ -205,7 +210,9 @@
                         this.queryError = 'No teams found'
                     }
                 }
-            })
+            });
+
+            this.advancedQueryContent = JSON.stringify(this.filters)
         },
 
         components: {
@@ -253,12 +260,11 @@
                 })
             },
 
-            onClick: function (text, data) {
-                Swal.fire('Hello')
-            },
-
             deleteFilter: function (logical, filter) {
                 this.filters[logical].splice(this.filters[logical].indexOf(filter), 1);
+                if (this.filters[logical].length == 0) {
+                  delete this.filters[logical];
+                }
                 this.updateSearch()
             },
 
@@ -429,7 +435,7 @@
                     outputStr += output[i] + "\n";
                 }
 
-                var filename = "Users-export-" + new Date() + ".csv";
+                var filename = "Teams-export-" + new Date() + ".csv";
                 var blob = new Blob([outputStr], {
                     type: "text/csv;charset=utf-8"
                 });
