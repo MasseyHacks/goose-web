@@ -64,6 +64,14 @@
                     <button class="generic-button-dark less-wide" v-on:click="flushAllEmails">Flush global email queue</button>
 					
                 </div>
+
+                <div class="ui-card dash-card-offset dash-card dash-card-large">
+                  <h3>Global Team Management</h3>
+                  <hr>
+
+                  <button class="generic-button-dark less-wide" v-on:click="deactivateAllTeams">Deactivate all teams</button>
+
+                </div>
 				
 				<div class="ui-card dash-card-offset dash-card dash-card-large">
                     <h3>Email Queue Stats</h3>
@@ -545,6 +553,33 @@
                         })
                     }
                 })
+            },
+
+            deactivateAllTeams() {
+              Swal.fire({
+                title: 'Are you sure you?',
+                text: 'YOU ARE ABOUT TO DEACTIVATE ALL TEAMS THAT ARE CURRENTLY ACTIVE! ARE YOU SURE YOU WANT TO PROCEED?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes!'
+              }).then((result) => {
+                if (result.value) {
+                  AuthService.skillTest(() => {
+                    Swal.showLoading();
+                    AuthService.sendRequest('POST', apiHost + '/api/deactivateAllTeams', {
+
+                    }, (err, msg) => {
+                      if (err) {
+                        Swal.fire('Error', err ? err.error : 'Something went wrong...', 'error')
+                      } else {
+                        Swal.fire('Success', `Team deactivation queued. Check the logs for any errors.`, 'success');
+                      }
+                    })
+                  })
+                }
+              })
             },
 
             convertTimes() {

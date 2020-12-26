@@ -37,6 +37,18 @@
 
                 <hr>
 
+                <h4>STANDINGS</h4>
+              <div class="duo-col">
+                <ul style="overflow-wrap: break-word; text-align: left; list-style: none">
+                  <li>
+                    <br>
+                    <b>Total Points</b><br>{{computePoints(userObj)}}<br>
+                  </li>
+                </ul>
+              </div>
+
+                <hr>
+
                 <router-link :to="{path: returnPath}">
                     <button class="generic-button-dark less-wide">Back</button>
                 </router-link>
@@ -133,6 +145,13 @@
         },
 
         methods: {
+            computePoints(user){
+              let acc = 0;
+              for (let pointInfo of user.points.history){
+                acc += pointInfo.points;
+              }
+              return acc;
+            },
             formatUser(user) {
 
                 user = JSON.parse(JSON.stringify(user));
