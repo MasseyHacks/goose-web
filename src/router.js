@@ -32,6 +32,7 @@ import Payment from "./views/Payment";
 import Swal from 'sweetalert2'
 import axios from 'axios'
 import {apiHost} from "./variables";
+import PointsAdmin from "./views/PointsAdmin";
 
 Vue.use(Router);
 
@@ -255,6 +256,14 @@ const router = new Router({
           beforeEnter: isAuthorized,
           meta: {
             permissions: "admin"
+          }
+        },
+        {
+          path: 'points',
+          component: PointsAdmin,
+          beforeEnter: isAuthorized,
+          meta: {
+            permissions: 'admin'
           }
         }
       ]

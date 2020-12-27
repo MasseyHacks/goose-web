@@ -24,6 +24,9 @@
                         <router-link v-if="user.permissions.reviewer" to="/organizer/review">
                             <button class="generic-button-dark wide">Review</button>
                         </router-link>
+                        <router-link to="/organizer/points">
+                          <button class="generic-button-dark wide">Points</button>
+                        </router-link>
                     </div>
                 </div>
             </div>
@@ -45,12 +48,12 @@
 
     export default {
         beforeRouteUpdate(to, from, next) {
-            const pageLayout = ['statistics', 'users', 'teamview', 'userview', 'teammanage', 'review'];
+            const pageLayout = ['statistics', 'users', 'teamview', 'userview', 'teammanage', 'review', 'points'];
             const toPath = to.path.split('/');
             const fromPath = from.path.split('/');
 
-            console.log('dasd', toPath, fromPath);
-            console.log('Hello there');
+            // console.log('dasd', toPath, fromPath);
+            // console.log('Hello there');
 
             if (toPath[toPath.length - 1].indexOf('?') != -1) {
                 toPath[toPath.length - 1] = toPath[toPath.length - 1].split('?')[0]
@@ -59,7 +62,7 @@
             const toDepth = pageLayout.indexOf(toPath[toPath.length - 1]);
             const fromDepth = pageLayout.indexOf(fromPath[toPath.length - 1]);
 
-            console.log(toDepth, fromDepth);
+            // console.log(toDepth, fromDepth);
 
             if (toDepth === -1) {
                 return next('/organizer/statistics')
@@ -78,7 +81,7 @@
             }
         },
         beforeMount() {
-            if (this.$router.currentRoute.path == '/organizer') {
+            if (this.$router.currentRoute.path === '/organizer') {
                 this.$router.replace('/organizer/statistics')
             }
         }

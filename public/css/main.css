@@ -755,6 +755,7 @@ h4 {
     color: black;
     border: 2px solid black;
     transition: background-color 0.1s;
+    margin-right: 0.5em;
 }
 
 .generic-button:disabled {
@@ -781,6 +782,7 @@ h4 {
     color: black;
     border: 2px solid black;
     transition: background-color 0.3s;
+    margin-right: 0.5em;
 }
 
 .generic-button-dark:hover {
