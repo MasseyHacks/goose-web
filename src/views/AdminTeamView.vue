@@ -44,6 +44,7 @@
                     <button class="generic-button-dark less-wide" v-on:click="acceptTeam">Force Admit</button>
                     <button class="generic-button-dark less-wide" v-on:click="rejectTeam">Force Reject</button>
 
+                    <button class="generic-button-dark less-wide" v-on:click="deactivateTeam" :disabled="!this.teamObj.active">Deactivate Team</button>
                     <button class="generic-button-dark less-wide" v-on:click="deleteTeam">Delete Team</button>
                 </div>
         </div>
@@ -122,6 +123,39 @@
 
                 return 'incomplete';
 
+            },
+            deactivateTeam() {
+              Swal.fire({
+                title: 'Warning',
+                type: 'warning',
+                text: 'Are you sure you want to deactivate ' + this.teamObj.name +'? It will need to be reactivated manually.',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes!'
+              }).then((result) => {
+                if (result.value) {
+                  Swal.showLoading();
+
+                  ApiService.deactivateTeam(this.teamObj._id, (err, data) => {
+                    if (err) {
+                      Swal.fire({
+                        title: "Warning",
+                        type: 'danger',
+                        text: 'Unable to deactivate team'
+                      })
+                    } else {
+                      Swal.fire({
+                        title: "Success",
+                        type: 'success',
+                        text: 'Team has been deactivated'
+                      }).then(() => {
+                        this.teamObj.active = false;
+                      })
+                    }
+                  })
+                }
+              })
             },
             removeUser(user) {
                 Swal.fire({

@@ -484,6 +484,12 @@ export default {
         }, callback)
     },
 
+    deactivateTeam(code, callback) {
+        AuthService.sendRequest('POST', apiHost + '/api/deactivateTeam', {
+            code: code
+        }, callback)
+    },
+
     removeFromTeam(id, code, callback) {
         AuthService.sendRequest('POST', apiHost + '/api/removeFromTeam', {
             code: code,
