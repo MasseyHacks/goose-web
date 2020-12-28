@@ -77,12 +77,12 @@
                     </div>
                     <div v-else-if="user.status.name === 'rejected'">
                         <p>
-                            Your application was strong, but unfortunately we are unable to offer you a spot at MasseyHacks. Thank you for applying to MasseyHacks V.
+                            Your application was strong, but unfortunately we are unable to offer you a spot. Thank you for applying.
                         </p>
                     </div>
                     <div v-else-if="user.status.name === 'waitlisted'">
                         <p>
-                            Your application for MasseyHacks was strong, but unfortunately, due to overwhelming interest in the event, you have been placed on the waiting list. Don’t worry; we will notify you immediately when a spot opens up for you. Thank you for applying to MasseyHacks V!
+                            Your application was strong, but unfortunately, due to overwhelming interest in the event, you have been placed on the waiting list. Don’t worry; we will notify you immediately when a spot opens up for you. Thank you for applying!
                         </p>
                     </div>
                     <div v-else-if="user.status.name === 'declined'">
@@ -95,12 +95,12 @@
                     </div>
                     <div v-else-if="user.status.name === 'checkedin'">
                         <p>
-                            Welcome to MasseyHacks! If you have any questions or concerns, feel free to speak to an organizer.
+                            Welcome! If you have any questions or concerns, feel free to speak to an organizer.
                         </p>
                     </div>
                     <!-- unverified -->
                     <div v-else-if="!user.permissions.verified">
-                        <p>Hey! You haven't verified your email! You must do this before you can apply to MasseyHacks.<br><br>We sent an email to <b>{{user.email}}</b>! Please be sure to check your spam/junk folders.</p>
+                        <p>Hey! You haven't verified your email! You must do this before you can apply.<br><br>We sent an email to <b>{{user.email}}</b>! Please be sure to check your spam/junk folders.</p>
                         <button class="generic-button-dark less-wide" v-on:click="resendVerify">Resend</button>
                     </div>
 
