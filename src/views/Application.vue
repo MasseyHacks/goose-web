@@ -463,7 +463,7 @@
                             console.log(data)
                             ApiService.updateProfile(data, (err, user) => {
                                 if (err) {
-                                    Swal.fire("Error", err.responseJSON['error'], "error");
+                                    Swal.fire("Error", err.rawError['error'], "error");
                                 } else {
                                     Session.setUser(user);
 
@@ -531,7 +531,7 @@
                 ApiService.updateProfile(data, (err, user) => {
                     if (!auto) {
                         if (err) {
-                            Swal.fire("Error", err.responseJSON['error'], "error");
+                            Swal.fire("Error", err.rawError['error'], "error");
                         } else {
                             Swal.fire("Success", "Your application has been saved!", "success");
                             Session.setUser(user);

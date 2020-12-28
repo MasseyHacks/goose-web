@@ -245,7 +245,7 @@
                     this.queryError = '';
 
                     if (err || !data) {
-                        this.loadingError = err ? err.responseJSON.error : 'Unable to process request'
+                        this.loadingError = err ? err.rawError.error : 'Unable to process request'
                     } else {
                         this.log = data.log;
                         this.totalPages = data.totalPages;

@@ -55,6 +55,7 @@
 
                 <button class="generic-button-dark less-wide" v-on:click="voteAdmit">Vote Admit</button>
                 <button class="generic-button-dark less-wide" v-on:click="voteReject">Vote Reject</button>
+                <button class="generic-button-dark less-wide" v-on:click="awardPoints">Award Points</button>
 
                 <div v-if="user.permissions.owner">
                     <hr>
@@ -119,7 +120,7 @@
 
             ApiService.getFields(true, (err, data) => {
                 if (err || !data) {
-                    this.loadingError = err ? err.responseJSON.error : 'Unable to process request'
+                    this.loadingError = err ? err.rawError.error : 'Unable to process request'
                 } else {
                     this.fields = data
                 }
@@ -145,6 +146,46 @@
         },
 
         methods: {
+            awardPoints() {
+              Swal.fire({
+                title: 'Enter Points Information',
+                html:
+                    `<p>You are awarding points to: ${this.userObj.fullName}</p>` +
+                    '<input id="award-amount" class="form-control" placeholder="Amount">' +
+                    '<br><textarea id="award-notes" class="form-control" placeholder="Notes">',
+                focusConfirm: false,
+                preConfirm: () => {
+                  return [document.getElementById('award-amount').value, document.getElementById('award-notes').value];
+                }
+              }).then((info) => {
+                console.log(info);
+                let awardAmount = info.value[0];
+                let awardNotes = info.value[1];
+                if(isNaN(awardAmount) || (awardAmount * 10)%10 !== 0){
+                  return Swal.fire({
+                    title: 'Error',
+                    type: 'error',
+                    text: 'Points award amount is not a whole number!'
+                  });
+                }
+                ApiService.awardUserPoints(this.userID, awardAmount, awardNotes, (err, data) => {
+                  console.log(data);
+                  if(err){
+                    console.log(err);
+                    return Swal.fire({
+                      title: 'Error',
+                      type: 'error',
+                      text: 'There was an error awarding points.'
+                    });
+                  }
+                  Swal.fire({
+                    title: 'Success',
+                    text: `Successfully awarded ${awardAmount} points to ${this.userObj.fullName}.`,
+                    type: 'success'
+                  })
+                })
+              })
+            },
             computePoints(user){
               let acc = 0;
               for (let pointInfo of user.points.history){

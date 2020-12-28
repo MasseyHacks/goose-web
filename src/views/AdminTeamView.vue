@@ -37,15 +37,18 @@
                 </ul>
 
             </div>-->
+                <div>
+                  <router-link :to="{path: returnPath}"><button class="generic-button-dark less-wide">Back</button></router-link>
+                  <button class="generic-button-dark less-wide" v-on:click="awardPoints">Award Points</button>
+                </div>
                 <div v-if="user.permissions.owner">
                     <hr>
-
-                    <router-link :to="{path: returnPath}"><button class="generic-button-dark less-wide">Back</button></router-link>
                     <button class="generic-button-dark less-wide" v-on:click="acceptTeam">Force Admit</button>
                     <button class="generic-button-dark less-wide" v-on:click="rejectTeam">Force Reject</button>
 
                     <button class="generic-button-dark less-wide" v-on:click="deactivateTeam" :disabled="!this.teamObj.active">Deactivate Team</button>
                     <button class="generic-button-dark less-wide" v-on:click="deleteTeam">Delete Team</button>
+
                 </div>
         </div>
         </div>
@@ -293,7 +296,47 @@
                         })
                     }
                 })
-            }
+            },
+            awardPoints() {
+                Swal.fire({
+                  title: 'Enter Points Information',
+                  html:
+                      `<p>You are awarding points to: ${this.teamObj.name}</p>` +
+                      '<input id="award-amount" class="form-control" placeholder="Amount">' +
+                      '<br><textarea id="award-notes" class="form-control" placeholder="Notes">',
+                  focusConfirm: false,
+                  preConfirm: () => {
+                    return [document.getElementById('award-amount').value, document.getElementById('award-notes').value];
+                  }
+                }).then((info) => {
+                    console.log(info);
+                    let awardAmount = info.value[0];
+                    let awardNotes = info.value[1];
+                    if(isNaN(awardAmount) || (awardAmount * 10)%10 !== 0){
+                      return Swal.fire({
+                        title: 'Error',
+                        type: 'error',
+                        text: 'Points award amount is not a whole number!'
+                      });
+                    }
+                    ApiService.awardTeamPoints(this.teamCode, awardAmount, awardNotes, (err, data) => {
+                      console.log(data);
+                      if(err){
+                        console.log(err);
+                        return Swal.fire({
+                          title: 'Error',
+                          type: 'error',
+                          text: 'There was an error awarding points.'
+                        });
+                      }
+                      Swal.fire({
+                        title: 'Success',
+                        text: `Successfully awarded ${awardAmount} points to ${this.teamObj.name}.`,
+                        type: 'success'
+                      })
+                    })
+                })
+              }
 
         }
 

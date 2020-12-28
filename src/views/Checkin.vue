@@ -103,7 +103,7 @@
             ApiService.getUsers({ page: 1, size: 0, filters: this.filters, appPage: 'checkin', sort: {"firstName": 1, "lastName": 1}}, (err, data) => {
                 this.loading = false;
                 if (err || !data) {
-                    this.loadingError = err ? err.responseJSON.error : 'Unable to process request'
+                    this.loadingError = err ? err.rawError.error : 'Unable to process request'
                 } else {
                     this.users = data.users;
                     this.totalPages = data.totalPages;
@@ -132,7 +132,7 @@
                 ApiService.getUsers({ page: 1, size: 0, filters: this.filters, appPage: 'checkin'}, (err, data) => {
 
                     if (err || !data) {
-                        this.loadingError = err ? err.responseJSON.error : 'Unable to process request'
+                        this.loadingError = err ? err.rawError.error : 'Unable to process request'
                     } else {
                         this.users = data.users;
                         this.totalPages = data.totalPages
@@ -242,7 +242,7 @@
                 ApiService.getUsers({ page: 1, size: 0, text: this.searchQuery, filters : this.filters, appPage: 'checkin'}, (err, data) => {
                     this.queryError = '';
                     if (err || !data) {
-                        this.queryError = err ? err.responseJSON.error : 'Unable to process request'
+                        this.queryError = err ? err.rawError.error : 'Unable to process request'
                     } else {
                         this.users = data.users;
                         this.totalPages = data.totalPages;

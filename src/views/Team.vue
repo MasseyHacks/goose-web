@@ -120,7 +120,7 @@
                 ApiService.createTeam(this.teamName, (err, team) => {
 
                     if (err) {
-                        this.error = err.responseJSON.error
+                        this.error = err.rawError.error
                     } else {
                         this.team = team;
                         this.page = '';
@@ -132,7 +132,7 @@
                 ApiService.joinTeam(this.teamCode, (err, team) => {
 
                     if (err) {
-                        this.error = err.responseJSON.error
+                        this.error = err.rawError.error
                     } else {
                         this.team = team;
                         this.page = '';
@@ -155,7 +155,7 @@
                         Swal.showLoading();
                         ApiService.leaveTeam((err, team) => {
                             if (err) {
-                                this.error = err.responseJSON.error
+                                this.error = err.rawError.error
                             }
 
                             this.team = null;

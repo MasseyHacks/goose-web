@@ -583,5 +583,19 @@ export default {
     },
     requestSuperToken(query, callback) {
         AuthService.sendRequest('POST', apiHost + '/requestSuperToken', query, callback)
+    },
+    awardTeamPoints(code, amount, notes, callback){
+        AuthService.sendRequest('POST', apiHost + '/api/awardTeamPoints', {
+            code: code,
+            amount: amount,
+            notes: notes
+        }, callback);
+    },
+    awardUserPoints(id, amount, notes, callback){
+        AuthService.sendRequest('POST', apiHost + '/api/awardUserPoints', {
+            id: id,
+            amount: amount,
+            notes: notes
+        }, callback);
     }
 };

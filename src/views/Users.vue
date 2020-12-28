@@ -179,7 +179,7 @@
             // Get fields for filters
             ApiService.getFields(false, (err, data) => {
                 if (err || !data) {
-                    this.loadingError = err ? err.responseJSON.error : 'Unable to process request'
+                    this.loadingError = err ? err.rawError.error : 'Unable to process request'
                 } else {
                     this.fields = data
                 }
@@ -197,7 +197,7 @@
                 this.loading = false;
 
                 if (err || !data) {
-                    this.loadingError = err ? err.responseJSON.error : 'Unable to process request'
+                    this.loadingError = err ? err.rawError.error : 'Unable to process request'
                 } else {
                     this.users = data.users;
                     this.totalPages = data.totalPages;
@@ -248,7 +248,7 @@
                     this.loading = false;
 
                     if (err || !data) {
-                        this.loadingError = err ? err.responseJSON.error : 'Unable to process request'
+                        this.loadingError = err ? err.rawError.error : 'Unable to process request'
                     } else {
                         this.users = data.users;
                         this.totalPages = data.totalPages;
@@ -370,7 +370,7 @@
                 }, (err, data) => {
                     this.queryError = '';
                     if (err || !data) {
-                        this.queryError = err ? err.responseJSON.error : 'Unable to process request'
+                        this.queryError = err ? err.rawError.error : 'Unable to process request'
                     } else {
                         this.users = data.users;
                         this.totalPages = data.totalPages;
@@ -387,7 +387,7 @@
             exportUsersCSV: function () {
                 ApiService.getUsers({page: 1, size: 100000, text: this.searchQuery, filters: this.filters}, (err, data) => {
                     if (err || !data) {
-                        this.loadingError = err ? err.responseJSON.error : 'Unable to process request'
+                        this.loadingError = err ? err.rawError.error : 'Unable to process request'
                     } else {
                         var csvArray = [];
                         for (var i = 0; i < data.users.length; i++) {

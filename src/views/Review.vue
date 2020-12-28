@@ -80,7 +80,7 @@
                 this.loading = false;
 
                     if (err || !data) {
-                        this.err = err ? err.responseJSON.error : 'Unable to process request'
+                        this.err = err ? err.rawError.error : 'Unable to process request'
                     } else {
                         this.applicationsLeft = Object.keys(data.users).length;
                         this.users = data;

@@ -49,8 +49,7 @@ export default {
             if (error.data && (error.data.status == 401 || error.data.status == 403) && Session.loggedIn() && !url.includes('changePassword')) {
                 this.logout(null, 'Permission error occurred. Please login again.')
             }
-
-            callback({responseJSON: {error: error}}, {'error': 'This message is deprecated.'})
+            callback({rawError: {error: error}}, {'error': 'This message is deprecated.'})
 
             // if (!('error' in error.data)) {
             //     error.data['error'] = 'Something went wrong'
@@ -177,7 +176,7 @@ export default {
                         password: result.value
                     }, (err, data) => {
                         if (err) {
-                            if (callback) callback(err.responseJSON.error)
+                            if (callback) callback(err.rawError.error)
                         } else {
                             if (callback) callback(null, data)
                         }
@@ -195,7 +194,7 @@ export default {
             newPassword: newPassword
         }, (err, data) => {
             if (err) {
-                if (callback) callback(err.responseJSON.error)
+                if (callback) callback(err.rawError.error)
             } else {
                 Session.create(data['token'], data['user']);
                 this.updateLoginState(true);
@@ -213,7 +212,7 @@ export default {
             lastName: lastName
         }, (err, data) => {
             if (err) {
-                if (callback) callback(err.responseJSON.error)
+                if (callback) callback(err.rawError.error)
             } else {
                 Session.create(data['token'], data['user']);
                 this.updateLoginState(true);
@@ -229,7 +228,7 @@ export default {
             password: password
         }, (err, data) => {
             if (err) {
-                if (callback) callback(err.responseJSON.error)
+                if (callback) callback(err.rawError.error)
             } else {
                 console.log('data', data);
                 if (data['user']['2FA']) {
@@ -273,7 +272,7 @@ export default {
             'code':code
         }, (err, data) => {
             if (err) {
-                if (callback) callback(err.responseJSON.error)
+                if (callback) callback(err.rawError.error)
             } else {
                 Session.create(data['token'], data['user']);
                 this.updateLoginState(true);
@@ -288,7 +287,7 @@ export default {
             token: token
         }, (err, data) => {
             if (err) {
-                if (callback) callback(err.responseJSON.error)
+                if (callback) callback(err.rawError.error)
             } else {
                 if (callback) callback(null)
             }
@@ -301,7 +300,7 @@ export default {
             password: password
         }, (err, data) => {
             if (err) {
-                if (callback) callback(err.responseJSON.error)
+                if (callback) callback(err.rawError.error)
             } else {
                 this.logout(null, 'The session has expired');
                 if (callback) callback(null, data)
@@ -315,7 +314,7 @@ export default {
         }, (err, data) => {
             if (err) {
                 console.log('hakjsgdaijsd', err);
-                if (callback) callback(err.responseJSON.error)
+                if (callback) callback(err.rawError.error)
             } else {
                 if (callback) callback(null, data)
             }
@@ -327,7 +326,7 @@ export default {
 
         }, (err, data) => {
             if (err) {
-                if (callback) callback(err.responseJSON.error)
+                if (callback) callback(err.rawError.error)
             } else {
                 if (callback) callback(null, data)
             }
