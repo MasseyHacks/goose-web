@@ -29,10 +29,12 @@ import TeamTable from './views/TeamTable.vue'
 import MagicLogin from './views/Magic.vue'
 import TeamManage from './views/AdminTeamView.vue'
 import Payment from "./views/Payment";
+import PointsAdmin from "./views/PointsAdmin";
+import Points from "./views/Points";
+
 import Swal from 'sweetalert2'
 import axios from 'axios'
 import {apiHost} from "./variables";
-import PointsAdmin from "./views/PointsAdmin";
 
 Vue.use(Router);
 
@@ -105,6 +107,7 @@ function requireAuth (to, from, next) {
 
 function isAuthorized (to, from, next) {
   var authorized = true;
+  console.log("sesssion user", Session.getUser());
 
   for (var key in to.meta) {
     if (!Session.getUser() || !to['meta'][key] in Session.getUser()[key] || !Session.getUser()[key][to['meta'][key]]) {
@@ -164,6 +167,14 @@ const router = new Router({
     {
       path: '/application',
       component: Application,
+      beforeEnter: isAuthorized,
+      meta: {
+        permissions: 'verified'
+      }
+    },
+    {
+      path: '/points',
+      component: Points,
       beforeEnter: isAuthorized,
       meta: {
         permissions: 'verified'

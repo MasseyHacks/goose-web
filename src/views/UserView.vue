@@ -42,7 +42,7 @@
                 <ul style="overflow-wrap: break-word; text-align: left; list-style: none">
                   <li>
                     <br>
-                    <b>Total Points</b><br>{{computePoints(userObj)}}<br>
+                    <b>Total Points</b><br>{{userObj.points.total}}<br>
                   </li>
                 </ul>
               </div>
@@ -185,13 +185,6 @@
                   })
                 })
               })
-            },
-            computePoints(user){
-              let acc = 0;
-              for (let pointInfo of user.points.history){
-                acc += pointInfo.amount;
-              }
-              return acc;
             },
             formatUser(user) {
 

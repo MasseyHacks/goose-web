@@ -261,7 +261,7 @@
     }
 </script>
 
-<style>
+<style scoped>
     .collapsible {
         background-color: #777;
         color: white;

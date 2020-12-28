@@ -17,7 +17,12 @@
             <button class="menu-button" v-on:click="retractSidebar">Application</button>
           </router-link>
         </li>
-        <li v-if="user.permissions.verified && (user.permissions.developer || (!user.permissions.admin && !(user.status.admitted || user.status.rejected)))">
+        <li v-if="user.permissions.verified && (user.permissions.developer || user.status.checkedIn)">
+          <router-link tag="a" to="/points">
+            <button class="menu-button" v-on:click="retractSidebar">Points</button>
+          </router-link>
+        </li>
+        <li v-if="user.permissions.verified && (user.permissions.developer || (!user.permissions.admin && !(user.status.rejected)))">
           <router-link tag="a" to="/team">
             <button class="menu-button" v-on:click="retractSidebar">Team</button>
           </router-link>

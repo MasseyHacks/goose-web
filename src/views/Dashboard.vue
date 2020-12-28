@@ -93,9 +93,12 @@
                             All jokes aside, we thank you for applying, and we hope that you will be able to make it next time.
                         </p>
                     </div>
-                    <div v-else-if="user.status.name === 'checkedin'">
+                    <div v-else-if="user.status.name === 'checked in'">
                         <p>
                             Welcome! If you have any questions or concerns, feel free to speak to an organizer.
+                        </p>
+                        <p>
+                          You currently have <strong>{{user.points.total}}</strong> points.
                         </p>
                     </div>
                     <!-- unverified -->
