@@ -148,7 +148,7 @@
             computePoints(user){
               let acc = 0;
               for (let pointInfo of user.points.history){
-                acc += pointInfo.points;
+                acc += pointInfo.amount;
               }
               return acc;
             },
