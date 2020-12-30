@@ -309,14 +309,25 @@
                     return [document.getElementById('award-amount').value, document.getElementById('award-notes').value];
                   }
                 }).then((info) => {
-                    console.log(info);
-                    let awardAmount = info.value[0];
-                    let awardNotes = info.value[1];
-                    if(isNaN(awardAmount) || (awardAmount * 10)%10 !== 0){
+                    let awardAmount = info.value[0].trim();
+                    let awardNotes = info.value[1].trim();
+
+                    if(awardAmount === "" || isNaN(awardAmount) || (awardAmount * 10)%10 !== 0){
                       return Swal.fire({
                         title: 'Error',
                         type: 'error',
                         text: 'Points award amount is not a whole number!'
+                      }).then(() => {
+                        this.awardPoints();
+                      });
+                    }
+                    if(awardNotes === ""){
+                      return Swal.fire({
+                        title: 'Error',
+                        type: 'error',
+                        text: 'Please enter a note about this point award!'
+                      }).then(() => {
+                        this.awardPoints();
                       });
                     }
                     ApiService.awardTeamPoints(this.teamCode, awardAmount, awardNotes, (err, data) => {
