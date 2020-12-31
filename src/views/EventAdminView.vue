@@ -30,8 +30,8 @@
 
         <hr>
 
-        <h4>TIMES</h4>
-        <PropertyDisplayList :display-object="eventObj.dates" neg-one-replacement="Never" parse-as-dates=true></PropertyDisplayList>
+        <h4>DATES</h4>
+        <PropertyDisplayList :display-object="eventObj.dates" neg-one-replacement="Never" parse-as-dates="true"></PropertyDisplayList>
 
         <hr>
 
@@ -47,7 +47,7 @@
 
         <button class="generic-button-dark less-wide" v-on:click="editDetails">Edit Details</button>
         <button class="generic-button-dark less-wide" v-on:click="editOptions">Edit Options</button>
-        <button class="generic-button-dark less-wide" v-on:click="editTimes">Edit Times</button>
+        <button class="generic-button-dark less-wide" v-on:click="editDates">Edit Dates</button>
         <button class="generic-button-dark less-wide" v-on:click="editMessages">Edit Messages</button>
 
       </div>
@@ -100,53 +100,179 @@ export default {
         html:
             `<input id="event-name" class="form-control" placeholder="Name" value="${this.eventObj.name}">` +
             `<br><textarea id="event-description" class="form-control" placeholder="Description">${this.eventObj.description}</textarea>`,
+        showCancelButton: true,
+        cancelButtonColor: '#d33',
         focusConfirm: false,
         preConfirm: () => {
           return [document.getElementById('event-name').value, document.getElementById('event-description').value];
         }
       }).then((info) => {
-        const newName = info.value[0].trim();
-        const newDescription = info.value[1].trim();
+        if(info.value){
+          const newName = info.value[0].trim();
+          const newDescription = info.value[1].trim();
 
-        if(newName === "" || newDescription === ""){
-          return Swal.fire({
-            title: "Error",
-            text: "The event name and description cannot be blank!",
-            type: "error"
-          });
-        }
+          if(newName === "" || newDescription === ""){
+            return Swal.fire({
+              title: "Error",
+              text: "The event name and description cannot be blank!",
+              type: "error"
+            });
+          }
 
-        AuthService.skillTest(() => {
-          console.log(info.value)
-          ApiService.updateEventDetails(this.eventID, newName, newDescription, (err, data) => {
-            if(err){
-              console.log(err);
+          AuthService.skillTest(() => {
+            console.log(info.value)
+            ApiService.updateEventDetails(this.eventID, newName, newDescription, (err, data) => {
+              if(err){
+                console.log(err);
+                Swal.fire({
+                  title: 'Error',
+                  type: 'error',
+                  text: 'There was an error updating event details.'
+                });
+                return;
+              }
               Swal.fire({
-                title: 'Error',
-                type: 'error',
-                text: 'There was an error updating event details.'
-              });
-              return;
-            }
-            Swal.fire({
-              title: 'Success',
-              text: `Successfully updated event details.`,
-              type: 'success'
-            }).then(()=>{
-              this.$router.go();
+                title: 'Success',
+                text: `Successfully updated event details.`,
+                type: 'success'
+              }).then(()=>{
+                this.$router.go();
+              })
             })
           })
-        })
+        }
+
       })
     },
-    editOptions(){
+    buildEditForm(editObj, textarea = false){
+      const inputTemplate = textarea ? `<label for="eventEdit-{{fieldID}}" class="text-left float-left">{{fieldID}}</label>
+      <textarea type="text" class="form-control" id="eventEdit-{{fieldID}}">{{fieldValue}}</textarea><br>` : `<label for="eventEdit-{{fieldID}}" class="text-left float-left">{{fieldID}}</label>
+      <input type="text" class="form-control" id="eventEdit-{{fieldID}}" value="{{fieldValue}}"><br>`;
 
+      let rForm = "";
+
+      for(const field of Object.keys(editObj)) {
+        console.log(field)
+        rForm += inputTemplate.replaceAll("{{fieldID}}", field).replaceAll("{{fieldValue}}", editObj[field]);
+      }
+      return rForm;
     },
-    editTimes() {
-
+    editOptions(){
+      Swal.fire({
+        title: 'Enter your changes',
+        html: this.buildEditForm(this.eventObj.options),
+        showCancelButton: true,
+        cancelButtonColor: '#d33',
+        focusConfirm: false,
+        preConfirm: () => {
+          let rVals = {};
+          for(const field of Object.keys(this.eventObj.options)){
+            rVals[field] = document.getElementById('eventEdit-'+field).value;
+          }
+          return rVals;
+        }
+      }).then((info) => {
+        if(info.value){
+          AuthService.skillTest(() => {
+            ApiService.updateEventOptions(this.eventID, info.value, (err, data) => {
+              if(err){
+                console.log(err);
+                Swal.fire({
+                  title: 'Error',
+                  type: 'error',
+                  text: 'There was an error updating event options.'+ApiService.extractErrorText(err)
+                });
+                return;
+              }
+              Swal.fire({
+                title: 'Success',
+                text: `Successfully updated event options.`,
+                type: 'success'
+              }).then(()=>{
+                this.$router.go();
+              })
+            })
+          })
+        }
+      })
+    },
+    editDates() {
+      Swal.fire({
+        title: 'Enter your changes',
+        html: this.buildEditForm(this.eventObj.dates),
+        showCancelButton: true,
+        cancelButtonColor: '#d33',
+        focusConfirm: false,
+        preConfirm: () => {
+          let rVals = {};
+          for(const field of Object.keys(this.eventObj.dates)){
+            rVals[field] = document.getElementById('eventEdit-'+field).value;
+          }
+          return rVals;
+        }
+      }).then((info) => {
+        if(info.value){
+          AuthService.skillTest(() => {
+            ApiService.updateEventDates(this.eventID, info.value, (err, data) => {
+              if(err){
+                console.log(err);
+                Swal.fire({
+                  title: 'Error',
+                  type: 'error',
+                  text: 'There was an error updating event dates.'+ApiService.extractErrorText(err)
+                });
+                return;
+              }
+              Swal.fire({
+                title: 'Success',
+                text: `Successfully updated event dates.`,
+                type: 'success'
+              }).then(()=>{
+                this.$router.go();
+              })
+            })
+          })
+        }
+      })
     },
     editMessages() {
-
+      Swal.fire({
+        title: 'Enter your changes',
+        html: this.buildEditForm(this.eventObj.messages, true),
+        showCancelButton: true,
+        cancelButtonColor: '#d33',
+        focusConfirm: false,
+        preConfirm: () => {
+          let rVals = {};
+          for(const field of Object.keys(this.eventObj.messages)){
+            rVals[field] = document.getElementById('eventEdit-'+field).value;
+          }
+          return rVals;
+        }
+      }).then((info) => {
+        if(info.value){
+          AuthService.skillTest(() => {
+            ApiService.updateEventMessages(this.eventID, info.value, (err, data) => {
+              if(err){
+                console.log(err);
+                Swal.fire({
+                  title: 'Error',
+                  type: 'error',
+                  text: 'There was an error updating event messages.'+ApiService.extractErrorText(err)
+                });
+                return;
+              }
+              Swal.fire({
+                title: 'Success',
+                text: `Successfully updated event messages.`,
+                type: 'success'
+              }).then(()=>{
+                this.$router.go();
+              })
+            })
+          })
+        }
+      })
     }
   }
 }

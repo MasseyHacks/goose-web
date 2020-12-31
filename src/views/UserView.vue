@@ -154,48 +154,53 @@
                     `<p>You are awarding points to: ${this.userObj.fullName}</p>` +
                     '<input id="award-amount" class="form-control" placeholder="Amount">' +
                     '<br><textarea id="award-notes" class="form-control" placeholder="Notes">',
+                showCancelButton: true,
+                cancelButtonColor: '#d33',
                 focusConfirm: false,
                 preConfirm: () => {
                   return [document.getElementById('award-amount').value, document.getElementById('award-notes').value];
                 }
               }).then((info) => {
-                let awardAmount = info.value[0].trim();
-                let awardNotes = info.value[1].trim();
+                if(info.value){
+                  let awardAmount = info.value[0].trim();
+                  let awardNotes = info.value[1].trim();
 
-                if(awardAmount === "" || isNaN(awardAmount) || (awardAmount * 10)%10 !== 0){
-                  return Swal.fire({
-                    title: 'Error',
-                    type: 'error',
-                    text: 'Points award amount is not a whole number!'
-                  }).then(() => {
-                    this.awardPoints();
-                  });
-                }
-                if(awardNotes === ""){
-                  return Swal.fire({
-                    title: 'Error',
-                    type: 'error',
-                    text: 'Please enter a note about this point award!'
-                  }).then(() => {
-                    this.awardPoints();
-                  });
-                }
-                ApiService.awardUserPoints(this.userID, awardAmount, awardNotes, (err, data) => {
-                  console.log(data);
-                  if(err){
-                    console.log(err);
+                  if(awardAmount === "" || isNaN(awardAmount) || (awardAmount * 10)%10 !== 0){
                     return Swal.fire({
                       title: 'Error',
                       type: 'error',
-                      text: 'There was an error awarding points.'
+                      text: 'Points award amount is not a whole number!'
+                    }).then(() => {
+                      this.awardPoints();
                     });
                   }
-                  Swal.fire({
-                    title: 'Success',
-                    text: `Successfully awarded ${awardAmount} points to ${this.userObj.fullName}.`,
-                    type: 'success'
+                  if(awardNotes === ""){
+                    return Swal.fire({
+                      title: 'Error',
+                      type: 'error',
+                      text: 'Please enter a note about this point award!'
+                    }).then(() => {
+                      this.awardPoints();
+                    });
+                  }
+                  ApiService.awardUserPoints(this.userID, awardAmount, awardNotes, (err, data) => {
+                    console.log(data);
+                    if(err){
+                      console.log(err);
+                      return Swal.fire({
+                        title: 'Error',
+                        type: 'error',
+                        text: 'There was an error awarding points.'
+                      });
+                    }
+                    Swal.fire({
+                      title: 'Success',
+                      text: `Successfully awarded ${awardAmount} points to ${this.userObj.fullName}.`,
+                      type: 'success'
+                    })
                   })
-                })
+                }
+
               })
             },
             formatUser(user) {

@@ -27,9 +27,13 @@ export default {
       required: false
     },
     parseAsDates: {
-      type: Boolean,
+      type: String,
       required: false,
-      default: false
+      default: "false",
+      validator: function (value) {
+        // The value must match one of these strings
+        return ['true','false'].indexOf(value) !== -1
+      }
     },
     dateFormat: {
       type: String,
@@ -46,7 +50,7 @@ export default {
         return this.negOneReplacement;
       }
 
-      if(this.parseAsDates){
+      if(this.parseAsDates === "true"){
         return moment(value).format(this.dateFormat);
       }
       else {

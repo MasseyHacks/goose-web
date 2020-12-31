@@ -5,7 +5,15 @@ import Swal from 'sweetalert2'
 import {apiHost} from "./variables";
 
 export default {
-
+    extractErrorText(error){
+        console.log("extract", error)
+        if(error){
+            if(error.rawError && error.rawError.error && error.rawError.error.response && error.rawError.error.response.data && error.rawError.error.response.data.clean){
+                return " " + error.rawError.error.response.data.error;
+            }
+        }
+        return "";
+    },
     hideStatus(userName, userID, callback) {
         Swal.fire({
             title: "Hide status for user?",
@@ -609,6 +617,24 @@ export default {
             id: id,
             newName: newName,
             newDescription: newDescription
+        }, callback);
+    },
+    updateEventOptions(id, newOptions, callback){
+        AuthService.sendRequest('POST', apiHost + '/api/updateEventOptions', {
+            id: id,
+            newOptions: newOptions
+        }, callback);
+    },
+    updateEventDates(id, newDates, callback){
+        AuthService.sendRequest('POST', apiHost + '/api/updateEventDates', {
+            id: id,
+            newDates: newDates
+        }, callback);
+    },
+    updateEventMessages(id, newMessages, callback){
+        AuthService.sendRequest('POST', apiHost + '/api/updateEventMessages', {
+            id: id,
+            newMessages: newMessages
         }, callback);
     }
 };
