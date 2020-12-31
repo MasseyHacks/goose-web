@@ -45,10 +45,10 @@
           <button class="generic-button-dark less-wide">Back</button>
         </router-link>
 
-        <button class="generic-button-dark less-wide" v-on:click="editDetails">Edit Event Details</button>
-        <button class="generic-button-dark less-wide" v-on:click="editOptions">Edit Event Options</button>
-        <button class="generic-button-dark less-wide" v-on:click="editTimes">Edit Event Times</button>
-        <button class="generic-button-dark less-wide" v-on:click="editMessages">Edit Event Messages</button>
+        <button class="generic-button-dark less-wide" v-on:click="editDetails">Edit Details</button>
+        <button class="generic-button-dark less-wide" v-on:click="editOptions">Edit Options</button>
+        <button class="generic-button-dark less-wide" v-on:click="editTimes">Edit Times</button>
+        <button class="generic-button-dark less-wide" v-on:click="editMessages">Edit Messages</button>
 
       </div>
     </div>
