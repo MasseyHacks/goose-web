@@ -61,6 +61,7 @@
     import Session from '../Session'
 
     export default {
+      name: 'Login',
         data() {
             return {
                 email: '',

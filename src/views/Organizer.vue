@@ -27,6 +27,9 @@
                         <router-link to="/organizer/points">
                           <button class="generic-button-dark wide">Points</button>
                         </router-link>
+                      <router-link to="/organizer/events">
+                        <button class="generic-button-dark wide">Events</button>
+                      </router-link>
                     </div>
                 </div>
             </div>
@@ -47,8 +50,9 @@
     import Session from '../Session'
 
     export default {
+        name: 'Organizer',
         beforeRouteUpdate(to, from, next) {
-            const pageLayout = ['statistics', 'users', 'teamview', 'userview', 'teammanage', 'review', 'points'];
+            const pageLayout = ['statistics', 'users', 'teamview', 'userview', 'teammanage', 'review', 'points', 'events'];
             const toPath = to.path.split('/');
             const fromPath = from.path.split('/');
 

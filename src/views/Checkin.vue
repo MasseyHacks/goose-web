@@ -75,6 +75,7 @@
     import {apiHost} from "../variables";
 
     export default {
+      name: 'Checkin',
         data() {
             return {
                 filters: {

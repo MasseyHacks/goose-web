@@ -149,6 +149,7 @@
     import {VueContext} from 'vue-context'
 
     export default {
+      name: 'TeamTable',
         data() {
             return {
                 page: 1,

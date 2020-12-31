@@ -120,6 +120,7 @@
     import {apiHost} from "../variables";
 
     export default {
+      name: 'Application',
         data() {
             return {
                 loading: true,

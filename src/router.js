@@ -30,6 +30,7 @@ import MagicLogin from './views/Magic.vue'
 import TeamManage from './views/AdminTeamView.vue'
 import Payment from "./views/Payment";
 import PointsAdmin from "./views/PointsAdmin";
+import EventsAdmin from "./views/EventsAdmin";
 import Points from "./views/Points";
 
 import Swal from 'sweetalert2'
@@ -272,6 +273,14 @@ const router = new Router({
         {
           path: 'points',
           component: PointsAdmin,
+          beforeEnter: isAuthorized,
+          meta: {
+            permissions: 'admin'
+          },
+        },
+        {
+          path: 'events',
+          component: EventsAdmin,
           beforeEnter: isAuthorized,
           meta: {
             permissions: 'admin'

@@ -114,6 +114,7 @@
     import Session from '../Session'
 
     export default {
+      name: 'PasswordReset',
         props: {
             token: {
                 type: String

@@ -129,9 +129,10 @@
     import Swal from 'sweetalert2'
     import moment from 'moment'
     import $ from 'jquery';
-    import {apiHost} from "../variables";
+    import {apiHost} from "@/variables";
 
     export default {
+      name: 'Developer',
         data() {
             return {
                 page: 1,

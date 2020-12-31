@@ -124,6 +124,7 @@
   import ApiService from './ApiService'
 
   export default {
+    name: 'GOOSE',
     data() {
       return {
         user: Session.getUser(),

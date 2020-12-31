@@ -34,6 +34,7 @@
     import AuthService from '../AuthService'
 
     export default {
+      name: 'Verify',
         props: {
             token: {
                 type: String

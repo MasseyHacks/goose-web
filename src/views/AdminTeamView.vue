@@ -61,6 +61,7 @@
     import ApiService from '../ApiService'
 
     export default {
+      name: 'AdminTeamView',
         data() {
             return {
                 user: Session.getUser(),

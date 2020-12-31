@@ -597,5 +597,8 @@ export default {
             amount: amount,
             notes: notes
         }, callback);
+    },
+    getAllEvents(callback) {
+        AuthService.sendRequest('GET', apiHost + '/api/getAllEvents', {}, callback);
     }
 };

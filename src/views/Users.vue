@@ -140,6 +140,7 @@
     import {VueContext} from 'vue-context'
 
     export default {
+      name: 'Users',
         data() {
             return {
                 page: 1,

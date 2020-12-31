@@ -44,6 +44,7 @@ import moment from 'moment';
 import Session from "../Session";
 
 export default {
+  name: 'Points',
   data() {
     return {
       user: Session.getUser(),

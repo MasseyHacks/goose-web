@@ -47,6 +47,7 @@
     import Swal from 'sweetalert2'
 
     export default {
+      name: 'Review',
         data() {
             return {
                 page: 1,

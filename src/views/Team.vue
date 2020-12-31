@@ -86,6 +86,7 @@
     import ApiService from '../ApiService'
 
     export default {
+      name: 'Team',
         data() {
             return {
                 error: '',

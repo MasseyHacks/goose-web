@@ -11,6 +11,7 @@ import Session from '../Session'
 import ApiService from '../ApiService'
 
 export default {
+  name: 'PointsAdmin',
   data() {
     return {
       user: Session.getUser()

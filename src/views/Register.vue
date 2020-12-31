@@ -60,6 +60,7 @@
     import Session from '../Session'
 
     export default {
+      name: 'Register',
         data () {
             return {
                 firstName: '',

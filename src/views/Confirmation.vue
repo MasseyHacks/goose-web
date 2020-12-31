@@ -136,6 +136,7 @@
     import {apiHost} from "../variables";
     import payment from './Payment'
     export default {
+      name: 'Confirmation',
         data() {
             return {
                 user: Session.getUser(),

@@ -142,6 +142,7 @@
     import {apiHost} from "../variables";
 
     export default {
+      name: 'Owner',
         components: {
             JsonTree
         },

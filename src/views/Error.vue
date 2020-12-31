@@ -17,6 +17,7 @@
 
 <script>
     export default {
+      name: 'Error',
         created() {
             if (!this.$route.query.error) {
                 this.$router.replace('/')

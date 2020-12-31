@@ -97,6 +97,7 @@
     import {apiHost} from "../variables";
 
     export default {
+      name: 'UserView',
         components: {
             JsonTree
         },

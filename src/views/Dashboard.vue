@@ -122,6 +122,7 @@
     import ApiService from "../ApiService";
 
     export default {
+      name: 'Dashboard',
         data() {
             return {
                 user: Session.getUser(),
