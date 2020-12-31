@@ -31,7 +31,7 @@
         <hr>
 
         <h4>TIMES</h4>
-        <PropertyDisplayList :display-object="eventObj.dates" neg-one-replacement="Never" parse-as-dates="true"></PropertyDisplayList>
+        <PropertyDisplayList :display-object="eventObj.dates" neg-one-replacement="Never" parse-as-dates=true></PropertyDisplayList>
 
         <hr>
 
@@ -45,13 +45,11 @@
           <button class="generic-button-dark less-wide">Back</button>
         </router-link>
 
-        <button class="generic-button-dark less-wide" v-on:click="v">Vote Admit</button>
+        <button class="generic-button-dark less-wide" v-on:click="editDetails">Edit Event Details</button>
+        <button class="generic-button-dark less-wide" v-on:click="editOptions">Edit Event Options</button>
+        <button class="generic-button-dark less-wide" v-on:click="editTimes">Edit Event Times</button>
+        <button class="generic-button-dark less-wide" v-on:click="editMessages">Edit Event Messages</button>
 
-        <div v-if="user.permissions.owner">
-          <hr>
-
-          <button class="generic-button-dark less-wide" v-on:click="">Edit User</button>
-        </div>
       </div>
     </div>
   </div>
@@ -60,8 +58,10 @@
 <script>
 import Session from '../Session'
 import ApiService from '../ApiService'
+import AuthService from '../AuthService'
 import moment from 'moment'
 import PropertyDisplayList from "@/components/PropertyDisplayList";
+import Swal from 'sweetalert2'
 
 export default {
   name: "EventAdminView",
@@ -93,6 +93,60 @@ export default {
   methods: {
     moment(date, format){
       return moment(date).format(format ? format : "LLLL");
+    },
+    editDetails() {
+      Swal.fire({
+        title: 'Enter Your Changes',
+        html:
+            `<input id="event-name" class="form-control" placeholder="Name" value="${this.eventObj.name}">` +
+            `<br><textarea id="event-description" class="form-control" placeholder="Description">${this.eventObj.description}</textarea>`,
+        focusConfirm: false,
+        preConfirm: () => {
+          return [document.getElementById('event-name').value, document.getElementById('event-description').value];
+        }
+      }).then((info) => {
+        const newName = info.value[0].trim();
+        const newDescription = info.value[1].trim();
+
+        if(newName === "" || newDescription === ""){
+          return Swal.fire({
+            title: "Error",
+            text: "The event name and description cannot be blank!",
+            type: "error"
+          });
+        }
+
+        AuthService.skillTest(() => {
+          console.log(info.value)
+          ApiService.updateEventDetails(this.eventID, newName, newDescription, (err, data) => {
+            if(err){
+              console.log(err);
+              Swal.fire({
+                title: 'Error',
+                type: 'error',
+                text: 'There was an error updating event details.'
+              });
+              return;
+            }
+            Swal.fire({
+              title: 'Success',
+              text: `Successfully updated event details.`,
+              type: 'success'
+            }).then(()=>{
+              this.$router.go();
+            })
+          })
+        })
+      })
+    },
+    editOptions(){
+
+    },
+    editTimes() {
+
+    },
+    editMessages() {
+
     }
   }
 }

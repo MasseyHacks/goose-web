@@ -603,5 +603,12 @@ export default {
     },
     getEventByID(id, callback) {
         AuthService.sendRequest('GET', apiHost + '/api/getEvent', {id: id}, callback);
+    },
+    updateEventDetails(id, newName, newDescription, callback){
+        AuthService.sendRequest('POST', apiHost + '/api/updateEventDetails', {
+            id: id,
+            newName: newName,
+            newDescription: newDescription
+        }, callback);
     }
 };
