@@ -59,6 +59,7 @@
 import Session from '../Session'
 import ApiService from '../ApiService'
 import AuthService from '../AuthService'
+import LoggingService from '../LoggingService'
 import moment from 'moment'
 import PropertyDisplayList from "@/components/PropertyDisplayList";
 import Swal from 'sweetalert2'
@@ -84,7 +85,7 @@ export default {
     ApiService.getEventByID(this.eventID, (err, data) => {
       this.loading = false;
       if (err || !data) {
-        this.loadingError = err ? err.rawError.error : 'Unable to process request'
+        this.loadingError = 'Unable to process request.' + ApiService.extractErrorText(err)
       } else {
         this.eventObj = data;
       }
@@ -120,10 +121,8 @@ export default {
           }
 
           AuthService.skillTest(() => {
-            console.log(info.value)
             ApiService.updateEventDetails(this.eventID, newName, newDescription, (err, data) => {
               if(err){
-                console.log(err);
                 Swal.fire({
                   title: 'Error',
                   type: 'error',
@@ -152,7 +151,6 @@ export default {
       let rForm = "";
 
       for(const field of Object.keys(editObj)) {
-        console.log(field)
         rForm += inputTemplate.replaceAll("{{fieldID}}", field).replaceAll("{{fieldValue}}", editObj[field]);
       }
       return rForm;
@@ -176,7 +174,6 @@ export default {
           AuthService.skillTest(() => {
             ApiService.updateEventOptions(this.eventID, info.value, (err, data) => {
               if(err){
-                console.log(err);
                 Swal.fire({
                   title: 'Error',
                   type: 'error',
@@ -215,7 +212,6 @@ export default {
           AuthService.skillTest(() => {
             ApiService.updateEventDates(this.eventID, info.value, (err, data) => {
               if(err){
-                console.log(err);
                 Swal.fire({
                   title: 'Error',
                   type: 'error',
@@ -254,7 +250,6 @@ export default {
           AuthService.skillTest(() => {
             ApiService.updateEventMessages(this.eventID, info.value, (err, data) => {
               if(err){
-                console.log(err);
                 Swal.fire({
                   title: 'Error',
                   type: 'error',

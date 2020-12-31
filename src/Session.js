@@ -1,5 +1,5 @@
 //import AuthService  from './AuthService'
-
+import LoggingService from './LoggingService'
 export default {
 
     setSettings(settings) {
@@ -28,7 +28,7 @@ export default {
 
     create2FA(token, data) {
         localStorage.token = token;
-        console.log(token)
+        LoggingService.debug("2fa token", token)
     },
 
     destroy(callback) {
@@ -62,7 +62,7 @@ export default {
     },
 
     getUser() {
-        console.log('getUser!!!', this.loggedIn());
+        LoggingService.debug('getUser!!!', this.loggedIn());
         return this.loggedIn() ? JSON.parse(localStorage.user) : null
     },
 

@@ -20,6 +20,7 @@
 
 <script>
     import AuthService from '../AuthService'
+    import ApiService from '../ApiService'
     import Session     from '../Session'
 
     export default {
@@ -39,7 +40,7 @@
             codeLogin () {
                 AuthService.loginWithCode(this.code, (err, data) => {
                     if (err) {
-                        this.error = err
+                        this.error = ApiService.extractErrorText(err, false);
                     } else {
                         this.error = null;
                         this.$router.replace(this.$route.query.redirect || '/')

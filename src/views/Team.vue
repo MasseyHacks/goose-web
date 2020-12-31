@@ -98,12 +98,11 @@
             }
         },
         beforeMount() {
-            console.log(this.settings);
             ApiService.getTeam((err, team) => {
                 this.loading = false;
 
                 if (err) {
-                    this.error = err ? err : 'Something went wrong :\'('
+                    this.error = 'Something went wrong :\'(' + ApiService.extractErrorText(err)
                 } else if (!team) {
                     this.team = null
                 } else {
@@ -121,7 +120,7 @@
                 ApiService.createTeam(this.teamName, (err, team) => {
 
                     if (err) {
-                        this.error = err.rawError.error
+                        this.error = ApiService.extractErrorText(err)
                     } else {
                         this.team = team;
                         this.page = '';
@@ -133,7 +132,7 @@
                 ApiService.joinTeam(this.teamCode, (err, team) => {
 
                     if (err) {
-                        this.error = err.rawError.error
+                        this.error = ApiService.extractErrorText(err)
                     } else {
                         this.team = team;
                         this.page = '';
@@ -156,7 +155,7 @@
                         Swal.showLoading();
                         ApiService.leaveTeam((err, team) => {
                             if (err) {
-                                this.error = err.rawError.error
+                                this.error = ApiService.extractErrorText(err)
                             }
 
                             this.team = null;

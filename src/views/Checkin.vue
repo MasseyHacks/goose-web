@@ -69,6 +69,7 @@
 <script>
     import ApiService from '../ApiService'
     import AuthService from '../AuthService'
+    import LoggingService from '../LoggingService'
     import Swal from 'sweetalert2'
     import {VueContext} from 'vue-context'
     import Vue from 'vue'
@@ -104,7 +105,7 @@
             ApiService.getUsers({ page: 1, size: 0, filters: this.filters, appPage: 'checkin', sort: {"firstName": 1, "lastName": 1}}, (err, data) => {
                 this.loading = false;
                 if (err || !data) {
-                    this.loadingError = err ? err.rawError.error : 'Unable to process request'
+                    this.loadingError = 'Unable to process request.'+ApiService.extractErrorText(err)
                 } else {
                     this.users = data.users;
                     this.totalPages = data.totalPages;
@@ -133,7 +134,7 @@
                 ApiService.getUsers({ page: 1, size: 0, filters: this.filters, appPage: 'checkin'}, (err, data) => {
 
                     if (err || !data) {
-                        this.loadingError = err ? err.rawError.error : 'Unable to process request'
+                        this.loadingError = 'Unable to process request.'+ApiService.extractErrorText(err)
                     } else {
                         this.users = data.users;
                         this.totalPages = data.totalPages
@@ -154,8 +155,7 @@
                         Swal.showLoading();
                         ApiService.checkIn({userID: user.id, appPage: 'checkin'}, (err, data) => {
                             if(err) {
-                                console.log(err);
-                                Swal.fire('Error', 'An error has occured, please contact an organizer immediately', 'error')
+                                Swal.fire('Error', 'An error has occurred, please contact an organizer immediately.'+ApiService.extractErrorText(err), 'error')
                             } else {
                                 Swal.fire('Success', 'Hacker ' + data.name + ' has been successfully checked in.', 'success');
                                 Vue.set(this.users, index, data)
@@ -163,7 +163,7 @@
                         });
                         // AuthService.sendRequest('POST', apiHost + '/api/checkIn', {userID: user.id, appPage: 'checkin'}, (err, data) => {
                         //     if(err) {
-                        //         console.log(err);
+                        //         LoggingService.log(err);
                         //         Swal.fire('Error', 'An error has occured, please contact an organizer immediately', 'error')
                         //     } else {
                         //         Swal.fire('Success', 'Hacker ' + data.name + ' has been successfully checked in.', 'success');
@@ -187,8 +187,7 @@
                         Swal.showLoading();
                         ApiService.checkOut({userID: user.id, appPage: 'checkin'}, (err, data) => {
                             if(err) {
-                                console.log(err);
-                                Swal.fire('Error', 'An error has occured, please contact an organizer immediately', 'error')
+                                Swal.fire('Error', 'An error has occurred, please contact an organizer immediately.'+ApiService.extractErrorText(err), 'error')
                             } else {
                                 Swal.fire('Success', 'Hacker ' + data.name + ' has been successfully checked out.', 'success');
                                 Vue.set(this.users, index, data)
@@ -196,7 +195,7 @@
                         });
                         // AuthService.sendRequest('POST', apiHost + '/api/checkOut', {userID: user.id, appPage: 'checkin'}, (err, data) => {
                         //     if(err) {
-                        //         console.log(err);
+                        //         LoggingService.log(err);
                         //         Swal.fire('Error', 'An error has occured, please contact an organizer immediately', 'error')
                         //     } else {
                         //         Swal.fire('Success', 'Hacker ' + data.name + ' has been successfully checked out.', 'success');
@@ -220,7 +219,7 @@
                         Swal.showLoading();
                         ApiService.waiverIn({'userID': user.id, appPage: 'checkin'}, (err, data) => {
                             if (err || !data) {
-                                Swal.fire('Error', err.error, 'error')
+                                Swal.fire('Error', ApiService.extractErrorText(err, false), 'error')
                             } else {
                                 Swal.fire('Success', 'Waiver accepted', 'success');
                                 Vue.set(this.users, index, data)
@@ -243,7 +242,7 @@
                 ApiService.getUsers({ page: 1, size: 0, text: this.searchQuery, filters : this.filters, appPage: 'checkin'}, (err, data) => {
                     this.queryError = '';
                     if (err || !data) {
-                        this.queryError = err ? err.rawError.error : 'Unable to process request'
+                        this.queryError = 'Unable to process request.'+ApiService.extractErrorText(err)
                     } else {
                         this.users = data.users;
                         this.totalPages = data.totalPages;

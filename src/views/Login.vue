@@ -58,6 +58,7 @@
 
 <script>
     import AuthService from '../AuthService'
+    import ApiService from '../ApiService'
     import Session from '../Session'
 
     export default {
@@ -79,7 +80,7 @@
             login() {
                 AuthService.loginWithPassword(this.email, this.pass, (err, data) => {
                     if (err) {
-                        this.error = err
+                        this.error = ApiService.extractErrorText(err);
                     } else {
                         this.error = null;
                         if (data["2FA"]) {

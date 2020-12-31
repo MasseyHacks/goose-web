@@ -2,6 +2,7 @@
 
 import $ from 'jquery'
 import Session from './Session'
+import LoggingService from './LoggingService'
 import Swal from 'sweetalert2'
 import { apiHost } from "./variables";
 import axios from 'axios'
@@ -40,12 +41,12 @@ export default {
             },
             params: type === 'GET' ? data : null
         }).then(response => {
-            console.log(response)
+            LoggingService.debug("response", response)
             if (callback) {
                 return callback(null, response.data)
             }
         }).catch(error => {
-            console.log(error, data);
+            LoggingService.debug("error & response", error, data);
             if (error.data && (error.data.status == 401 || error.data.status == 403) && Session.loggedIn() && !url.includes('changePassword')) {
                 this.logout(null, 'Permission error occurred. Please login again.')
             }
@@ -176,7 +177,7 @@ export default {
                         password: result.value
                     }, (err, data) => {
                         if (err) {
-                            if (callback) callback(err.rawError.error)
+                            if (callback) callback(err)
                         } else {
                             if (callback) callback(null, data)
                         }
@@ -194,7 +195,7 @@ export default {
             newPassword: newPassword
         }, (err, data) => {
             if (err) {
-                if (callback) callback(err.rawError.error)
+                if (callback) callback(err)
             } else {
                 Session.create(data['token'], data['user']);
                 this.updateLoginState(true);
@@ -212,7 +213,7 @@ export default {
             lastName: lastName
         }, (err, data) => {
             if (err) {
-                if (callback) callback(err.rawError.error)
+                if (callback) callback(err)
             } else {
                 Session.create(data['token'], data['user']);
                 this.updateLoginState(true);
@@ -228,9 +229,9 @@ export default {
             password: password
         }, (err, data) => {
             if (err) {
-                if (callback) callback(err.rawError.error)
+                if (callback) callback(err)
             } else {
-                console.log('data', data);
+                LoggingService.debug('data', data);
                 if (data['user']['2FA']) {
                     Session.create2FA(data['token'], data['user']);
                     return callback(null, data['user'])
@@ -247,10 +248,10 @@ export default {
     refreshToken() {
         // Login with token if it exists
         if (Session.loggedIn()) {
-            console.log('Token refreshed!');
+            LoggingService.debug('Token refreshed!');
             this.loginWithToken()
         } else {
-            console.log('Session does not exist')
+            LoggingService.debug('Session does not exist')
         }
     },
 
@@ -272,7 +273,7 @@ export default {
             'code':code
         }, (err, data) => {
             if (err) {
-                if (callback) callback(err.rawError.error)
+                if (callback) callback(err)
             } else {
                 Session.create(data['token'], data['user']);
                 this.updateLoginState(true);
@@ -287,7 +288,7 @@ export default {
             token: token
         }, (err, data) => {
             if (err) {
-                if (callback) callback(err.rawError.error)
+                if (callback) callback(err)
             } else {
                 if (callback) callback(null)
             }
@@ -300,7 +301,7 @@ export default {
             password: password
         }, (err, data) => {
             if (err) {
-                if (callback) callback(err.rawError.error)
+                if (callback) callback(err)
             } else {
                 this.logout(null, 'The session has expired');
                 if (callback) callback(null, data)
@@ -313,8 +314,8 @@ export default {
             email: email
         }, (err, data) => {
             if (err) {
-                console.log('hakjsgdaijsd', err);
-                if (callback) callback(err.rawError.error)
+                LoggingService.debug('requestReset error', err);
+                if (callback) callback(err)
             } else {
                 if (callback) callback(null, data)
             }
@@ -326,7 +327,7 @@ export default {
 
         }, (err, data) => {
             if (err) {
-                if (callback) callback(err.rawError.error)
+                if (callback) callback(err)
             } else {
                 if (callback) callback(null, data)
             }

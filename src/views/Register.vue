@@ -57,6 +57,7 @@
 
 <script>
     import AuthService from '../AuthService'
+    import ApiService from '../ApiService'
     import Session from '../Session'
 
     export default {
@@ -83,7 +84,7 @@
                 } else {
                     AuthService.register(this.email, this.firstName, this.lastName, this.password1, (err, data) => {
                         if (err) {
-                            this.error = err
+                            this.error = ApiService.extractErrorText(err);
                         } else {
                             this.error = null;
                             this.$router.replace(this.$route.query.redirect || '/')

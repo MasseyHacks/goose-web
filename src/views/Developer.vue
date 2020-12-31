@@ -126,6 +126,7 @@
 <script>
     import AuthService from '../AuthService'
     import ApiService from '../ApiService'
+    import LoggingService from '../LoggingService'
     import Swal from 'sweetalert2'
     import moment from 'moment'
     import $ from 'jquery';
@@ -157,7 +158,7 @@
 
             AuthService.sendRequest("GET", apiHost + "/api/version", null, (err, data) => {
                 if(err) {
-                    console.log("Error while getting template");
+                  Swal.fire('error', "Error getting server version. " + ApiService.extractErrorText(err), 'error');
                     this.currentLocalVersion = "-1"
                 }
                 else{
@@ -168,7 +169,7 @@
             $.ajax({
                 url: "https://api.github.com/repos/MasseyHacks/MasseyHacks-V-Registration/commits/master",
                 success: (data) => {
-                    console.log("asgsfagf",data);
+                    LoggingService.debug("git repo info",data);
                     this.currentRemoteVersion = data.sha;
                 },
                 dataType: "json",
@@ -210,10 +211,9 @@
             },
             showDiv(id){
                 var children = document.getElementById(id).parentElement.parentElement.children;
-                console.log("parent");
-                console.log(document.getElementById(id).parentElement.parentElement);
+                LoggingService.debug("parent", document.getElementById(id).parentElement.parentElement);
                 for (var i = 0; i < children.length; i++) {
-                    console.log(children[i]);
+                    LoggingService.debug("child", children[i]);
                     if(children[i].lastChild.id != id){
                         children[i].lastChild.hidden = true;
                         if($(children[i].firstChild).hasClass('active')){
@@ -246,7 +246,7 @@
                     this.queryError = '';
 
                     if (err || !data) {
-                        this.loadingError = err ? err.rawError.error : 'Unable to process request'
+                        this.loadingError = 'Unable to process request.'+ApiService.extractErrorText(err)
                     } else {
                         this.log = data.log;
                         this.totalPages = data.totalPages;

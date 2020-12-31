@@ -92,6 +92,7 @@
     import AuthService from '../AuthService'
     import Swal from 'sweetalert2'
     import ApiService from '../ApiService'
+    import LoggingService from '../LoggingService'
     import moment from 'moment'
     import JsonTree from 'vue-json-tree'
     import {apiHost} from "../variables";
@@ -121,7 +122,7 @@
 
             ApiService.getFields(true, (err, data) => {
                 if (err || !data) {
-                    this.loadingError = err ? err.rawError.error : 'Unable to process request'
+                    this.loadingError = 'Unable to process request.' + ApiService.extractErrorText(err)
                 } else {
                     this.fields = data
                 }
@@ -134,12 +135,10 @@
 
         mounted() {
             this.userID = this.$route.query["username"];
-            console.log(this.userID);
             ApiService.getUser(this.userID, (err, data) => {
                 if (err || !data) {
-                    console.log("ERROR")
+                    Swal.fire("Error", "Error retrieving user information."+ApiService.extractErrorText(err), 'error');
                 } else {
-                    console.log("data2");
                     this.userObj = data;
                     this.flatten(this.userObj,false);
                 }
@@ -184,13 +183,11 @@
                     });
                   }
                   ApiService.awardUserPoints(this.userID, awardAmount, awardNotes, (err, data) => {
-                    console.log(data);
                     if(err){
-                      console.log(err);
                       return Swal.fire({
                         title: 'Error',
                         type: 'error',
-                        text: 'There was an error awarding points.'
+                        text: 'There was an error awarding points.'+ApiService.extractErrorText(err)
                       });
                     }
                     Swal.fire({
@@ -339,7 +336,7 @@
                             } else {
                                 if (depth < 6) {
                                     var profileObj = this.flatten(obj[keys], includeApplication, depth + 1);
-                                    console.log("RECURSION: " + depth);
+                                    LoggingService.debug("RECURSION: " + depth);
                                     if (includeApplication) {
                                         flattened["Application"] = profileObj
                                     }
@@ -349,7 +346,7 @@
                         }
                     }
                 } else {
-                    console.log("RECUR LIM REACHED")
+                    LoggingService.log("RECUR LIM REACHED")
                 }
                 return flattened
             },
@@ -359,7 +356,7 @@
                         id: this.userID
                     }, (err, data) => {
                         if (err) {
-                            Swal.fire("Error", "This action has been logged", "error")
+                            Swal.fire("Error", "This action has been logged."+ApiService.extractErrorText(err), "error")
                         } else {
                             Swal.fire({
                                 title: "PEI TOKEN ISSUED!",
@@ -377,14 +374,13 @@
                         data: {"profile.signature": "-1"}
                     }, (err, data) => {
                         if (err) {
-                            Swal.fire('Error', err.error, 'error')
+                            Swal.fire('Error', ApiService.extractErrorText(err), 'error')
                         } else {
-                            Swal.fire('Success', 'Application has been unlocked', 'success').then((result) => {
+                            Swal.fire('Success', 'Application has been unlocked.', 'success').then((result) => {
                                 ApiService.getUser(this.userID, (err, data) => {
                                     if (err || !data) {
-                                        console.log("ERROR")
+                                        Swal.fire('Error', ApiService.extractErrorText(err), 'error')
                                     } else {
-                                        console.log("data2");
                                         this.userObj = data
                                     }
                                 })
@@ -407,7 +403,7 @@
                 keys.splice(keys.indexOf('status.name'), 1);
                 keys.splice(keys.indexOf('profile.isSigned'), 1);
                 keys.splice(keys.indexOf('lowerCaseName'), 1);
-                console.log(keys);
+                LoggingService.debug("user keys", keys);
 
                 Swal.fire({
                     title: 'Warning',
@@ -469,14 +465,13 @@
                                             data: postData
                                         }, (err, data) => {
                                             if (err) {
-                                                Swal.fire('Error', err.error, 'error')
+                                                Swal.fire('Error', ApiService.extractErrorText(err), 'error')
                                             } else {
                                                 Swal.fire('Success', 'Field has been changed', 'success').then((result) => {
                                                     ApiService.getUser(this.userID, (err, data) => {
                                                         if (err || !data) {
-                                                            console.log("ERROR")
+                                                            Swal.fire('error', ApiService.extractErrorText(err), 'error');
                                                         } else {
-                                                            console.log("data2");
                                                             this.userObj = data
                                                         }
                                                     })
@@ -509,7 +504,7 @@
                     }
                     return tempObj;
                 } else {
-                    console.log("recursion limit reached!");
+                    LoggingService.log("recursion limit reached!");
                     return {};
                 }
             },

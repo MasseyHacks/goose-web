@@ -1,18 +1,21 @@
 /* globals localStorage */
 
 import AuthService from './AuthService'
+import LoggingService from './LoggingService'
 import Swal from 'sweetalert2'
 import {apiHost} from "./variables";
 
 export default {
-    extractErrorText(error){
-        console.log("extract", error)
+    extractErrorText(error, addSpace = true){
         if(error){
             if(error.rawError && error.rawError.error && error.rawError.error.response && error.rawError.error.response.data && error.rawError.error.response.data.clean){
-                return " " + error.rawError.error.response.data.error;
+                return (addSpace ? " ": "") + error.rawError.error.response.data.error;
+            }
+            if(error.rawError && error.rawError.error){
+                return (addSpace ? " ": "") + error.rawError.error;
             }
         }
-        return "";
+        return (addSpace ? " ": "") + "Unable to retrieve additional details about the error.";
     },
     hideStatus(userName, userID, callback) {
         Swal.fire({
@@ -29,14 +32,13 @@ export default {
             preConfirm: (userOK) => {
 
                 AuthService.skillTest(() => {
-                    console.log(userOK);
                     if (userOK) {
                         //register the vote
                         AuthService.sendRequest('POST', apiHost + '/api/hideStatus', {
                             userID: userID
                         }, (err, data) => {
                             if (err) {
-                                Swal.fire("Error", "Unable to perform action", "error");
+                                Swal.fire("Error", "Unable to perform action." + this.extractErrorText(err), "error");
                             }
                             else if (!err && data) {
                                 if (callback) callback(data);
@@ -62,16 +64,14 @@ export default {
             focusCancel: true,
             showLoaderOnConfirm: true,
             preConfirm: (userOK) => {
-                console.log(userOK);
                 if(userOK){
-
                     AuthService.skillTest(() => {
                         //register the vote
                         AuthService.sendRequest('POST', apiHost + '/api/releaseStatus', {
                             userID: userID
                         }, (err, data) => {
                             if (err) {
-                                Swal.fire("Error", "Unable to perform action", "error");
+                                Swal.fire("Error", "Unable to perform action." + this.extractErrorText(err), "error");
                             }
                             else if (!err && data) {
                                 if (callback) callback(data);
@@ -98,16 +98,14 @@ export default {
             focusCancel: true,
             showLoaderOnConfirm: true,
             preConfirm: (userOK) => {
-
                 AuthService.skillTest(() => {
-                    console.log(userOK);
                     if (userOK) {
                         //register the vote
                         AuthService.sendRequest('POST', apiHost + '/api/deactivate', {
                             userID: userID
                         }, (err, data) => {
                             if (err) {
-                                Swal.fire("Error", "Unable to perform action", "error");
+                                Swal.fire("Error", "Unable to perform action." + this.extractErrorText(err), "error");
                             }
                             else if (!err && data) {
                                 if (callback) callback(data);
@@ -133,16 +131,14 @@ export default {
             focusCancel: true,
             showLoaderOnConfirm: true,
             preConfirm: (userOK) => {
-                console.log(userOK);
                 if(userOK){
-
                     AuthService.skillTest(() => {
                         //register the vote
                         AuthService.sendRequest('POST', apiHost + '/api/activate', {
                             userID: userID
                         }, (err, data) => {
                             if (err) {
-                                Swal.fire("Error", "Unable to perform action", "error");
+                                Swal.fire("Error", "Unable to perform action." + this.extractErrorText(err), "error");
                             }
                             else if (!err && data) {
                                 if (callback) callback(data);
@@ -168,16 +164,14 @@ export default {
             focusCancel: true,
             showLoaderOnConfirm: true,
             preConfirm: (userOK) => {
-                console.log(userOK);
                 if(userOK){
-
                     AuthService.skillTest(() => {
                         //register the vote
                         AuthService.sendRequest('POST', apiHost + '/api/deleteUser', {
                             userID: userID
                         }, (err, data) => {
                             if (err) {
-                                Swal.fire("Error", "Unable to perform action", "error");
+                                Swal.fire("Error", "Unable to perform action." + this.extractErrorText(err), "error");
                             }
                             else if (!err) {
                                 if (callback) callback(data);
@@ -203,16 +197,14 @@ export default {
             focusCancel: true,
             showLoaderOnConfirm: true,
             preConfirm: (userOK) => {
-                console.log(userOK);
                 if(userOK){
-
                     AuthService.skillTest(() => {
                         //register the vote
                         AuthService.sendRequest('POST', apiHost + '/api/flushEmailQueue', {
                             userID: userID
                         }, (err, data) => {
                             if (err) {
-                                Swal.fire("Error", "Unable to perform action", "error");
+                                Swal.fire("Error", "Unable to perform action." + this.extractErrorText(err), "error");
                             }
                             else if (!err && data) {
                                 if (callback) callback(data);
@@ -238,16 +230,14 @@ export default {
             focusCancel: true,
             showLoaderOnConfirm: true,
             preConfirm: (userOK) => {
-                console.log(userOK);
                 if(userOK){
-
                     AuthService.skillTest(() => {
                         //register the vote
                         AuthService.sendRequest('POST', apiHost + '/api/voteReset', {
                             userID: userID
                         }, (err, data) => {
                             if (err) {
-                                Swal.fire("Error", "Unable to perform action", "error");
+                                Swal.fire("Error", "Unable to perform action." + this.extractErrorText(err), "error");
                             }
                             else if (!err && data) {
                                 if (callback) callback(data);
@@ -273,16 +263,14 @@ export default {
             focusCancel: true,
             showLoaderOnConfirm: true,
             preConfirm: (userOK) => {
-                console.log(userOK);
                 if(userOK){
-
                     AuthService.skillTest(() => {
                         //register the vote
                         AuthService.sendRequest('POST', apiHost + '/api/resetInvitation', {
                             userID: userID
                         }, (err, data) => {
                             if (err) {
-                                Swal.fire("Error", "Unable to perform action", "error");
+                                Swal.fire("Error", "Unable to perform action." + this.extractErrorText(err), "error");
                             }
                             else if (!err && data) {
                                 if (callback) callback(data);
@@ -308,16 +296,14 @@ export default {
             focusCancel: true,
             showLoaderOnConfirm: true,
             preConfirm: (userOK) => {
-                console.log(userOK);
                 if(userOK){
-
                     AuthService.skillTest(() => {
                         //register the vote
                         AuthService.sendRequest('POST', apiHost + '/api/resetAdmissionState', {
                             userID: userID
                         }, (err, data) => {
                             if (err) {
-                                Swal.fire("Error", "Unable to perform action", "error");
+                                Swal.fire("Error", "Unable to perform action." + this.extractErrorText(err), "error");
                             }
                             else if (!err && data) {
                                 if (callback) callback(data);
@@ -342,14 +328,13 @@ export default {
             focusCancel: true,
             showLoaderOnConfirm: true,
             preConfirm: (userOK) => {
-                console.log(userOK);
                 if(userOK){
                     //register the vote
                     AuthService.sendRequest('POST',apiHost + '/api/voteAdmit',{
                         userID: userID
                     }, (err,data) =>{
                         if(err){
-                            Swal.fire("Error","Unable to perform action","error");
+                            Swal.fire("Error","Unable to perform action." + this.extractErrorText(err),"error");
                         }
                         else if(!err && data){
                             if (callback) callback(data);
@@ -374,14 +359,13 @@ export default {
             focusCancel: true,
             showLoaderOnConfirm: true,
             preConfirm: (userOK) => {
-                console.log(userOK);
                 if(userOK){
                     //register the vote
                     AuthService.sendRequest('POST',apiHost + '/api/voteReject',{
                         userID: userID
                     }, (err,data) =>{
                         if(err){
-                            Swal.fire("Error","Unable to perform action","error");
+                            Swal.fire("Error","Unable to perform action." + this.extractErrorText(err),"error");
                         }
                         else if(!err && data){
                             if (callback) callback(data);
@@ -406,7 +390,6 @@ export default {
             focusCancel: true,
             showLoaderOnConfirm: true,
             preConfirm: (userOK) => {
-                console.log(userOK);
                 if(userOK){
                     //register the vote
                     AuthService.skillTest(() => {
@@ -414,7 +397,7 @@ export default {
                             userID: userID
                         }, (err, data) => {
                             if (err) {
-                                Swal.fire("Error", "Unable to perform action", "error");
+                                Swal.fire("Error", "Unable to perform action." + this.extractErrorText(err), "error");
                             }
                             else if (!err && data) {
                                 if (callback) callback(data);
@@ -440,16 +423,14 @@ export default {
             focusCancel: true,
             showLoaderOnConfirm: true,
             preConfirm: (userOK) => {
-                console.log(userOK);
                 if(userOK){
-
                     AuthService.skillTest(() => {
                         //register the vote
                         AuthService.sendRequest('POST', apiHost + '/api/forceReject', {
                             userID: userID
                         }, (err, data) => {
                             if (err) {
-                                Swal.fire("Error", "Unable to perform action", "error");
+                                Swal.fire("Error", "Unable to perform action. + this.extractErrorText(err)", "error");
                             }
                             else if (!err && data) {
                                 if (callback) callback(data);

@@ -149,7 +149,7 @@
                     if (result.value) {
                         ApiService.declineInvitation({}, (err, data) => {
                             if (err || !data) {
-                                Swal.fire("Error", err.error, "error");
+                                Swal.fire("Error", "There was an error declining your invitation."+ApiService.extractErrorText(err), "error");
                             } else {
                                 Swal.fire({
                                     title: "Success",
@@ -174,7 +174,7 @@
                         this.error = err;
                         Swal.fire({
                             title: 'Sorry!',
-                            text: 'There was an error!',
+                            text: 'There was an error!'+ApiService.extractErrorText(err),
                             type: 'error'
                         });
                     }

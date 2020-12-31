@@ -144,6 +144,7 @@
 <script>
     import Session from '../Session'
     import ApiService from '../ApiService'
+    import LoggingService from '../LoggingService'
     import {saveAs} from 'file-saver'
     import Swal from 'sweetalert2'
     import {VueContext} from 'vue-context'
@@ -191,7 +192,7 @@
             // Get fields for filters
             ApiService.getTeamFields((err, data) => {
                 if (err || !data) {
-                    this.loadingError = err ? err.rawError.error : 'Unable to process request'
+                    this.loadingError = 'Unable to process request.' + ApiService.extractErrorText(err)
                 } else {
                     this.fields = data
                 }
@@ -201,7 +202,7 @@
                 this.loading = false;
 
                 if (err || !data) {
-                    this.loadingError = err ? err.rawError.error : 'Unable to process request'
+                    this.loadingError = 'Unable to process request.' + ApiService.extractErrorText(err)
                 } else {
                     this.teams = data.teams;
                     this.totalPages = data.totalPages;
@@ -248,7 +249,7 @@
                     this.loading = false;
 
                     if (err || !data) {
-                        this.loadingError = err ? err.rawError.error : 'Unable to process request'
+                        this.loadingError = 'Unable to process request.' + ApiService.extractErrorText(err)
                     } else {
                         this.teams = data.teams;
                         this.totalPages = data.totalPages;
@@ -359,7 +360,7 @@
                 }, (err, data) => {
                     this.queryError = '';
                     if (err || !data) {
-                        this.queryError = err ? err.rawError.error : 'Unable to process request'
+                        this.queryError = 'Unable to process request.' + ApiService.extractErrorText(err)
                     } else {
                         this.teams = data.teams;
                         this.totalPages = data.totalPages;
@@ -376,7 +377,7 @@
             exportUsersCSV: function () {
                 ApiService.getTeams({page: 1, size: 100000, text: this.searchQuery}, (err, data) => {
                     if (err || !data) {
-                        this.loadingError = err ? err.rawError.error : 'Unable to process request'
+                        this.loadingError = 'Unable to process request.' + ApiService.extractErrorText(err)
                     } else {
                         var csvArray = [];
                         for (var i = 0; i < data.teams.length; i++) {
@@ -403,7 +404,7 @@
                     }
                     return tempObj;
                 } else {
-                    console.log("recursion limit reached!");
+                    LoggingService.error("recursion limit reached!");
                     return {};
                 }
             },
@@ -511,10 +512,8 @@
                 if (this.filters.length > 0) {
                     if (this.filters['$and'].length > 0) {
                         this.filters['$and'][0]['permissions.checkin'] = this.displayOrganizers.toString();
-                        console.log(this.displayOrganizers)
                     }
                 }
-                console.log(this.filters);
                 this.updateSearch()
             }
         }

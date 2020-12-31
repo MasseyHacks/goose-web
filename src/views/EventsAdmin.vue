@@ -66,7 +66,7 @@ export default {
     ApiService.getAllEvents((err, data) => {
       this.loading = false;
       if (err || !data) {
-        this.loadingError = err ? err.rawError.error : 'Unable to process request'
+        this.loadingError = 'Unable to process request.' + ApiService.extractErrorText(err)
       } else {
         this.eventsData = data;
       }

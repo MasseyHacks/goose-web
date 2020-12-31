@@ -44,6 +44,7 @@
 <script>
     import Session from '../Session'
     import ApiService from '../ApiService'
+    import LoggingService from '../LoggingService'
     import Swal from 'sweetalert2'
 
     export default {
@@ -68,7 +69,6 @@
         },
         beforeMount() {
             this.user = Session.getUser();
-            console.log(this.user);
             ApiService.getUsers({ sort: { lastUpdated: '1' }, page: 1, size: 10000, filters: {
                 $and:[{
                     'status.admitted': false,
@@ -81,12 +81,10 @@
                 this.loading = false;
 
                     if (err || !data) {
-                        this.err = err ? err.rawError.error : 'Unable to process request'
+                        this.err = 'Unable to process request.' + ApiService.extractErrorText(err)
                     } else {
                         this.applicationsLeft = Object.keys(data.users).length;
                         this.users = data;
-                        console.log('data');
-                        console.log(Object.assign({}, data))
                     }
                 });
 
@@ -106,10 +104,9 @@
                     showCancelButton: true,
                     focusCancel: true
                 }).then((userOK) =>{
-                    console.log(userOK);
                     if(userOK.value){
                         if(this.applicationsLeft > 0 || true){
-                            console.log("Starting!");
+                            LoggingService.debug("Starting!");
                             this.reviewingApplications = true;
 
                             var userTimesList = [];
@@ -117,7 +114,7 @@
                                 userTimesList.push([user.id,user.lastUpdated,user]);
                             });
 
-                            console.log(userTimesList);
+                            LoggingService.debug("user times list", userTimesList);
                             userTimesList.sort(function(a, b) {
                                 return a[1] - b[1];
                             });
@@ -144,10 +141,9 @@
                         showCancelButton: true,
                         focusCancel: true
                     }).then((userOK) =>{
-                        console.log(userOK);
                         if(userOK.value){
                             if(!start){
-                                console.log("in here");
+                                LoggingService.debug("in here");
                                 this.userTimes.shift();
                             }
                             this.displayApplication();
@@ -156,7 +152,7 @@
                 }
                 else{
                     if(!start){
-                        console.log("in here2");
+                        LoggingService.debug("in here2");
                         this.userTimes.shift();
                     }
                     this.displayApplication();
@@ -188,7 +184,7 @@
                     Object.keys(application).forEach((field) => {
                         this.reviewBody += '<li><b>' + (Object.keys(this.applications.hacker).indexOf(field) != -1 ? this.applications.hacker[field].reviewerText ? this.applications.hacker[field]['reviewerText'] : this.applications.hacker[field]['question'] : field) + '</b><br>' + application[field] + '</li><br>';
                     });
-                    console.log(application);
+                    LoggingService.debug("application", application);
                 }
             },
             applicationVote: function(vote){

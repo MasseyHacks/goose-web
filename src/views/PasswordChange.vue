@@ -38,6 +38,7 @@
 <script>
     import AuthService from '../AuthService'
     import Swal from 'sweetalert2'
+    import ApiService from "..//ApiService";
 
     export default {
       name: 'PasswordChange',
@@ -56,7 +57,7 @@
                 } else {
                     AuthService.changePassword(this.oldPassword, this.password1, (err, data) => {
                         if (err) {
-                            this.error = err ? err : 'Something went wrong'
+                            this.error = 'Something went wrong.' + ApiService.extractErrorText(err)
                         } else {
                             this.error = null;
 

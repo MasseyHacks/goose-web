@@ -130,6 +130,7 @@
 <script>
     import AuthService from '../AuthService'
     import ApiService from '../ApiService'
+    import LoggingService from '../LoggingService'
     import Session from '../Session'
     import moment from 'moment'
     import Swal from 'sweetalert2'
@@ -172,7 +173,7 @@
 
             ApiService.getPendingSchools((err, data) => {
                 if (err) {
-                    Swal.fire('Error', err, 'error')
+                    Swal.fire('Error', ApiService.extractErrorText(err, false), 'error')
                 } else {
                     this.pendingSchools = data
                 }
@@ -180,27 +181,25 @@
 
             AuthService.sendRequest('GET', apiHost + '/api/email/listTemplates', null, (err, data) => {
                 if (err) {
-                    console.log('Error while getting template')
+                  Swal.fire('error', "Error getting template." + ApiService.extractErrorText(err), 'error');
                 } else {
                     this.templateOptions = data.validTemplates
                 }
             });
 
             AuthService.sendRequest('GET', apiHost + '/api/getRawSettings', null, (err, data) => {
-                console.log(data);
                 this.globalSettings = data;
 
             });
 
 			AuthService.sendRequest('GET', apiHost + '/api/getEmailQueueStats', null, (err, data) => {
-				console.log(data.stats);
 				this.emailQueueStats = data.stats;
 				
 			});
 
             AuthService.sendRequest('GET', apiHost + '/api/email/get/base', null, (err, data) => {
                 if (err) {
-                    Swal.fire('Error', err, 'error')
+                    Swal.fire('Error', ApiService.extractErrorText(err, false), 'error')
                 } else {
                     let base = data.email.split('{{emailData}}');
                     this.baseHTMLFront = base[0];
@@ -243,7 +242,7 @@
                     if (decision) {
                         switch (decision) {
                             case '0': // Accept
-                                console.log('Accepted');
+                                LoggingService.debug('Accepted');
 
                                 ApiService.approveSchool(this.pendingSchools[0]);
                                 this.pendingSchools.splice(0, 1);
@@ -259,7 +258,7 @@
                                 break;
 
                             case '1': // Rejeccc
-                                console.log('Rejected');
+                                LoggingService.debug('Rejected');
 
 
                                 ApiService.rejectSchool(this.pendingSchools[0]);
@@ -280,8 +279,6 @@
                                 this.pendingSchools.splice(0, 1);
                                 break
                         }
-
-                        console.log(decision)
                     } else {
                         break
                     }
@@ -304,7 +301,7 @@
 
                             }, (err, msg) => {
                                 if (err) {
-                                    Swal.fire('Error', err ? err.error : 'Something went wrong...', 'error')
+                                    Swal.fire('Error', 'Something went wrong...' + ApiService.extractErrorText(err), 'error')
                                 } else {
                                     Swal.fire('Success', `Successfully checked ${msg} teams!`, 'success');
                                 }
@@ -330,7 +327,7 @@
 
                             }, (err, msg) => {
                                 if (err) {
-                                    Swal.fire('Error', err ? err.error : 'Something went wrong...', 'error')
+                                    Swal.fire('Error', 'Something went wrong...' + ApiService.extractErrorText(err), 'error')
                                 } else {
                                     Swal.fire('Success', `Successfully unrejected ${msg} users!`, 'success');
                                 }
@@ -356,7 +353,7 @@
 
                             }, (err, msg) => {
                                 if (err) {
-                                    Swal.fire('Error', err ? err.error : 'Something went wrong...', 'error')
+                                    Swal.fire('Error', 'Something went wrong...' + ApiService.extractErrorText(err), 'error')
                                 } else {
                                     Swal.fire('Success', `Successfully rejected ${msg} users!`, 'success');
                                 }
@@ -382,7 +379,7 @@
 
                             }, (err, msg) => {
                                 if (err) {
-                                    Swal.fire('Error', err ? err.error : 'Something went wrong...', 'error')
+                                    Swal.fire('Error', 'Something went wrong...' + ApiService.extractErrorText(err), 'error')
                                 } else {
                                     Swal.fire('Success', `Successfully released status for ${msg} users!`, 'success');
                                 }
@@ -409,7 +406,7 @@
 
                             }, (err, msg) => {
                                 if (err) {
-                                    Swal.fire('Error', err ? err.error : 'Something went wrong...', 'error')
+                                    Swal.fire('Error', 'Something went wrong...' + ApiService.extractErrorText(err), 'error')
                                 } else {
                                     Swal.fire('Success', `Successfully released status for ${msg} users!`, 'success');
                                 }
@@ -436,7 +433,7 @@
 
                             }, (err, msg) => {
                                 if (err) {
-                                    Swal.fire('Error', err ? err.error : 'Something went wrong...', 'error')
+                                    Swal.fire('Error', 'Something went wrong...' + ApiService.extractErrorText(err), 'error')
                                 } else {
                                     Swal.fire('Success', `Successfully released status for ${msg} users!`, 'success');
                                 }
@@ -464,7 +461,7 @@
 
                             }, (err, msg) => {
                                 if (err) {
-                                    Swal.fire('Error', err ? err.error : 'Something went wrong...', 'error')
+                                    Swal.fire('Error', 'Something went wrong...' + ApiService.extractErrorText(err), 'error')
                                 } else {
                                     Swal.fire('Success', `Successfully queued lagger emails!`, 'success');
                                 }
@@ -492,7 +489,7 @@
 
                             }, (err, msg) => {
                                 if (err) {
-                                    Swal.fire('Error', err ? err.error : 'Something went wrong...', 'error')
+                                    Swal.fire('Error', 'Something went wrong...' + ApiService.extractErrorText(err), 'error')
                                 } else {
                                     Swal.fire('Success', `Successfully released status for ${msg} users!`, 'success');
                                 }
@@ -519,7 +516,7 @@
 
                             }, (err, msg) => {
                                 if (err) {
-                                    Swal.fire('Error', err ? err.error : 'Something went wrong...', 'error')
+                                    Swal.fire('Error', 'Something went wrong...' + ApiService.extractErrorText(err), 'error')
                                 } else {
                                     Swal.fire('Success', `Successfully hid status for ${msg} users!`, 'success');
                                 }
@@ -546,7 +543,7 @@
 
                             }, (err, msg) => {
                                 if (err) {
-                                    Swal.fire('Error', err ? err.error : 'Something went wrong...', 'error')
+                                    Swal.fire('Error', 'Something went wrong...' + ApiService.extractErrorText(err), 'error')
                                 } else {
                                     Swal.fire('Success', `Successfully flushed email queue for ${msg} users!`, 'success');
                                 }
@@ -573,7 +570,7 @@
 
                     }, (err, msg) => {
                       if (err) {
-                        Swal.fire('Error', err ? err.error : 'Something went wrong...', 'error')
+                        Swal.fire('Error', 'Something went wrong...' + ApiService.extractErrorText(err), 'error')
                       } else {
                         Swal.fire('Success', `Team deactivation queued. Check the logs for any errors.`, 'success');
                       }
@@ -610,7 +607,7 @@
                                 'maxParticipants': this.maxParticipants
                             }, (err, setting) => {
                                 if (err || !setting) {
-                                    Swal.fire('Error', err.error, 'error')
+                                    Swal.fire('Error', ApiService.extractErrorText(err), 'error')
                                 } else {
                                     Swal.fire('Success', 'Limit has been changed successfully', 'success');
                                     Session.setSettings(setting);
@@ -640,7 +637,7 @@
                                 timeConfirm: moment(this.timeConfirm).unix() * 1000
                             }, (err, setting) => {
                                 if (err || !setting) {
-                                    Swal.fire('Error', err.error, 'error')
+                                    Swal.fire('Error', ApiService.extractErrorText(err), 'error')
                                 } else {
                                     Swal.fire('Success', 'Application times has been changed', 'success');
                                     Session.setSettings(setting);
@@ -660,7 +657,7 @@
 
                     AuthService.sendRequest('GET', apiHost + '/api/email/get/' + this.selected, null, (err, data) => {
                         if (err) {
-                            Swal.fire('Error', err, 'error')
+                            Swal.fire('Error', ApiService.extractErrorText(err), 'error')
                         } else {
                             Swal.fire('Success', 'Your Preview and Editor has been updated', 'success');
                             this.emailHTML = data.email;
@@ -688,7 +685,7 @@
                                 templateName: this.selected
                             }, (err, data) => {
                                 if (err || !data) {
-                                    Swal.fire('Error', err.error, 'error')
+                                    Swal.fire('Error', ApiService.extractErrorText(err), 'error')
                                 } else {
                                     Swal.fire('Success', 'Template set', 'success')
                                 }

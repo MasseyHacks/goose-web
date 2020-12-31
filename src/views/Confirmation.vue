@@ -130,6 +130,7 @@
     import Swal from 'sweetalert2'
     import AuthService from '../AuthService'
     import ApiService from '../ApiService'
+    import LoggingService from '../LoggingService'
     import $ from 'jquery'
     import moment from 'moment'
     import vSelect from 'vue-select'
@@ -150,12 +151,11 @@
             payment
         },
         beforeMount() {
-            console.log(this.settings);
             ApiService.getApplications((err, applications) => {
                 this.loading = false;
 
                 if (err || !applications) {
-                    this.loadingError = err ? err : 'Something went wrong :\'('
+                    this.loadingError = 'Something went wrong :\'('+ApiService.extractErrorText(err)
                 } else {
                     this.applications = applications
                 }
@@ -165,7 +165,7 @@
             this.$nextTick(function () {
                 ApiService.getApplications((err, applications) => {
                     if (err || !applications) {
-                        this.error = err ? err : 'Something went wrong :\'('
+                        this.error = 'Something went wrong :\'('+ApiService.extractErrorText(err)
                     } else {
                         this.applications = applications;
                         this.populateApplication();
@@ -176,7 +176,7 @@
             /*
        AuthService.sendRequest('GET', '/api/getResourceAuthorization?filename=asdsad-waiver-wtf.jpg', {}, (err, msg) => {
            if (err) {
-               console.log(err)
+               LoggingService.log(err)
            } else {
                this.waiver = msg
            }
@@ -192,13 +192,13 @@
             populateApplication() {
                 if (this.user.status.confirmed && this.user.profile.confirmation != null) {
 
-                    console.log('adding values');
+                    LoggingService.debug('adding values');
                     //populate the fields with what they submitted
                     var userApp = this.user.profile.confirmation;
 
                     Object.keys(userApp).forEach((field) => {
 
-                        console.log(userApp[field])
+                        LoggingService.debug('field value', userApp[field])
 
                         if (document.getElementById(field)) {
                             if (this.applications.confirmation[field].questionType == 'multicheck') {
@@ -216,7 +216,7 @@
                                         userApp[field] = 0;
                                     }
                                 }
-                                console.log("field", field + userApp[field]);
+                                LoggingService.debug("field", field + userApp[field]);
 
                                 if (document.getElementById(field + userApp[field])) {
                                     document.getElementById(field + userApp[field]).checked = true;
@@ -229,7 +229,7 @@
                             } else if (document.getElementById(field)) {
                                 document.getElementById(field).value = userApp[field];
                             } else {
-                                console.log(field, 'is broken!')
+                                LoggingService.log(field, 'is broken!')
                             }
                         }
                     })
@@ -242,7 +242,7 @@
                 var formValue = {};
 
                 Object.keys(template).forEach((question) => {
-                    console.log(template[question].questionType);
+                    LoggingService.debug('question type', template[question].questionType);
                     if (template[question].questionType == 'multicheck') {
                         var checked = [];
                         $("input[name='" + question + "']:checked").each(function () {
@@ -332,15 +332,15 @@
             submitFile() {
                 let formData = new FormData();
 
-                console.log(this.file)
+                LoggingService.debug('file to submit', this.file)
 
                 formData.append('file', this.file);
                 formData.append('id', Session.getUserID());
 
-                console.log('DIS IS FORM', formData.get('file'))
+                LoggingService.debug('DIS IS FORM', formData.get('file'))
 
                 AuthService.sendRequest('POST', apiHost + '/api/uploadWaiver', formData, (err, msg) => {
-                   console.log(err, msg)
+                   LoggingService.debug('upload wavier result', err, msg)
                 }, 'multipart/form-data; charset=utf-8');
 
             },
@@ -375,11 +375,11 @@
                                     confirmation: parsedForm.profile
                                 }, (err, data) => {
                                     if (err || !data) {
-                                        Swal.fire("Error", err.error, "error");
+                                        Swal.fire("Error", ApiService.extractErrorText(err, false), "error");
                                     } else {
                                         this.user = data
                                         Session.setUser(data)
-                                        console.log(this.user.status.name);
+                                        LoggingService.debug('current status', this.user.status.name);
 
                                         Swal.fire({
                                             title: "Success",
@@ -421,7 +421,7 @@
                         if (result.value) {
                             ApiService.declineInvitation({}, (err, data) => {
                                 if (err || !data) {
-                                    Swal.fire("Error", err.error, "error");
+                                    Swal.fire("Error", ApiService.extractErrorText(err, false), "error");
                                 } else {
                                     Swal.fire({
                                         title: "Success",

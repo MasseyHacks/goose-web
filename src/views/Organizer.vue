@@ -56,8 +56,8 @@
             const toPath = to.path.split('/');
             const fromPath = from.path.split('/');
 
-            // console.log('dasd', toPath, fromPath);
-            // console.log('Hello there');
+            // LoggingService.log('dasd', toPath, fromPath);
+            // LoggingService.log('Hello there');
 
             if (toPath[toPath.length - 1].indexOf('?') != -1) {
                 toPath[toPath.length - 1] = toPath[toPath.length - 1].split('?')[0]
@@ -66,7 +66,7 @@
             const toDepth = pageLayout.indexOf(toPath[toPath.length - 1]);
             const fromDepth = pageLayout.indexOf(fromPath[toPath.length - 1]);
 
-            // console.log(toDepth, fromDepth);
+            // LoggingService.log(toDepth, fromDepth);
 
             if (toDepth === -1) {
                 return next('/organizer/statistics')

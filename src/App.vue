@@ -122,6 +122,7 @@
   import AuthService from './AuthService'
   import Session from './Session'
   import ApiService from './ApiService'
+  import LoggingService from './LoggingService'
 
   export default {
     name: 'GOOSE',
@@ -141,10 +142,10 @@
         this.user = Session.getUser();
         this.loggedIn = state;
 
-        console.log('Setting state to', state, message);
+        LoggingService.debug('Setting state to', state, message);
 
         if (!state) {
-          console.log('?message=' + encodeURIComponent(message));
+          LoggingService.debug('?message=' + encodeURIComponent(message));
 
           if (message) {
             this.$router.push({path: '/login', query: {message: message}})

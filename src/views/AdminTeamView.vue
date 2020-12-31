@@ -59,6 +59,7 @@
     import Session from '../Session'
     import Swal from 'sweetalert2'
     import ApiService from '../ApiService'
+    import LoggingService from '../LoggingService'
 
     export default {
       name: 'AdminTeamView',
@@ -81,9 +82,8 @@
             this.teamCode = this.$route.query["code"];
             ApiService.getTeamByCode(this.teamCode, (err, data) => {
                 if (err || !data) {
-                    console.log("ERROR")
+                  Swal.fire('error', "There was an error retrieving the team. " + ApiService.extractErrorText(err), 'error');
                 } else {
-                    console.log("data2");
                     this.teamObj = data;
                     this.teamMembers = data.memberNames;
                 }
@@ -146,13 +146,13 @@
                       Swal.fire({
                         title: "Warning",
                         type: 'danger',
-                        text: 'Unable to deactivate team'
+                        text: 'Unable to deactivate team.'+ApiService.extractErrorText(err)
                       })
                     } else {
                       Swal.fire({
                         title: "Success",
                         type: 'success',
-                        text: 'Team has been deactivated'
+                        text: 'Team has been deactivated.'
                       }).then(() => {
                         this.teamObj.active = false;
                       })
@@ -179,13 +179,13 @@
                                 Swal.fire({
                                     title: "Warning",
                                     type: 'danger',
-                                    text: 'Unable to remove user'
+                                    text: 'Unable to remove user.'+ApiService.extractErrorText(err)
                                 })
                             } else {
                                 Swal.fire({
                                     title: "Success",
                                     type: 'success',
-                                    text: 'User has been removed'
+                                    text: 'User has been removed.'
                                 }).then(() => {
                                     if (data.message) {
                                         this.$router.push({path: this.returnPath});
@@ -221,7 +221,7 @@
                                 Swal.fire({
                                     title: "Warning",
                                     type: 'danger',
-                                    text: 'Unable to delete team'
+                                    text: 'Unable to delete team.'+ApiService.extractErrorText(err)
                                 })
                             } else {
                                 Swal.fire({
@@ -254,7 +254,7 @@
                                 Swal.fire({
                                     title: "Warning",
                                     type: 'danger',
-                                    text: 'Unable to admit team'
+                                    text: 'Unable to admit team'+ApiService.extractErrorText(err)
                                 })
                             } else {
                                 Swal.fire({
@@ -285,7 +285,7 @@
                                 Swal.fire({
                                     title: "Warning",
                                     type: 'danger',
-                                    text: 'Unable to reject team'
+                                    text: 'Unable to reject team.'+ApiService.extractErrorText(err)
                                 })
                             } else {
                                 Swal.fire({
@@ -332,13 +332,11 @@
                       });
                     }
                     ApiService.awardTeamPoints(this.teamCode, awardAmount, awardNotes, (err, data) => {
-                      console.log(data);
                       if(err){
-                        console.log(err);
                         return Swal.fire({
                           title: 'Error',
                           type: 'error',
-                          text: 'There was an error awarding points.'
+                          text: 'There was an error awarding points.' + ApiService.extractErrorText(err)
                         });
                       }
                       Swal.fire({

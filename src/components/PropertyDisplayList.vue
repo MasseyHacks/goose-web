@@ -41,9 +41,6 @@ export default {
       default: "LLLL"
     }
   },
-  mounted() {
-    console.log(this.negOneReplacement);
-  },
   methods: {
     conformData(value){
       if(value === -1 && this.negOneReplacement !== undefined){

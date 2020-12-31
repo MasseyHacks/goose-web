@@ -135,6 +135,7 @@
 
 <script>
     import ApiService from '../ApiService'
+    import LoggingService from '../LoggingService'
     import {saveAs} from 'file-saver'
     import Swal from 'sweetalert2'
     import {VueContext} from 'vue-context'
@@ -180,7 +181,7 @@
             // Get fields for filters
             ApiService.getFields(false, (err, data) => {
                 if (err || !data) {
-                    this.loadingError = err ? err.rawError.error : 'Unable to process request'
+                    this.loadingError = 'Unable to process request.' + ApiService.extractErrorText(err)
                 } else {
                     this.fields = data
                 }
@@ -198,7 +199,7 @@
                 this.loading = false;
 
                 if (err || !data) {
-                    this.loadingError = err ? err.rawError.error : 'Unable to process request'
+                    this.loadingError = 'Unable to process request.' + ApiService.extractErrorText(err)
                 } else {
                     this.users = data.users;
                     this.totalPages = data.totalPages;
@@ -249,13 +250,11 @@
                     this.loading = false;
 
                     if (err || !data) {
-                        this.loadingError = err ? err.rawError.error : 'Unable to process request'
+                        this.loadingError = 'Unable to process request.' + ApiService.extractErrorText(err)
                     } else {
                         this.users = data.users;
                         this.totalPages = data.totalPages;
                         this.count = data.count;
-
-                        console.log(data.users);
 
                         if (this.users.length == 0) {
                             this.queryError = 'No users found'
@@ -371,7 +370,7 @@
                 }, (err, data) => {
                     this.queryError = '';
                     if (err || !data) {
-                        this.queryError = err ? err.rawError.error : 'Unable to process request'
+                        this.queryError = 'Unable to process request.' + ApiService.extractErrorText(err)
                     } else {
                         this.users = data.users;
                         this.totalPages = data.totalPages;
@@ -388,7 +387,7 @@
             exportUsersCSV: function () {
                 ApiService.getUsers({page: 1, size: 100000, text: this.searchQuery, filters: this.filters}, (err, data) => {
                     if (err || !data) {
-                        this.loadingError = err ? err.rawError.error : 'Unable to process request'
+                        this.loadingError = 'Unable to process request.' + ApiService.extractErrorText(err)
                     } else {
                         var csvArray = [];
                         for (var i = 0; i < data.users.length; i++) {
@@ -417,7 +416,7 @@
                     return tempObj;
                 }
                 else {
-                    console.log("recursion limit reached!");
+                    LoggingService.log("recursion limit reached!");
                     return {};
                 }
             },
@@ -544,10 +543,10 @@
                 if (this.filters.length > 0) {
                     if (this.filters['$and'].length > 0) {
                         this.filters['$and'][0]['permissions.checkin'] = this.displayOrganizers.toString()
-                        console.log(this.displayOrganizers)
+                        LoggingService.log(this.displayOrganizers)
                     }
                 }
-                console.log(this.filters)
+                LoggingService.log(this.filters)
                 this.updateSearch()
             }*/
         }

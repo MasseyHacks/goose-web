@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import vSelect from 'vue-select'
 import Session from './Session'
 import AuthService from './AuthService'
+import LoggingService from './LoggingService'
 
 import 'vue-select/dist/vue-select.css';
 
@@ -85,7 +86,7 @@ James Xu (github.com/JamesXu123)`)
 
 axios.get(apiHost + '/api/settings').then(result => {
   Session.setSettings(result.data)
-}).catch(() => console.log("wow this should never have failed!"));
+}).catch(() => LoggingService.log("wow this should never have failed!"));
 
 // Refresh every 24HRs
 setInterval(() => {
@@ -109,7 +110,7 @@ function requireAuth (to, from, next) {
 
 function isAuthorized (to, from, next) {
   var authorized = true;
-  console.log("sesssion user", Session.getUser());
+  LoggingService.debug("session user", Session.getUser());
 
   for (var key in to.meta) {
     if (!Session.getUser() || !to['meta'][key] in Session.getUser()[key] || !Session.getUser()[key][to['meta'][key]]) {
@@ -409,7 +410,7 @@ router.beforeEach((to, from, next) => {
 
   let pageLayout = Session.loggedIn() ? mainLayout : loginLayout;
 
-  console.log(fromPath, toPath);
+  LoggingService.log(fromPath, toPath);
 
   const toDepth = pageLayout.indexOf(toPath[1]);
   const fromDepth = pageLayout.indexOf(fromPath[1]);
@@ -417,8 +418,8 @@ router.beforeEach((to, from, next) => {
   // Kind of ghetto way to transfer data
   // Couldn't find better way to detect router update :'(
 
-  console.log("sgsafgsf");
-  console.log(this);
+  LoggingService.log("sgsafgsf");
+  LoggingService.log(this);
   if (Session.loggedIn()) {
     if (mainLayout.indexOf(fromPath[1]) != -1 || Session.loggedIn()) {
       vue.transition = toDepth > fromDepth ? 'slide-up' : 'slide-down'

@@ -113,6 +113,7 @@
     import Session from '../Session'
     import Swal from 'sweetalert2'
     import AuthService from '../AuthService'
+    import LoggingService from '../LoggingService'
     import ApiService from '../ApiService'
     import $ from 'jquery'
     import moment from 'moment'
@@ -147,7 +148,7 @@
             vSelect
         },
         beforeRouteLeave(to, from, next) {
-            console.log('hai', to, from);
+            LoggingService.debug('beforeRouteLeave', to, from);
 
             if (this.modified()) {
 
@@ -167,19 +168,18 @@
                     }
                 });
             }  else {
-                console.log('unloaded')
+                LoggingService.debug('unloaded')
                 document.removeEventListener('beforeunload', this.handler);
                 next();
             }
 
         },
         beforeMount() {
-            console.log(this.settings);
             ApiService.getApplications((err, applications) => {
                 this.loading = false;
 
                 if (err || !applications) {
-                    this.loadingError = err ? err : 'Something went wrong :\'('
+                    this.loadingError = 'Something went wrong :\'('+ApiService.extractErrorText(err);
                 } else {
                     this.applications = applications
                     this.checkEditState();
@@ -198,7 +198,7 @@
             this.$nextTick(function () {
                 ApiService.getApplications((err, applications) => {
                     if (err || !applications) {
-                        this.error = err ? err : 'Something went wrong :\'('
+                        this.error = 'Something went wrong :\'('+ApiService.extractErrorText(err);
                     } else {
                         this.applications = applications;
                         this.populateApplication();
@@ -206,7 +206,7 @@
                             this.saveTimer = setInterval(function () {
                                 this.autoSave();
                             }.bind(this), 600000);
-                            console.log(this.user.profile.signature)
+                            LoggingService.debug("user profile signature", this.user.profile.signature)
                         }
                         this.checkEditState();
                     }
@@ -218,7 +218,7 @@
                 return this.frqModels[element].length
             },
             handler(event) {
-                console.log('Exit listener triggered');
+                LoggingService.debug('Exit listener triggered');
 
                 if (this.modified()) {
                     event.returnValue = `Are you sure you want to leave?`;
@@ -239,21 +239,21 @@
             populateApplication() {
                 if (this.user.profile.hacker != null) {
 
-                    console.log('adding values');
+                    LoggingService.debug('adding values');
                     //populate the fields with what they submitted
                     var userApp = this.user.profile.hacker;
 
-                    console.log(this.user.profile.hacker);
+                    LoggingService.debug("user hacker profile", this.user.profile.hacker);
 
                     this.oldApplication = this.user.profile.hacker;
 
-                    console.log(userApp);
+                    LoggingService.debug("user app", userApp);
 
                     Object.keys(userApp).forEach((field) => {
 
                         if (document.getElementById(field) && field in this.applications.hacker) {
 
-                            console.log(userApp[field])
+                            LoggingService.debug("field value", userApp[field])
 
                             if (this.applications.hacker[field].questionType == 'multicheck') {
                                 userApp[field].forEach((checkedBox) => {
@@ -270,11 +270,11 @@
                                         userApp[field] = 0;
                                     }
                                 }
-                                console.log("field", field + userApp[field]);
+                                LoggingService.debug("field", field + userApp[field]);
 
                                 if (document.getElementById(field + userApp[field])) {
                                     document.getElementById(field + userApp[field]).checked = true;
-                                    console.log('CHECKINGOFF BUSS')
+                                    LoggingService.debug('CHECKINGOFF BUSS')
                                 }
                             } else if (this.applications.hacker[field].questionType == 'schoolSearch') {
                                 this.schoolPlaceholder = userApp[field];
@@ -286,7 +286,7 @@
                             } else if (document.getElementById(field)) {
                                 document.getElementById(field).value = userApp[field];
                             } else {
-                                console.log(field, 'is broken!')
+                                LoggingService.log(field, 'is broken!')
                             }
                         }
                     })
@@ -299,7 +299,7 @@
                 var formValue = {};
 
                 Object.keys(template).forEach((question) => {
-                    console.log(template[question].questionType);
+                    LoggingService.debug("question type", template[question].questionType);
                     if (template[question].questionType == 'multicheck') {
                         var checked = [];
                         $("input[name='" + question + "']:checked").each(function () {
@@ -461,10 +461,9 @@
                             data.profile = {};
                             data.profile.hacker = parsedForm.profile;
                             data.profile.signature = 1;
-                            console.log(data)
                             ApiService.updateProfile(data, (err, user) => {
                                 if (err) {
-                                    Swal.fire("Error", err.rawError['error'], "error");
+                                    Swal.fire("Error", ApiService.extractErrorText(err, false), "error");
                                 } else {
                                     Session.setUser(user);
 
@@ -493,7 +492,7 @@
                 var profile = this.parseForm(this.applications.hacker, false).profile;
                 var oldApp = JSON.parse(JSON.stringify(this.oldApplication));
 
-                console.log(oldApp, profile);
+                LoggingService.debug("oldapp, profile", oldApp, profile);
 
                 for (var field in profile) {
 
@@ -511,7 +510,7 @@
                     }
 
                     if (JSON.stringify(oldApp[field]) != JSON.stringify(profile[field])) {
-                        console.log('field is diff!!!', field, oldApp[field], profile[field]);
+                        LoggingService.debug('field is diff!!!', field, oldApp[field], profile[field]);
                         return true;
                     }
                 }
@@ -532,7 +531,7 @@
                 ApiService.updateProfile(data, (err, user) => {
                     if (!auto) {
                         if (err) {
-                            Swal.fire("Error", err.rawError['error'], "error");
+                            Swal.fire("Error", ApiService.extractErrorText(err, false), "error");
                         } else {
                             Swal.fire("Success", "Your application has been saved!", "success");
                             Session.setUser(user);

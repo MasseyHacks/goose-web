@@ -110,6 +110,7 @@
 
 <script>
     import AuthService from '../AuthService'
+    import ApiService from '../ApiService'
     import Swal from 'sweetalert2'
     import Session from '../Session'
 
@@ -133,7 +134,7 @@
             requestReset() {
                 AuthService.requestReset(this.email, (err, data) => {
                     if (err) {
-                        this.error = err
+                        this.error = ApiService.extractErrorText(err);
                     } else {
                         this.error = null;
 
@@ -154,7 +155,7 @@
                 } else {
                     AuthService.resetPasswordWithToken(this.token, this.password1, (err, data) => {
                         if (err) {
-                            this.error = err ? err : 'Something went wrong'
+                            this.error = 'Something went wrong.' + ApiService.extractErrorText(err)
                         } else {
                             this.error = null;
 
