@@ -32,6 +32,7 @@ import Payment from "./views/Payment";
 import PointsAdmin from "./views/PointsAdmin";
 import EventsAdmin from "./views/EventsAdmin";
 import Points from "./views/Points";
+import EventAdminView from "./views/EventAdminView";
 
 import Swal from 'sweetalert2'
 import axios from 'axios'
@@ -281,6 +282,14 @@ const router = new Router({
         {
           path: 'events',
           component: EventsAdmin,
+          beforeEnter: isAuthorized,
+          meta: {
+            permissions: 'admin'
+          }
+        },
+        {
+          path: 'eventview',
+          component: EventAdminView,
           beforeEnter: isAuthorized,
           meta: {
             permissions: 'admin'

@@ -52,7 +52,7 @@
     export default {
         name: 'Organizer',
         beforeRouteUpdate(to, from, next) {
-            const pageLayout = ['statistics', 'users', 'teamview', 'userview', 'teammanage', 'review', 'points', 'events'];
+            const pageLayout = ['statistics', 'users', 'teamview', 'userview', 'teammanage', 'review', 'points', 'events', 'eventview'];
             const toPath = to.path.split('/');
             const fromPath = from.path.split('/');
 

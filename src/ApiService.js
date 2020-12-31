@@ -600,5 +600,8 @@ export default {
     },
     getAllEvents(callback) {
         AuthService.sendRequest('GET', apiHost + '/api/getAllEvents', {}, callback);
+    },
+    getEventByID(id, callback) {
+        AuthService.sendRequest('GET', apiHost + '/api/getEvent', {id: id}, callback);
     }
 };
