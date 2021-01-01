@@ -14,12 +14,14 @@
         <div style="overflow-x: auto; max-width: 100%">
           <table class="data-table-generic">
             <tr class="table-header">
-              <td>NAME</td>
+              <td>Name</td>
+              <td>Date</td>
               <td># Registered</td>
               <td># Checked In</td>
               <td>Registration Open</td>
               <td>Check In Open</td>
               <td>Public</td>
+              <td>Finish Date</td>
             </tr>
             <router-link v-for="event in eventsData"
                          :to="{path: '/organizer/eventview?eventID='+event._id+'&returnPath=/organizer/events'}"
@@ -27,6 +29,9 @@
                          tag="tr">
               <td>
                 {{event.name}}
+              </td>
+              <td>
+                {{moment(event.dates.event, "MM/DD/YYYY hh:mm a")}}
               </td>
               <td>
                 {{event.registeredUsers.length}}
@@ -42,6 +47,10 @@
               </td>
               <td>
                 {{event.options.public}}
+              </td>
+              <td>
+                {{event.dates.finished !== -1 ? moment(event.dates.finished, "MM/DD/YYYY hh:mm a") : "Never"}}
+                {{event.dates.finished !== -1 && event.dates.finished < Date.now() ? "(Finished)" : ""}}
               </td>
             </router-link>
           </table>
