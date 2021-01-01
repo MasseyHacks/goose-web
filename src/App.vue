@@ -22,6 +22,11 @@
             <button class="menu-button" v-on:click="retractSidebar">Points</button>
           </router-link>
         </li>
+        <li v-if="user.permissions.verified && (user.permissions.developer || user.status.checkedIn)">
+          <router-link tag="a" to="/events">
+            <button class="menu-button" v-on:click="retractSidebar">Events</button>
+          </router-link>
+        </li>
         <li v-if="user.permissions.verified && (user.permissions.developer || (!user.permissions.admin && !(user.status.rejected)))">
           <router-link tag="a" to="/team">
             <button class="menu-button" v-on:click="retractSidebar">Team</button>

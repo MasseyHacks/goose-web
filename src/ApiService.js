@@ -593,6 +593,9 @@ export default {
     getEventByID(id, callback) {
         AuthService.sendRequest('GET', apiHost + '/api/getEvent', {id: id}, callback);
     },
+    getFilteredEvents(callback){
+        AuthService.sendRequest('GET', apiHost + '/api/getFilteredEvents', {}, callback);
+    },
     updateEventDetails(id, newName, newDescription, callback){
         AuthService.sendRequest('POST', apiHost + '/api/updateEventDetails', {
             id: id,

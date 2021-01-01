@@ -19,7 +19,7 @@
                     </ul>
                 </div>-->
 
-                <json-tree :raw="JSON.stringify(formatUser(userObj))" :level="1"></json-tree>
+                <json-tree :raw="JSON.stringify(formatUser(this.userObj))" :level="1" v-if="this.userLoadFormatComplete"></json-tree>
 
 
                 <hr>
@@ -42,7 +42,7 @@
                 <ul style="overflow-wrap: break-word; text-align: left; list-style: none">
                   <li>
                     <br>
-                    <b>Total Points</b><br>{{userObj.points.total}}<br>
+                    <b>Total Points</b><br>{{userObj.points ? userObj.points.total : ""}}<br>
                   </li>
                 </ul>
               </div>
@@ -63,7 +63,7 @@
                     <button class="generic-button-dark less-wide" v-on:click="editUser">Edit User</button>
                     <button class="generic-button-dark less-wide" v-on:click="forceAdmit">Force Admit</button>
                     <button class="generic-button-dark less-wide" v-on:click="forceReject">Force Reject</button>
-                    <button class="generic-button-dark less-wide" v-on:click="toggleStatus"><span v-if="userObj && userObj.status.statusReleased">Hide Status</span><span v-else>Release Status</span></button>
+                    <button class="generic-button-dark less-wide" v-on:click="toggleStatus"><span v-if="userObj.status && userObj.status.statusReleased">Hide Status</span><span v-else>Release Status</span></button>
 
                     <hr>
 
@@ -77,7 +77,7 @@
                     <button class="generic-button-dark less-wide" @click="requestSuperToken" v-if="user.permissions.developer">SU Login
                     </button>
                     <button class="generic-button-dark less-wide" v-on:click="changePassword">Change Password</button>
-                    <button class="generic-button-dark less-wide" v-on:click="toggleSuspend"><span v-if="userObj && userObj.status.active">Deactivate</span><span v-else>Activate</span></button>
+                    <button class="generic-button-dark less-wide" v-on:click="toggleSuspend"><span v-if="userObj.status && userObj.status.active">Deactivate</span><span v-else>Activate</span></button>
 
                     <button class="generic-button-dark less-wide" v-on:click="flushEmailQueue">Flush Email Queue</button>
                     <button class="generic-button-dark less-wide" v-on:click="deleteUser">Delete User</button>
@@ -111,7 +111,8 @@
                 userApp: {},
                 returnPath: "/organizer/users",
                 applications: {},
-                fields: {}
+                fields: {},
+                userLoadFormatComplete: false
             }
         },
 
@@ -120,29 +121,36 @@
                 this.returnPath = this.$route.query["returnPath"]
             }
 
+          this.userID = this.$route.query["username"];
+
             ApiService.getFields(true, (err, data) => {
                 if (err || !data) {
-                    this.loadingError = 'Unable to process request.' + ApiService.extractErrorText(err)
+                    this.loadingError = 'Unable to process request.' + ApiService.extractErrorText(err);
                 } else {
-                    this.fields = data
+                    this.fields = data;
+
+                    ApiService.getApplications((err, applications) => {
+                      this.applications = applications;
+
+                    });
+
+                    ApiService.getUser(this.userID, (err, data) => {
+                      if (err || !data) {
+                        Swal.fire("Error", "Error retrieving user information."+ApiService.extractErrorText(err), 'error');
+                      } else {
+                        this.userObj = data;
+                        this.flatten(this.userObj,false);
+                        this.userLoadFormatComplete = true;
+                      }
+                    });
+
                 }
             });
 
-            ApiService.getApplications((err, applications) => {
-                this.applications = applications
-            });
         },
 
         mounted() {
-            this.userID = this.$route.query["username"];
-            ApiService.getUser(this.userID, (err, data) => {
-                if (err || !data) {
-                    Swal.fire("Error", "Error retrieving user information."+ApiService.extractErrorText(err), 'error');
-                } else {
-                    this.userObj = data;
-                    this.flatten(this.userObj,false);
-                }
-            })
+
         },
 
         methods: {
@@ -154,7 +162,7 @@
                     '<input id="award-amount" class="form-control" placeholder="Amount">' +
                     '<br><textarea id="award-notes" class="form-control" placeholder="Notes">',
                 showCancelButton: true,
-                cancelButtonColor: '#d33',
+                cancelButtonColor: '#dd3333',
                 focusConfirm: false,
                 preConfirm: () => {
                   return [document.getElementById('award-amount').value, document.getElementById('award-notes').value];
@@ -204,7 +212,7 @@
 
                 user = JSON.parse(JSON.stringify(user));
 
-                for (var key in this.fields) { // Replace unix timestamps with human readable
+                for (var key of Object.keys(this.fields)) { // Replace unix timestamps with human readable
 
                     if (this.fields[key] && this.fields[key].time) {
                         key = key.split('.')
@@ -321,6 +329,7 @@
                 });
             },
             flatten: function (obj, includeApplication = true, depth = 0) {
+              LoggingService.debug("flattening user")
                 var flattened = {};
                 if (depth < 6) {
                     for (var keys in obj) {
