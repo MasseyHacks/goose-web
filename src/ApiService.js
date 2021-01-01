@@ -633,10 +633,11 @@ export default {
             eventID: eventID
         }, callback);
     },
-    checkInEvent(userID, eventID, callback){
+    checkInEvent(userID, eventID, checkInCode, callback){
         AuthService.sendRequest('POST', apiHost + '/api/checkInToEvent', {
             userID: userID,
-            eventID: eventID
+            eventID: eventID,
+            checkInCode: checkInCode
         }, callback);
     },
     createEvent(eventName, eventDescription, eventDate, callback){
@@ -644,6 +645,11 @@ export default {
             name: eventName,
             description: eventDescription,
             dateTime: eventDate
+        }, callback);
+    },
+    getEventMessages(eventID, callback){
+        AuthService.sendRequest('GET', apiHost + '/api/getEventMessages', {
+            eventID: eventID,
         }, callback);
     }
 };

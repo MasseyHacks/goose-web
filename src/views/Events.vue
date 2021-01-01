@@ -11,15 +11,16 @@
         <div class="ui-card dash-card-offset dash-card dash-card-large">
           <h3>Events You're Registered For</h3>
           <hr>
-          <div>
+          <div style="overflow-x: auto; max-width: 100%">
             <table class="data-table-generic">
               <tr class="table-header">
                 <td>NAME</td>
                 <td>DESCRIPTION</td>
+                <td>DATE</td>
                 <td>CHECK IN OPEN</td>
                 <td>CHECK IN CLOSE</td>
                 <td>CHECK IN</td>
-                <td>UNREGISTER</td>
+                <td>DETAILS</td>
               </tr>
               <tr v-for="event in registeredEvents">
                 <td>
@@ -27,6 +28,9 @@
                 </td>
                 <td>
                   {{event.description}}
+                </td>
+                <td>
+                  {{moment(event.dates.event, "MM/DD/YYYY hh:mm a")}}
                 </td>
                 <td>
                   {{moment(event.dates.checkInOpen, "MM/DD/YYYY hh:mm a")}}
@@ -40,9 +44,9 @@
                   </button>
                 </td>
                 <td>
-                  <button class="generic-button-dark less-wide" @click="unregisterEvent(event.id)" :disabled="isCheckedIn[event.id]">
-                    {{isCheckedIn[event.id] ? "Check In Done" : "Unregister"}}
-                  </button>
+                  <router-link :to="{path: '/eventdetails?eventID='+event.id+ '&checkedIn='+isCheckedIn[event.id]}">
+                    <button class="generic-button-dark less-wide">Details</button>
+                  </router-link>
                 </td>
               </tr>
 
@@ -54,11 +58,12 @@
         <div class="ui-card dash-card-offset dash-card dash-card-large">
           <h3>Other Events</h3>
           <hr>
-          <div>
+          <div style="overflow-x: auto; max-width: 100%">
             <table class="data-table-generic">
               <tr class="table-header">
                 <td>NAME</td>
                 <td>DESCRIPTION</td>
+                <td>DATE</td>
                 <td>REGISTRATION OPEN</td>
                 <td>REGISTRATION CLOSE</td>
                 <td>REGISTER</td>
@@ -69,6 +74,9 @@
                 </td>
                 <td>
                   {{event.description}}
+                </td>
+                <td>
+                  {{moment(event.dates.date, "MM/DD/YYYY hh:mm a")}}
                 </td>
                 <td>
                   {{moment(event.dates.registrationOpen, "MM/DD/YYYY hh:mm a")}}
@@ -147,8 +155,8 @@ export default {
     }
   },
   methods: {
-    moment(date) {
-      return moment(date).format("LLLL")
+    moment(date, format = "LLLL") {
+      return moment(date).format(format)
     },
     registerEvent(eventID){
       Swal.fire({
@@ -181,40 +189,7 @@ export default {
         }
       })
     },
-    unregisterEvent(eventID){
-      Swal.fire({
-        title: 'Are you sure?',
-        type: 'question',
-        text: `Are you sure you want to unregister from ${this.eventsData[eventID].name}?`,
-        showCancelButton: true,
-        cancelButtonColor: '#d33'
-      }).then((info) => {
-        if(info.value){
-          ApiService.unregisterFromEvent(this.userObj.id, eventID, (err, data)=> {
-            if(err){
-              Swal.fire({
-                title: 'Error',
-                type: 'error',
-                text: 'There was an error unregistering from the event.'+ApiService.extractErrorText(err)
-              })
-            }
-            else{
-              Swal.fire({
-                title: 'Success',
-                type: 'success',
-                text: `Successfully unregistered from ${this.eventsData[eventID].name}.`
-              }).then(() => {
-                // remove from cache
-                const ind = this.eventsData[eventID].registeredUsers.indexOf(this.userObj.id);
-                if(ind !== -1){
-                  this.eventsData[eventID].registeredUsers.splice(ind, 1);
-                }
-              })
-            }
-          })
-        }
-      })
-    },
+
     checkInEvent(eventID){
       Swal.fire({
         title: 'Are you sure?',
@@ -224,24 +199,41 @@ export default {
         cancelButtonColor: '#d33'
       }).then((info) => {
         if(info.value){
-          ApiService.checkInEvent(this.userObj.id, eventID, (err, data)=> {
-            if(err){
-              Swal.fire({
-                title: 'Error',
-                type: 'error',
-                text: 'There was an error checking in to the event.'+ApiService.extractErrorText(err)
-              })
-            }
-            else{
-              Swal.fire({
-                title: 'Success',
-                type: 'success',
-                text: `Successfully checked in to ${this.eventsData[eventID].name}. You will no longer be able to unregister.`
-              }).then(() => {
-                // update cache
-                this.isCheckedIn[eventID] = true;
-              })
-            }
+          if(this.eventsData[eventID].options.checkInCodeRequired && !this.userObj.permissions.admin){
+            Swal.fire({
+              title: 'Please enter the check in code',
+              input: 'text'
+            }).then((info) => {
+              if(info.value){
+                this.fireCheckInRequest(eventID, info.value);
+              }
+            })
+          }
+          else{
+            this.fireCheckInRequest(eventID)
+          }
+
+        }
+      })
+    },
+
+    fireCheckInRequest(eventID, checkInCode=""){
+      ApiService.checkInEvent(this.userObj.id, eventID, checkInCode, (err, data)=> {
+        if(err){
+          Swal.fire({
+            title: 'Error',
+            type: 'error',
+            text: 'There was an error checking in to the event.'+ApiService.extractErrorText(err)
+          })
+        }
+        else{
+          Swal.fire({
+            title: 'Success',
+            type: 'success',
+            text: `Successfully checked in to ${this.eventsData[eventID].name}. You will no longer be able to unregister.`
+          }).then(() => {
+            // update cache
+            this.isCheckedIn[eventID] = true;
           })
         }
       })
