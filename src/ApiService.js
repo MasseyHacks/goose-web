@@ -620,5 +620,23 @@ export default {
             id: id,
             newMessages: newMessages
         }, callback);
+    },
+    registerForEvent(userID, eventID, callback){
+        AuthService.sendRequest('POST', apiHost + '/api/registerForEvent', {
+            userID: userID,
+            eventID: eventID
+        }, callback);
+    },
+    unregisterFromEvent(userID, eventID, callback){
+        AuthService.sendRequest('POST', apiHost + '/api/unregisterFromEvent', {
+            userID: userID,
+            eventID: eventID
+        }, callback);
+    },
+    checkInEvent(userID, eventID, callback){
+        AuthService.sendRequest('POST', apiHost + '/api/checkInToEvent', {
+            userID: userID,
+            eventID: eventID
+        }, callback);
     }
 };
