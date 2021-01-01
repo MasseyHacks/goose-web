@@ -11,12 +11,14 @@
           <button class="generic-button-dark less-wide" v-if="!eventCheckedIn" @click="unregisterEvent(eventID)">Unregister</button>
         </div>
       </div>
-      <div style="padding-bottom: 30px">
+      <div style="padding-bottom: 30px" v-if="!userObj.permissions.admin">
         <div class="ui-card dash-card-offset dash-card dash-card-large" v-html="eventMessage">
         </div>
       </div>
-      <div style="padding-bottom: 30px" v-if="userObj.permissions.admin">
-        <div class="ui-card dash-card-offset dash-card dash-card-large" v-html="eventRegisteredMessage">
+      <div v-if="userObj.permissions.admin">
+        <div style="padding-bottom: 30px" v-for="message in pastMessages">
+          <div class="ui-card dash-card-offset dash-card dash-card-large" v-html="message">
+          </div>
         </div>
       </div>
     </div>
@@ -35,7 +37,8 @@ export default {
     return {
       userObj: Session.getUser(),
       eventMessage: "Loading...",
-      eventRegisteredMessage: "Loading...",
+      pastMessages: {
+      },
       eventID: "",
       returnPath: "/events",
       eventCheckedIn: false,
@@ -48,24 +51,6 @@ export default {
     }
     this.eventID = this.$route.query["eventID"];
     this.eventCheckedIn = this.$route.query["checkedIn"].toLowerCase() === "true";
-    ApiService.getEventMessages(this.eventID, (err, data) => {
-      if(err){
-        Swal.fire({
-          title: 'Error',
-          text: 'There was an error retrieving event messages.' + ApiService.extractErrorText(err),
-          type: 'error'
-        })
-      }
-      else {
-        if(data.checkedIn){
-          this.eventMessage = data.checkedIn
-          this.eventRegisteredMessage = data.registered
-        }
-        else {
-          this.eventMessage = data.registered
-        }
-      }
-    });
 
     ApiService.getEventByID(this.eventID, (err, data) => {
       if(err){
@@ -77,8 +62,38 @@ export default {
       }
       else {
         this.eventObj = data;
+
+        ApiService.getEventMessages(this.eventID, (err, data) => {
+          if(err){
+            Swal.fire({
+              title: 'Error',
+              text: 'There was an error retrieving event messages.' + ApiService.extractErrorText(err),
+              type: 'error'
+            })
+          }
+          else {
+            if(this.eventObj.dates.finished !== -1 && this.eventObj.dates.finished < Date.now()){
+              this.eventMessage = data.finished;
+            }
+            else if(data.checkedIn){
+              this.eventMessage = data.checkedIn
+            }
+            else {
+              this.eventMessage = data.registered
+            }
+
+            if(this.userObj.permissions.admin){
+              this.pastMessages = data;
+            }
+
+          }
+        });
+
       }
     })
+
+
+
   },
   methods: {
     unregisterEvent(eventID){

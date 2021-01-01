@@ -94,7 +94,34 @@
           </div>
         </div>
       </div>
-
+      <div style="padding-bottom: 30px">
+        <div class="ui-card dash-card-offset dash-card dash-card-large">
+          <h3>Past Events</h3>
+          <hr>
+          <div style="overflow-x: auto; max-width: 100%">
+            <table class="data-table-generic">
+              <tr class="table-header">
+                <td>NAME</td>
+                <td>DATE</td>
+                <td>DETAILS</td>
+              </tr>
+              <tr v-for="event in pastEvents">
+                <td>
+                  {{event.name}}
+                </td>
+                <td>
+                  {{moment(event.dates.date, "MM/DD/YYYY hh:mm a")}}
+                </td>
+                <td>
+                  <router-link :to="{path: '/eventdetails?eventID='+event.id+ '&checkedIn='+isCheckedIn[event.id]}">
+                    <button class="generic-button-dark less-wide">Details</button>
+                  </router-link>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -138,16 +165,30 @@ export default {
     otherEvents() {
       let events = {}
       for (const event of Object.keys(this.eventsData)){
-        if(this.eventsData[event].registeredUsers.indexOf(this.userObj.id) === -1){
-          events[event] = this.eventsData[event];
+        if(this.eventsData[event].dates.finished === -1 || this.eventsData[event].dates.finished > Date.now()){
+          if(this.eventsData[event].registeredUsers.indexOf(this.userObj.id) === -1){
+            events[event] = this.eventsData[event];
+          }
         }
+
       }
       return events;
     },
     registeredEvents() {
       let events = {}
       for (const event of Object.keys(this.eventsData)){
-        if(this.eventsData[event].registeredUsers.indexOf(this.userObj.id) !== -1){
+        if(this.eventsData[event].dates.finished === -1 || this.eventsData[event].dates.finished > Date.now()){
+          if(this.eventsData[event].registeredUsers.indexOf(this.userObj.id) !== -1 || !this.eventsData[event].options.mustRegisterBeforeCheckIn){
+            events[event] = this.eventsData[event];
+          }
+        }
+      }
+      return events;
+    },
+    pastEvents() {
+      let events = {}
+      for (const event of Object.keys(this.eventsData)){
+        if(this.eventsData[event].dates.finished !== -1 && this.eventsData[event].dates.finished < Date.now() && this.isCheckedIn[event]){
           events[event] = this.eventsData[event];
         }
       }
@@ -204,7 +245,7 @@ export default {
               title: 'Please enter the check in code',
               input: 'text'
             }).then((info) => {
-              if(info.value){
+              if(info.value !== undefined){
                 this.fireCheckInRequest(eventID, info.value);
               }
             })
