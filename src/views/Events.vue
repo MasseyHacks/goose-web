@@ -35,7 +35,7 @@
                   {{event.dates.checkInClose !== -1 ? moment(event.dates.checkInClose, "MM/DD/YYYY hh:mm a") : "N/A"}}
                 </td>
                 <td>
-                  <button class="generic-button-dark less-wide" @click="checkInEvent(event.id)" :disabled="event.options.checkInOpen <= Date.now() && (event.options.checkInClose === -1 || event.options.checkInClose >= Date.now()) || isCheckedIn[event.id]">
+                  <button class="generic-button-dark less-wide" @click="checkInEvent(event.id)" :disabled="event.dates.checkInOpen >= Date.now() || (event.dates.checkInClose !== -1 && event.dates.checkInClose <= Date.now()) || isCheckedIn[event.id]">
                     {{isCheckedIn[event.id] ? "Check In Done" : "Check In"}}
                   </button>
                 </td>
@@ -77,7 +77,7 @@
                   {{event.dates.registrationClose !== -1 ? moment(event.dates.registrationClose, "MM/DD/YYYY hh:mm a") : "N/A"}}
                 </td>
                 <td>
-                  <button class="generic-button-dark less-wide" @click="registerEvent(event.id)" :disabled="event.options.maxRegistrations !== -1 ? event.registeredUsers.length >= event.options.maxRegistrations : false">
+                  <button class="generic-button-dark less-wide" @click="registerEvent(event.id)" :disabled="event.dates.registrationOpen >= Date.now() || (event.options.maxRegistrations !== -1 && event.registeredUsers.length >= event.options.maxRegistrations)">
                     {{event.options.maxRegistrations !== -1 ? (event.registeredUsers.length >= event.options.maxRegistrations ? "Full" : "Register") : "Register"}}
                   </button>
                 </td>

@@ -143,7 +143,7 @@ export default {
 
       })
     },
-    buildEditForm(editObj, textarea = false){
+    buildEditForm(editObj, textarea = false, replaceDates = false){
       const inputTemplate = textarea ? `<label for="eventEdit-{{fieldID}}" class="text-left float-left">{{fieldID}}</label>
       <textarea type="text" class="form-control" id="eventEdit-{{fieldID}}">{{fieldValue}}</textarea><br>` : `<label for="eventEdit-{{fieldID}}" class="text-left float-left">{{fieldID}}</label>
       <input type="text" class="form-control" id="eventEdit-{{fieldID}}" value="{{fieldValue}}"><br>`;
@@ -151,7 +151,7 @@ export default {
       let rForm = "";
 
       for(const field of Object.keys(editObj)) {
-        rForm += inputTemplate.replaceAll("{{fieldID}}", field).replaceAll("{{fieldValue}}", editObj[field]);
+        rForm += inputTemplate.replaceAll("{{fieldID}}", field).replaceAll("{{fieldValue}}", replaceDates && editObj[field] != -1 ? moment(editObj[field]).format('YYYY-MM-DDTHH:mm:ss') : editObj[field]);
       }
       return rForm;
     },
@@ -196,14 +196,15 @@ export default {
     editDates() {
       Swal.fire({
         title: 'Enter your changes',
-        html: this.buildEditForm(this.eventObj.dates),
+        html: this.buildEditForm(this.eventObj.dates, false, true),
         showCancelButton: true,
         cancelButtonColor: '#d33',
         focusConfirm: false,
         preConfirm: () => {
           let rVals = {};
           for(const field of Object.keys(this.eventObj.dates)){
-            rVals[field] = document.getElementById('eventEdit-'+field).value;
+            const fVal = document.getElementById('eventEdit-'+field).value;
+            rVals[field] = fVal === "-1" ? fVal : moment(fVal).unix() * 1000;
           }
           return rVals;
         }

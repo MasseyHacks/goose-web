@@ -638,5 +638,12 @@ export default {
             userID: userID,
             eventID: eventID
         }, callback);
+    },
+    createEvent(eventName, eventDescription, eventDate, callback){
+        AuthService.sendRequest('POST', apiHost + '/api/createEvent', {
+            name: eventName,
+            description: eventDescription,
+            dateTime: eventDate
+        }, callback);
     }
 };
