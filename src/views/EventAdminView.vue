@@ -49,6 +49,10 @@
         <button class="generic-button-dark less-wide" v-on:click="editOptions">Edit Options</button>
         <button class="generic-button-dark less-wide" v-on:click="editDates">Edit Dates</button>
         <button class="generic-button-dark less-wide" v-on:click="editMessages">Edit Messages</button>
+        <hr>
+
+        <button class="generic-button-dark less-wide" v-on:click="awardRegisteredPoints">Award Registered Points</button>
+        <button class="generic-button-dark less-wide" v-on:click="awardCheckedInPoints">Award Checked In Points</button>
 
       </div>
     </div>
@@ -268,6 +272,104 @@ export default {
             })
           })
         }
+      })
+    },
+    awardRegisteredPoints() {
+      Swal.fire({
+        title: 'Enter Points Information',
+        html:
+            `<p>You are awarding points to <strong>ALL REGISTERED USERS</strong> of event ${this.eventObj.name}</p>` +
+            '<input id="award-amount" class="form-control" placeholder="Amount">' +
+            '<br><textarea id="award-notes" class="form-control" placeholder="Notes">',
+        focusConfirm: false,
+        preConfirm: () => {
+          return [document.getElementById('award-amount').value, document.getElementById('award-notes').value];
+        }
+      }).then((info) => {
+        let awardAmount = info.value[0].trim();
+        let awardNotes = info.value[1].trim();
+
+        if(awardAmount === "" || isNaN(awardAmount) || (awardAmount * 10)%10 !== 0){
+          return Swal.fire({
+            title: 'Error',
+            type: 'error',
+            text: 'Points award amount is not a whole number!'
+          }).then(() => {
+            this.awardRegisteredPoints();
+          });
+        }
+        if(awardNotes === ""){
+          return Swal.fire({
+            title: 'Error',
+            type: 'error',
+            text: 'Please enter a note about this point award!'
+          }).then(() => {
+            this.awardRegisteredPoints();
+          });
+        }
+        ApiService.awardEventRegisteredPoints(this.eventID, awardAmount, awardNotes, (err, data) => {
+          if(err){
+            return Swal.fire({
+              title: 'Error',
+              type: 'error',
+              text: 'There was an error awarding points.' + ApiService.extractErrorText(err)
+            });
+          }
+          Swal.fire({
+            title: 'Success',
+            text: `Successfully awarded ${awardAmount} points to all registered users of ${this.eventObj.name}.`,
+            type: 'success'
+          })
+        })
+      })
+    },
+    awardCheckedInPoints() {
+      Swal.fire({
+        title: 'Enter Points Information',
+        html:
+            `<p>You are awarding points to <strong>ALL CHECKED IN USERS</strong> of event ${this.eventObj.name}</p>` +
+            '<input id="award-amount" class="form-control" placeholder="Amount">' +
+            '<br><textarea id="award-notes" class="form-control" placeholder="Notes">',
+        focusConfirm: false,
+        preConfirm: () => {
+          return [document.getElementById('award-amount').value, document.getElementById('award-notes').value];
+        }
+      }).then((info) => {
+        let awardAmount = info.value[0].trim();
+        let awardNotes = info.value[1].trim();
+
+        if(awardAmount === "" || isNaN(awardAmount) || (awardAmount * 10)%10 !== 0){
+          return Swal.fire({
+            title: 'Error',
+            type: 'error',
+            text: 'Points award amount is not a whole number!'
+          }).then(() => {
+            this.awardCheckedInPoints();
+          });
+        }
+        if(awardNotes === ""){
+          return Swal.fire({
+            title: 'Error',
+            type: 'error',
+            text: 'Please enter a note about this point award!'
+          }).then(() => {
+            this.awardCheckedInPoints();
+          });
+        }
+        ApiService.awardEventCheckedInPoints(this.eventID, awardAmount, awardNotes, (err, data) => {
+          if(err){
+            return Swal.fire({
+              title: 'Error',
+              type: 'error',
+              text: 'There was an error awarding points.' + ApiService.extractErrorText(err)
+            });
+          }
+          Swal.fire({
+            title: 'Success',
+            text: `Successfully awarded ${awardAmount} points to all checked in users of ${this.eventObj.name}.`,
+            type: 'success'
+          })
+        })
       })
     }
   }

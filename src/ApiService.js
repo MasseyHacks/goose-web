@@ -651,5 +651,19 @@ export default {
         AuthService.sendRequest('GET', apiHost + '/api/getEventMessages', {
             eventID: eventID,
         }, callback);
+    },
+    awardEventRegisteredPoints(eventID, amount, notes, callback){
+        AuthService.sendRequest('POST', apiHost + '/api/awardEventRegisteredPoints', {
+            id: eventID,
+            amount: amount,
+            notes: notes
+        }, callback);
+    },
+    awardEventCheckedInPoints(eventID, amount, notes, callback){
+        AuthService.sendRequest('POST', apiHost + '/api/awardEventCheckedInPoints', {
+            id: eventID,
+            amount: amount,
+            notes: notes
+        }, callback);
     }
 };
