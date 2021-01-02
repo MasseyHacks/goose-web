@@ -15,10 +15,11 @@
           <ul style="overflow-wrap: break-word; text-align: left; list-style: none">
             <li>
               <br>
-              <b>Description</b><br>{{eventObj.description}}<br>
+              <b>ID</b><br>{{eventObj.id}}<br>
             </li>
             <li>
-              <br><br>
+              <br>
+              <b>Description</b><br>{{eventObj.description}}<br>
             </li>
           </ul>
         </div>

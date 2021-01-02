@@ -122,6 +122,14 @@
           </div>
         </div>
       </div>
+      <div style="padding-bottom: 30px">
+        <div class="ui-card dash-card-offset dash-card dash-card-large">
+          <h3>Manual Registration</h3>
+          <p>Have a code for a non-public event?</p>
+          <hr>
+          <button @click="registerByID" class="generic-button-dark less-wide">Input Code</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -199,11 +207,21 @@ export default {
     moment(date, format = "LLLL") {
       return moment(date).format(format)
     },
-    registerEvent(eventID){
+    registerByID() {
+      Swal.fire({
+        title: 'Please enter the event ID',
+        input: 'text'
+      }).then((info) => {
+        if(info.value !== undefined){
+          this.registerEvent(info.value, true);
+        }
+      })
+    },
+    registerEvent(eventID, hidden=false){
       Swal.fire({
         title: 'Are you sure?',
         type: 'question',
-        text: `Are you sure you want to register for ${this.eventsData[eventID].name}?`,
+        text: `Are you sure you want to register for ${hidden ? "this event" : this.eventsData[eventID].name}?`,
         showCancelButton: true,
         cancelButtonColor: '#d33'
       }).then((info) => {
@@ -220,10 +238,16 @@ export default {
               Swal.fire({
                 title: 'Success',
                 type: 'success',
-                text: `Successfully registered for ${this.eventsData[eventID].name}.`
+                text: `Successfully registered for ${hidden ? "the event" : this.eventsData[eventID].name}.`
               }).then(() => {
                 // update cache
-                this.eventsData[eventID].registeredUsers.push(this.userObj.id);
+                if(hidden){
+                  this.$router.go();
+                }
+                else{
+                  this.eventsData[eventID].registeredUsers.push(this.userObj.id);
+                }
+
               })
             }
           })
