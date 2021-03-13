@@ -665,5 +665,19 @@ export default {
             amount: amount,
             notes: notes
         }, callback);
+    },
+    getEventRegisteredUsers(eventID, page, pageSize, callback){
+        AuthService.sendRequest('GET', apiHost + '/api/getEventRegisteredUsers', {
+            id: eventID,
+            page: page,
+            pageSize: pageSize
+        }, callback);
+    },
+    getEventCheckedInUsers(eventID, page, pageSize, callback){
+        AuthService.sendRequest('GET', apiHost + '/api/getEventCheckedInUsers', {
+            id: eventID,
+            page: page,
+            pageSize: pageSize
+        }, callback);
     }
 };

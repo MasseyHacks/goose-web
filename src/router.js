@@ -34,6 +34,7 @@ import PointsAdmin from "./views/PointsAdmin";
 import EventsAdmin from "./views/EventsAdmin";
 import Points from "./views/Points";
 import EventAdminView from "./views/EventAdminView";
+import EventAdminUsersView from "./views/EventAdminUsersView";
 import Events from "./views/Events";
 import EventDetails from "./views/EventDetails";
 
@@ -309,6 +310,14 @@ const router = new Router({
         {
           path: 'eventview',
           component: EventAdminView,
+          beforeEnter: isAuthorized,
+          meta: {
+            permissions: 'admin'
+          }
+        },
+        {
+          path: 'eventusers',
+          component: EventAdminUsersView,
           beforeEnter: isAuthorized,
           meta: {
             permissions: 'admin'

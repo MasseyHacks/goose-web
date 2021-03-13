@@ -42,6 +42,23 @@
 
         <hr>
 
+        <h4>STATS</h4>
+        <div class="duo-col">
+          <ul style="overflow-wrap: break-word; text-align: left; list-style: none">
+            <li>
+              <br>
+              <b>Total Registered</b><br>{{eventObj.registeredUsers ? eventObj.registeredUsers.length : "None"}}<br>
+            </li>
+          </ul>
+          <ul style="overflow-wrap: break-word; text-align: left; list-style: none">
+            <li>
+              <br>
+                <b>Total Checked In</b><br>{{eventObj.checkInData ? eventObj.checkInData.length : "None"}}<br>
+            </li>
+          </ul>
+        </div>
+        <hr>
+
         <router-link :to="{path: returnPath}">
           <button class="generic-button-dark less-wide">Back</button>
         </router-link>
@@ -50,6 +67,9 @@
         <button class="generic-button-dark less-wide" v-on:click="editOptions">Edit Options</button>
         <button class="generic-button-dark less-wide" v-on:click="editDates">Edit Dates</button>
         <button class="generic-button-dark less-wide" v-on:click="editMessages">Edit Messages</button>
+        <router-link :to="{path: '/organizer/eventusers?eventID='+eventID+'&returnPath=/organizer/eventview?eventID='+eventID, params: {eventID: eventID}}">
+          <button class="generic-button-dark less-wide">View Users</button>
+        </router-link>
         <hr>
 
         <button class="generic-button-dark less-wide" v-on:click="awardRegisteredPoints">Award Registered Points</button>
