@@ -703,6 +703,12 @@ export default {
             }
         }, callback);
     },
+    updateShopItemRaw(itemID, newDetails, callback){
+        AuthService.sendRequest('POST', apiHost + '/api/updateShopItem', {
+            itemID: itemID,
+            newDetails: newDetails
+        }, callback);
+    },
     fulfillOrder(orderID, callback){
         AuthService.sendRequest('POST', apiHost + '/api/fulfillOrder', {
             orderID: orderID

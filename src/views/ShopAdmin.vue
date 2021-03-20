@@ -13,8 +13,10 @@
           <td>DESCRIPTION</td>
           <td>PRICE</td>
           <td>MAX ORDERS</td>
+          <td>ORDERS OPEN TIME</td>
+          <td>ORDERS CLOSE TIME</td>
           <td>ORDERS OPEN</td>
-          <td>ORDERS CLOSE</td>
+          <td>STATUS</td>
           <td>EDIT</td>
         </tr>
         <tr v-for="shopItem in shopItems">
@@ -35,6 +37,12 @@
           </td>
           <td>
             {{shopItem.ordersCloseTime === -1 ? "Never" : moment(shopItem.ordersCloseTime)}}
+          </td>
+          <td>
+            {{shopItem.ordersOpen ? "Open" : "Closed"}}
+          </td>
+          <td>
+            <button class="generic-button-dark less-wide" v-on:click="toggleItemStatus(shopItem._id, shopItem.disabled)">{{ shopItem.disabled ? "Enable" : "Disable" }}</button>
           </td>
           <td>
             <button class="generic-button-dark less-wide" v-on:click="editItem(shopItem._id)">Edit</button>
@@ -130,7 +138,7 @@ export default {
               Swal.fire({
                 type: 'error',
                 title: 'Error',
-                text: 'There was an error creating the item. ' + ApiService.extractErrorText(err)
+                text: 'There was an error creating the item.' + ApiService.extractErrorText(err)
               })
             }
             else {
@@ -190,7 +198,7 @@ export default {
               Swal.fire({
                 type: 'error',
                 title: 'Error',
-                text: 'There was an error editing the item. ' + ApiService.extractErrorText(err)
+                text: 'There was an error editing the item.' + ApiService.extractErrorText(err)
               })
             }
             else {
@@ -202,6 +210,28 @@ export default {
                 this.$router.go();
               })
             }
+          })
+        }
+      })
+    },
+    toggleItemStatus(itemID, currentStatus){
+      ApiService.updateShopItemRaw(itemID, {
+        disabled: !currentStatus
+      }, (err, data) => {
+        if(err){
+          Swal.fire({
+            type: 'error',
+            title: 'Error',
+            text: 'There was an error toggling item status.' + ApiService.extractErrorText(err)
+          })
+        }
+        else{
+          Swal.fire({
+            type: 'success',
+            title: 'Success',
+            text: 'Item status was toggled.'
+          }).then((result) =>{
+            this.$router.go();
           })
         }
       })
