@@ -144,7 +144,10 @@ export default {
       Swal.fire({
         type: 'warning',
         title: 'Are you sure?',
-        html: `You are about to purchase <strong>${itemName}</strong> for <strong>${price}</strong> points! Purchases are non-reversible!`
+        html: `You are about to purchase <strong>${itemName}</strong> for <strong>${price}</strong> points! Purchases are non-reversible!`,
+        showCancelButton: true,
+        cancelButtonColor: '#dd3333',
+        focusConfirm: false
       }).then((result) => {
         if(result.value){
           ApiService.createOrder(itemID, (err, data) => {

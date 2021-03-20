@@ -11,6 +11,7 @@
         <div>
           <button class="generic-button-dark less-wide" @click="createEvent">Create New</button>
         </div>
+        <hr>
         <div style="overflow-x: auto; max-width: 100%">
           <table class="data-table-generic">
             <tr class="table-header">
@@ -108,7 +109,7 @@ export default {
             '<textarea type="text" class="form-control" id="eventEdit-description" placeholder="One of the coolest events in the galaxy."></textarea>' +
 
             '<label for="eventEdit-date" class="text-left float-left">DateTime (Unix)</label>' +
-            `<input type="text" class="form-control" id="eventEdit-date" value="${moment(Date.now()).format('YYYY-MM-DDTHH:mm:ss')}">`,
+            `<input type="text" class="form-control" id="eventEdit-date" value="${moment(Date.now()).format('YYYY-MM-DDTHH:mm:ssZ')}">`,
         showCancelButton: true,
         cancelButtonColor: '#dd3333',
         focusConfirm: false,

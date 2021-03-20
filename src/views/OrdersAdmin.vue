@@ -1,7 +1,7 @@
 <template>
   <div style="width: 100%">
     <div class="organizer-card">
-      Points management.
+      Orders management.
     </div>
   </div>
 </template>

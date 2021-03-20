@@ -176,7 +176,7 @@ export default {
       let rForm = "";
 
       for(const field of Object.keys(editObj)) {
-        rForm += inputTemplate.replaceAll("{{fieldID}}", field).replaceAll("{{fieldValue}}", replaceDates && editObj[field] != -1 ? moment(editObj[field]).format('YYYY-MM-DDTHH:mm:ss') : editObj[field]);
+        rForm += inputTemplate.replaceAll("{{fieldID}}", field).replaceAll("{{fieldValue}}", replaceDates && editObj[field] != -1 ? moment(editObj[field]).format('YYYY-MM-DDTHH:mm:ssZ') : editObj[field]);
       }
       return rForm;
     },
