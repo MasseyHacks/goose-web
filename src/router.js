@@ -30,7 +30,8 @@ import TeamTable from './views/TeamTable.vue'
 import MagicLogin from './views/Magic.vue'
 import TeamManage from './views/AdminTeamView.vue'
 import Payment from "./views/Payment";
-import PointsAdmin from "./views/PointsAdmin";
+import ShopAdmin from "./views/ShopAdmin";
+import OrdersAdmin from "./views/OrdersAdmin";
 import EventsAdmin from "./views/EventsAdmin";
 import Points from "./views/Points";
 import EventAdminView from "./views/EventAdminView";
@@ -292,8 +293,16 @@ const router = new Router({
           }
         },
         {
-          path: 'points',
-          component: PointsAdmin,
+          path: 'shop',
+          component: ShopAdmin,
+          beforeEnter: isAuthorized,
+          meta: {
+            permissions: 'admin'
+          },
+        },
+        {
+          path: 'orders',
+          component: OrdersAdmin,
           beforeEnter: isAuthorized,
           meta: {
             permissions: 'admin'

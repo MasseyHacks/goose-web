@@ -13,7 +13,64 @@
           <h3>Redeem Points</h3>
 
           <hr>
-          <p>Do some cool things with points here</p>
+          <p v-if="shopError">{{shopError}}</p>
+          <table class="data-table-generic" v-else>
+            <tr class="table-header">
+              <td>NAME</td>
+              <td>DESCRIPTION</td>
+              <td>PRICE</td>
+              <td>BUY</td>
+            </tr>
+            <tr v-for="shopItem in shopItems">
+              <td>
+                {{shopItem.name}}
+              </td>
+              <td>
+                {{shopItem.description}}
+              </td>
+              <td>
+                {{shopItem.price}}
+              </td>
+              <td>
+                <button class="generic-button-dark less-wide" v-on:click="purchaseItem(shopItem.name, shopItem.price, shopItem._id)">Buy</button>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div style="padding-bottom: 30px">
+          <div class="ui-card dash-card-offset dash-card dash-card-large">
+            <h3>Order History</h3>
+
+            <hr>
+            <p v-if="ordersError">{{ordersError}}</p>
+            <table class="data-table-generic" v-else>
+              <tr class="table-header">
+                <td>ID</td>
+                <td>ITEM</td>
+                <td>ORDER DATE</td>
+                <td>PRICE</td>
+                <td>STATUS</td>
+              </tr>
+              <tr v-for="order in orders">
+                <td>
+                  {{order._id}}
+                </td>
+                <td>
+                  {{order.itemName}}
+                </td>
+                <td>
+                  {{moment(order.purchaseTime)}}
+                </td>
+                <td>
+                  {{order.purchasePrice}}
+                </td>
+                <td>
+                  {{order.status}}
+                </td>
+              </tr>
+            </table>
+          </div>
         </div>
 
       </div>
@@ -38,10 +95,10 @@
 </template>
 
 <script>
-import AuthService from '../AuthService'
 import Swal from 'sweetalert2'
 import moment from 'moment';
 import Session from "../Session";
+import ApiService from "@/ApiService";
 
 export default {
   name: 'Points',
@@ -49,7 +106,30 @@ export default {
     return {
       user: Session.getUser(),
       settings: Session.getSettings(),
+      shopItems: {},
+      shopError: "",
+      orders: {},
+      ordersError: ""
     }
+  },
+  beforeMount() {
+    ApiService.getShopItems((err, data) => {
+      if(err){
+        this.shopError = ApiService.extractErrorText(err);
+      }
+      else{
+        this.shopItems = data.shopItems;
+      }
+    });
+
+    ApiService.getOrders(this.user._id, (err, data) => {
+      if(err){
+        this.ordersError = ApiService.extractErrorText(err);
+      }
+      else{
+        this.orders = data.orders;
+      }
+    });
   },
   computed: {
     reversePointEntries() {
@@ -60,6 +140,32 @@ export default {
     moment (date) {
       return moment(date).format('MMMM Do YYYY [at] h:mm:ss a')
     },
+    purchaseItem(itemName, price, itemID){
+      Swal.fire({
+        type: 'warning',
+        title: 'Are you sure?',
+        html: `You are about to purchase <strong>${itemName}</strong> for <strong>${price}</strong> points! Purchases are non-reversible!`
+      }).then((result) => {
+        if(result.value){
+          ApiService.createOrder(itemID, (err, data) => {
+            if(err){
+              Swal.fire({
+                type: 'error',
+                title: 'Error',
+                text: 'There was an error placing your order. ' + ApiService.extractErrorText(data)
+              })
+            }
+            else {
+              Swal.fire({
+                type: 'success',
+                title: 'Success!',
+                text: data.message
+              })
+            }
+          })
+        }
+      })
+    }
   }
 }
 </script>

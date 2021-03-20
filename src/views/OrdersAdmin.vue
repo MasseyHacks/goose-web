@@ -11,7 +11,7 @@ import Session from '../Session'
 import ApiService from '../ApiService'
 
 export default {
-  name: 'ShopAdmin',
+  name: 'OrdersAdmin',
   data() {
     return {
       user: Session.getUser()

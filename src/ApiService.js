@@ -679,5 +679,51 @@ export default {
             page: page,
             pageSize: pageSize
         }, callback);
+    },
+    createShopItem(name, description, price, maxOrders, ordersOpenTime, ordersCloseTime, callback){
+        AuthService.sendRequest('POST', apiHost + '/api/createShopItem', {
+            name: name,
+            description: description,
+            price: price,
+            maxOrders: maxOrders,
+            ordersOpenTime: ordersOpenTime,
+            ordersCloseTime: ordersCloseTime
+        }, callback);
+    },
+    updateShopItem(itemID, name, description, price, maxOrders, ordersOpenTime, ordersCloseTime, callback){
+        AuthService.sendRequest('POST', apiHost + '/api/updateShopItem', {
+            itemID: itemID,
+            newDetails: {
+                name: name,
+                description: description,
+                price: price,
+                maxOrders: maxOrders,
+                ordersOpenTime: ordersOpenTime,
+                ordersCloseTime: ordersCloseTime
+            }
+        }, callback);
+    },
+    fulfillOrder(orderID, callback){
+        AuthService.sendRequest('POST', apiHost + '/api/fulfillOrder', {
+            orderID: orderID
+        }, callback);
+    },
+    cancelOrder(orderID, callback){
+        AuthService.sendRequest('POST', apiHost + '/api/cancelOrder', {
+            orderID: orderID
+        }, callback);
+    },
+    getShopItems(callback){
+        AuthService.sendRequest('GET', apiHost + '/api/getShopItems', {}, callback);
+    },
+    createOrder(itemID, callback){
+        AuthService.sendRequest('POST', apiHost + '/api/createOrder', {
+            itemID: itemID
+        }, callback);
+    },
+    getOrders(userID, callback){
+        AuthService.sendRequest('GET', apiHost + '/api/getOrders', {
+            userID: userID
+        }, callback);
     }
 };

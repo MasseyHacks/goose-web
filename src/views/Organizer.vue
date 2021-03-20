@@ -24,9 +24,12 @@
                         <router-link v-if="user.permissions.reviewer" to="/organizer/review">
                             <button class="generic-button-dark wide">Review</button>
                         </router-link>
-                        <router-link to="/organizer/points">
-                          <button class="generic-button-dark wide">Points</button>
+                        <router-link to="/organizer/shop">
+                          <button class="generic-button-dark wide">Shop</button>
                         </router-link>
+                      <router-link to="/organizer/orders">
+                        <button class="generic-button-dark wide">Orders</button>
+                      </router-link>
                       <router-link to="/organizer/events">
                         <button class="generic-button-dark wide">Events</button>
                       </router-link>
@@ -52,7 +55,7 @@
     export default {
         name: 'Organizer',
         beforeRouteUpdate(to, from, next) {
-            const pageLayout = ['statistics', 'users', 'teamview', 'userview', 'teammanage', 'review', 'points', 'events', 'eventview', 'eventusers'];
+            const pageLayout = ['statistics', 'users', 'teamview', 'userview', 'teammanage', 'review', 'shop', 'orders', 'events', 'eventview', 'eventusers'];
             const toPath = to.path.split('/');
             const fromPath = from.path.split('/');
 
