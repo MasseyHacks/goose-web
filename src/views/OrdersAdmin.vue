@@ -1,7 +1,9 @@
 <template>
   <div style="width: 100%">
     <div class="organizer-card">
-      Orders management.
+      <div class="ui-card dash-card-large">
+        Orders management.
+      </div>
     </div>
   </div>
 </template>

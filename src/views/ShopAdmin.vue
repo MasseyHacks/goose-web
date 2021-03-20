@@ -1,54 +1,59 @@
 <template>
   <div style="width: 100%">
     <div class="organizer-card">
-      <div>
-        <button class="generic-button-dark less-wide" @click="createItem">Create New</button>
-      </div>
-      <hr>
+      <div class="ui-card dash-card-large">
+        <div>
+          <button class="generic-button-dark less-wide" @click="createItem">Create New</button>
+        </div>
+        <hr>
 
-      <p v-if="shopError">{{shopError}}</p>
-      <table class="data-table-generic" v-else>
-        <tr class="table-header">
-          <td>NAME</td>
-          <td>DESCRIPTION</td>
-          <td>PRICE</td>
-          <td>MAX ORDERS</td>
-          <td>ORDERS OPEN TIME</td>
-          <td>ORDERS CLOSE TIME</td>
-          <td>ORDERS OPEN</td>
-          <td>STATUS</td>
-          <td>EDIT</td>
-        </tr>
-        <tr v-for="shopItem in shopItems">
-          <td>
-            {{shopItem.name}}
-          </td>
-          <td>
-            {{shopItem.description}}
-          </td>
-          <td>
-            {{shopItem.price}}
-          </td>
-          <td>
-            {{shopItem.maxOrders}}
-          </td>
-          <td>
-            {{moment(shopItem.ordersOpenTime)}}
-          </td>
-          <td>
-            {{shopItem.ordersCloseTime === -1 ? "Never" : moment(shopItem.ordersCloseTime)}}
-          </td>
-          <td>
-            {{shopItem.ordersOpen ? "Open" : "Closed"}}
-          </td>
-          <td>
-            <button class="generic-button-dark less-wide" v-on:click="toggleItemStatus(shopItem._id, shopItem.disabled)">{{ shopItem.disabled ? "Enable" : "Disable" }}</button>
-          </td>
-          <td>
-            <button class="generic-button-dark less-wide" v-on:click="editItem(shopItem._id)">Edit</button>
-          </td>
-        </tr>
-      </table>
+        <p v-if="shopError">{{shopError}}</p>
+        <div style="overflow-x: auto; max-width: 100%" v-else>
+          <table class="data-table-generic">
+            <tr class="table-header">
+              <td>NAME</td>
+              <td>DESCRIPTION</td>
+              <td>PRICE</td>
+              <td>MAX ORDERS</td>
+              <td>ORDERS OPEN TIME</td>
+              <td>ORDERS CLOSE TIME</td>
+              <td>ORDERS OPEN</td>
+              <td>STATUS</td>
+              <td>EDIT</td>
+            </tr>
+            <tr v-for="shopItem in shopItems">
+              <td>
+                {{shopItem.name}}
+              </td>
+              <td>
+                {{shopItem.description}}
+              </td>
+              <td>
+                {{shopItem.price}}
+              </td>
+              <td>
+                {{shopItem.maxOrders}}
+              </td>
+              <td>
+                {{moment(shopItem.ordersOpenTime)}}
+              </td>
+              <td>
+                {{shopItem.ordersCloseTime === -1 ? "Never" : moment(shopItem.ordersCloseTime)}}
+              </td>
+              <td>
+                {{shopItem.ordersOpen ? "Open" : "Closed"}}
+              </td>
+              <td>
+                <button class="generic-button-dark less-wide" v-on:click="toggleItemStatus(shopItem._id, shopItem.disabled)">{{ shopItem.disabled ? "Enable" : "Disable" }}</button>
+              </td>
+              <td>
+                <button class="generic-button-dark less-wide" v-on:click="editItem(shopItem._id)">Edit</button>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
