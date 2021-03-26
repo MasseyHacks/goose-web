@@ -8,7 +8,7 @@
 
                     <div class="login-header">
 
-                        <img src="../assets/logo/logowide.svg"
+                        <img src="../assets/logo/7wc-logowide.svg"
                              style="width: 45%; min-width: 200px">
 
                         <div v-if="$route.query.redirect && !error" class="error-banner">

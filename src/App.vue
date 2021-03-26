@@ -3,7 +3,7 @@
 
     <!-- Common elements -->
     <div id="main-sidebar" v-if="loggedIn" v-bind:style="sidebarStyle">
-      <img height="150px" src="./assets/logo/logo-white.svg"
+      <img height="150px" src="./assets/logo/7wclogo.svg"
            style="margin-top: 40px; margin-bottom: 40px; margin-left: auto; margin-right: auto; text-align: center"
            width="150px">
       <ul>
@@ -91,7 +91,7 @@
       <div class="vertical-centered">
         <ul>
           <li>
-            <img height="50px" src="./assets/logo/logo-white.svg" width="auto">
+            <img height="50px" src="./assets/logo/7wclogo.svg" width="auto">
           </li>
 
           <li style="float: right">
