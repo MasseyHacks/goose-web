@@ -430,7 +430,7 @@ export default {
                             userID: userID
                         }, (err, data) => {
                             if (err) {
-                                Swal.fire("Error", "Unable to perform action. + this.extractErrorText(err)", "error");
+                                Swal.fire("Error", "Unable to perform action." + this.extractErrorText(err), "error");
                             }
                             else if (!err && data) {
                                 if (callback) callback(data);
