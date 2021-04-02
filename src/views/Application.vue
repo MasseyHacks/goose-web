@@ -295,6 +295,7 @@
             parseForm(template, validate) {
 
                 var doNotSubmit = false;
+                var validationErrors = [];
                 var submissionErrors = [];
                 var formValue = {};
 
@@ -343,6 +344,7 @@
 
                         if (validate && this.school && this.school.length > template[question].maxlength) {
                             submissionErrors.push('Field "' + question + '" exceeds character limit!');
+                            validationErrors.push('Field "' + question + '" exceeds character limit!');
                             doNotSubmit = true;
                         } else if (this.school) {
                             formValue[question] = this.school;
@@ -365,10 +367,12 @@
 
                         if (validate && (inputElement.value.length != template[question].maxlength || birthdayValues.length != 3)) {
                             submissionErrors.push('Please enter your birthday in the proper format!');
+                            validationErrors.push('Please enter your birthday in the proper format!');
                             doNotSubmit = true;
                         } else if ((birthdayDate.getFullYear() != parseInt(birthdayValues[0])) || (birthdayDate.getMonth() != parseInt(birthdayValues[1]) - 1) || (birthdayDate.getDate() != parseInt(birthdayValues[2]))) {
                             if (validate && template[question].mandatory) {
                                 submissionErrors.push('Please enter a valid birthday!');
+                                validationErrors.push('Please enter a valid birthday!');
                                 doNotSubmit = true;
                             } else {
                                 formValue[question] = null;
@@ -376,6 +380,7 @@
                         } else if((new Date()).getFullYear() - birthdayDate.getFullYear() > 130){
                             if (validate && template[question].mandatory) {
                                 submissionErrors.push('Sorry, but you cannot be over 130 years old!');
+                                validationErrors.push('Sorry, but you cannot be over 130 years old!');
                                 doNotSubmit = true;
                             } else {
                                 formValue[question] = null;
@@ -389,6 +394,7 @@
                         if(phoneNumber.length > template[question].maxlength){
                             if (validate) {
                                 submissionErrors.push('Your phone number is too long! The maximum length is 11 digits.')
+                                validationErrors.push('Your phone number is too long! The maximum length is 11 digits.')
                                 doNotSubmit = true
                             } else {
                                 formValue[question] = null;
@@ -396,6 +402,7 @@
                         } else if(isNaN(phoneNumber)){
                             if (validate) {
                                 submissionErrors.push('Please enter your phone number without any symbols or letters!')
+                                validationErrors.push('Please enter your phone number without any symbols or letters!')
                                 doNotSubmit = true
                             } else {
                                 formValue[question] = null;
@@ -417,6 +424,7 @@
                             }
                         } else if (validate && inputElement.value.length > template[question].maxlength) {
                             submissionErrors.push('Field "' + question + '" exceeds character limit!');
+                            validationErrors.push('Field "' + question + '" exceeds character limit!');
                             doNotSubmit = true;
                         } else {
                             if (this.saveTimer) {
@@ -429,7 +437,7 @@
                     }
                 });
 
-                return {doNotSubmit: doNotSubmit, submissionErrors: submissionErrors, profile: formValue}
+                return {doNotSubmit: doNotSubmit, submissionErrors: submissionErrors, validationErrors: validationErrors, profile: formValue}
 
             },
             submitApplication() {
@@ -518,32 +526,42 @@
                 return false;
             },
             saveApplication(auto) {
-                var parsedForm = this.parseForm(this.applications.hacker, false)
-                if (!auto) {
-                    Swal.showLoading()
+                var parsedForm = this.parseForm(this.applications.hacker, true);
+                if (parsedForm.validationErrors.length > 0) {
+                  Swal.fire({
+                    title: 'Error',
+                    html: '<p style="text-align: left"><b>' + (parsedForm.validationErrors.length ? parsedForm.validationErrors.join('<br>') + ' <br>' : '') + "</b></p> Please check all the affected fields and try again.",
+                    type: 'error'
+                  })
                 }
-                //ajax submit code
-                var data = {};
-                data.userID = Session.getUserID();
-                data.profile = {};
-                data.profile.hacker = parsedForm.profile;
-                data.profile.signature = -1;
-                ApiService.updateProfile(data, (err, user) => {
+                else {
+                  if (!auto) {
+                    Swal.showLoading()
+                  }
+                  //ajax submit code
+                  var data = {};
+                  data.userID = Session.getUserID();
+                  data.profile = {};
+                  data.profile.hacker = parsedForm.profile;
+                  data.profile.signature = -1;
+                  ApiService.updateProfile(data, (err, user) => {
                     if (!auto) {
-                        if (err) {
-                            Swal.fire("Error", ApiService.extractErrorText(err, false), "error");
-                        } else {
-                            Swal.fire("Success", "Your application has been saved!", "success");
-                            Session.setUser(user);
+                      if (err) {
+                        Swal.fire("Error", ApiService.extractErrorText(err, false), "error");
+                      } else {
+                        Swal.fire("Success", "Your application has been saved!", "success");
+                        Session.setUser(user);
 
-                            this.user = user;
-                            this.oldApplication = user.profile.hacker;
+                        this.user = user;
+                        this.oldApplication = user.profile.hacker;
 
-                            this.checkEditState();
+                        this.checkEditState();
 
-                        }
+                      }
                     }
-                });
+                  });
+                }
+
             }
         }
     }

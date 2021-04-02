@@ -37,7 +37,7 @@
                 </div>
 
                 <br>
-                <payment></payment>
+<!--                <payment></payment>-->
     
                 <!-- Copied from application -->
                 <div class="form-group" v-for="(question,questionName) in applications.confirmation" style="text-align: left">
@@ -100,15 +100,15 @@
 
                 </div>
     
-                Don’t forget, you <b>MUST</b> have your waiver signed to attend MasseyHacks.<br> You can either give us the hard copy at the front desk during registration or email a copy to <a href="mailto:hello@masseyhacks.ca" target="_blank">hello@masseyhacks.ca</a>.
+<!--                Don’t forget, you <b>MUST</b> have your waiver signed to attend MasseyHacks.<br> You can either give us the hard copy at the front desk during registration or email a copy to <a href="mailto:hello@masseyhacks.ca" target="_blank">hello@masseyhacks.ca</a>.-->
 
                 <br>
                 <br>
-                <a href="https://docs.google.com/document/d/10BuXfp0PlrNDA7DY6fx_T13VZLbQh1FMUbDYAdZyOYo/edit?usp=sharing" target="_blank">
-                    <button class="generic-button-dark less-wide">
-                        Waiver
-                    </button>
-                </a>
+<!--                <a href="https://docs.google.com/document/d/10BuXfp0PlrNDA7DY6fx_T13VZLbQh1FMUbDYAdZyOYo/edit?usp=sharing" target="_blank">-->
+<!--                    <button class="generic-button-dark less-wide">-->
+<!--                        Waiver-->
+<!--                    </button>-->
+<!--                </a>-->
 
                 <button class="generic-button less-wide" v-on:click="acceptInvitation">
                     <span v-if="user.status.confirmed">
@@ -345,13 +345,13 @@
 
             },
             acceptInvitation() {
-                if (!this.user.status.paid) {
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'You must pay before you can confirm!',
-                        type: 'error'
-                    })
-                } else {
+                // if (!this.user.status.paid) {
+                //     Swal.fire({
+                //         title: 'Error',
+                //         text: 'You must pay before you can confirm!',
+                //         type: 'error'
+                //     })
+                // } else {
                     var parsedForm = this.parseForm(this.applications.confirmation, true)
 
                     if (parsedForm.doNotSubmit) {
@@ -397,17 +397,17 @@
 
                         })
                     }
-                }
+                // }
                 
             },
             declineInvitation() {
-                if (this.user.status.paid) {
-                    Swal.fire({
-                        title: 'Sorry!',
-                        text: `You can't decline your confirmation if you have already paid. Unfortunately, tickets are NON-REFUNDABLE.`,
-                        type: 'info'
-                    })
-                } else {
+                // if (this.user.status.paid) {
+                //     Swal.fire({
+                //         title: 'Sorry!',
+                //         text: `You can't decline your confirmation if you have already paid. Unfortunately, tickets are NON-REFUNDABLE.`,
+                //         type: 'info'
+                //     })
+                // } else {
                     Swal.fire({
                         title: "Decline invitation?",
                         html: "Are you sure you want to decline your invitation? You <b>CANNOT</b> undo this action!",
@@ -436,7 +436,7 @@
                         }
 
                     })
-                }
+                // }
 
             }
         }
