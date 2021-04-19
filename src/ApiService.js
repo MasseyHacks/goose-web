@@ -571,7 +571,7 @@ export default {
         AuthService.sendRequest('POST', apiHost + '/api/modifyUser', query, callback)
     },
     requestSuperToken(query, callback) {
-        AuthService.sendRequest('POST', apiHost + '/requestSuperToken', query, callback)
+        AuthService.sendRequest('POST', apiHost + '/auth/requestSuperToken', query, callback)
     },
     awardTeamPoints(code, amount, notes, callback){
         AuthService.sendRequest('POST', apiHost + '/api/awardTeamPoints', {
