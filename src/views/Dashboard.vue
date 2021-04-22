@@ -59,7 +59,7 @@
                     </div>
                     <div v-else-if="user.status.name === 'confirmed'">
                         <p>
-                            Your spot has been confirmed! We hope to see you on April 21st! More details about the event will be sent as the data approaches. If you have any problems, please email us at hello@masseyhacks.ca for assistance.
+                            Your spot has been confirmed! We hope to see you on April 24st! Be sure to join the event Discord at <a href="https://go.vmcs.club/7wcdiscord" target="_blank">go.vmcs.club/7wcdiscord</a>.If you have any problems, please email us at hello@vmcs.club for assistance.
                         </p>
                         <router-link to="/confirmation">
                             <button class="generic-button-dark less-wide">
