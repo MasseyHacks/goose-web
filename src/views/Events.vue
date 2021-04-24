@@ -196,7 +196,7 @@ export default {
     pastEvents() {
       let events = {}
       for (const event of Object.keys(this.eventsData)){
-        if(this.eventsData[event].dates.finished !== -1 && this.eventsData[event].dates.finished < Date.now() && this.isCheckedIn[event]){
+        if(this.eventsData[event].dates.finished !== -1 && this.eventsData[event].dates.finished < Date.now() && this.eventsData[event].registeredUsers.indexOf(this.userObj.id) !== -1){
           events[event] = this.eventsData[event];
         }
       }
