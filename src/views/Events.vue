@@ -76,7 +76,7 @@
                   {{event.description}}
                 </td>
                 <td>
-                  {{moment(event.dates.date, "MM/DD/YYYY hh:mm a")}}
+                  {{moment(event.dates.event, "MM/DD/YYYY hh:mm a")}}
                 </td>
                 <td>
                   {{moment(event.dates.registrationOpen, "MM/DD/YYYY hh:mm a")}}
@@ -110,7 +110,7 @@
                   {{event.name}}
                 </td>
                 <td>
-                  {{moment(event.dates.date, "MM/DD/YYYY hh:mm a")}}
+                  {{moment(event.dates.event, "MM/DD/YYYY hh:mm a")}}
                 </td>
                 <td>
                   <router-link :to="{path: '/eventdetails?eventID='+event.id+ '&checkedIn='+isCheckedIn[event.id]}">
