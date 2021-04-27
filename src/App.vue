@@ -23,6 +23,11 @@
           </router-link>
         </li>
         <li v-if="user.permissions.verified && (user.permissions.developer || user.status.checkedIn)">
+          <router-link tag="a" to="/submissions">
+            <button class="menu-button" v-on:click="retractSidebar">Submissions</button>
+          </router-link>
+        </li>
+        <li v-if="user.permissions.verified && (user.permissions.developer || user.status.checkedIn)">
           <router-link tag="a" to="/events">
             <button class="menu-button" v-on:click="retractSidebar">Events</button>
           </router-link>

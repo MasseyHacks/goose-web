@@ -731,5 +731,13 @@ export default {
         AuthService.sendRequest('GET', apiHost + '/api/getOrders', {
             userID: userID
         }, callback);
+    },
+    getSubmissionBoxes(callback) {
+        AuthService.sendRequest('GET', apiHost + '/api/getSubmissionBoxes', {}, callback);
+    },
+    getPastSubmissions(userID, callback){
+        AuthService.sendRequest('GET', apiHost + '/api/getSubmissions', {
+            userID: userID
+        }, callback);
     }
 };

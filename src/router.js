@@ -38,6 +38,7 @@ import EventAdminView from "./views/EventAdminView";
 import EventAdminUsersView from "./views/EventAdminUsersView";
 import Events from "./views/Events";
 import EventDetails from "./views/EventDetails";
+import Submissions from "./views/Submissions";
 
 import Swal from 'sweetalert2'
 import axios from 'axios'
@@ -182,6 +183,14 @@ const router = new Router({
     {
       path: '/points',
       component: Points,
+      beforeEnter: isAuthorized,
+      meta: {
+        permissions: 'verified'
+      }
+    },
+    {
+      path: '/submissions',
+      component: Submissions,
       beforeEnter: isAuthorized,
       meta: {
         permissions: 'verified'
