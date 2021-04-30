@@ -51,8 +51,8 @@
 <!--                  <td style="min-width: 150px;"><span v-html="userStatusConverter(user)"></span></td>-->
 <!--                  <td>{{ user.numVotes }}</td>-->
                   <td class="email-col">{{ user.email }}</td>
-                  <td style="max-width: 100px;">{{ user.profile.hacker.school }}</td>
-                  <td>{{ user.profile.hacker.grade }}</td>
+                  <td style="max-width: 100px;">{{ user.profile.hacker ? user.profile.hacker.school : ""}}</td>
+                  <td>{{ user.profile.hacker ? user.profile.hacker.grade : "" }}</td>
                   <td>{{ user.points.total }}</td>
                 </router-link>
               </table>
