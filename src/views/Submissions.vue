@@ -144,6 +144,13 @@ export default {
               text: 'You have attached too many files. Please only select up to 10.'
             })
           }
+          else if(values[0].trim() === ""){
+            Swal.fire({
+              type: 'error',
+              title: 'Error',
+              text: 'Please enter a description about your submission.'
+            })
+          }
           else{
             let formData = new FormData();
             formData.append('submissionBoxID', submissionBoxID);
