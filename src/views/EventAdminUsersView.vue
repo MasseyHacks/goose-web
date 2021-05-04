@@ -61,7 +61,6 @@
           <p v-else>
             {{ queryError }}
           </p>
-
         </div>
       </div>
     </div>
