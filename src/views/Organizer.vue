@@ -27,17 +27,19 @@
                         <router-link to="/organizer/shop">
                           <button class="generic-button-dark wide">Shop</button>
                         </router-link>
-                      <router-link to="/organizer/orders">
-                        <button class="generic-button-dark wide">Orders</button>
-                      </router-link>
+<!--                      <router-link to="/organizer/orders">-->
+<!--                        <button class="generic-button-dark wide">Orders</button>-->
+<!--                      </router-link>-->
                       <router-link to="/organizer/events">
                         <button class="generic-button-dark wide">Events</button>
+                      </router-link>
+                      <router-link to="/organizer/submissions">
+                        <button class="generic-button-dark wide">Submissions</button>
                       </router-link>
                     </div>
                 </div>
             </div>
         </div>
-
 
         <transition :name="transitionName">
             <router-view class="child-view">
@@ -55,7 +57,7 @@
     export default {
         name: 'Organizer',
         beforeRouteUpdate(to, from, next) {
-            const pageLayout = ['statistics', 'users', 'teamview', 'userview', 'teammanage', 'review', 'shop', 'orders', 'events', 'eventview', 'eventusers'];
+            const pageLayout = ['statistics', 'users', 'teamview', 'userview', 'teammanage', 'review', 'shop', 'orders', 'events', 'eventview', 'eventusers', 'submissions'];
             const toPath = to.path.split('/');
             const fromPath = from.path.split('/');
 

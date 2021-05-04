@@ -20,6 +20,7 @@
               <td>ORDERS OPEN</td>
               <td>STATUS</td>
               <td>EDIT</td>
+              <td>ORDERS</td>
             </tr>
             <tr v-for="shopItem in shopItems">
               <td>
@@ -48,6 +49,9 @@
               </td>
               <td>
                 <button class="generic-button-dark less-wide" v-on:click="editItem(shopItem._id)">Edit</button>
+              </td>
+              <td>
+                <router-link class="generic-button-dark less-wide" :to="{path: '/organizer/orders?itemID='+shopItem._id+'&returnPath=/organizer/shop'}">Orders</router-link>
               </td>
             </tr>
           </table>
@@ -241,8 +245,6 @@ export default {
         }
       })
     }
-  },
-
-
+  }
 }
 </script>

@@ -117,9 +117,9 @@
         },
 
         beforeMount() {
-            if (this.$route.query["returnPath"]) {
-                this.returnPath = this.$route.query["returnPath"]
-            }
+          if (this.$route.query["returnPath"]) {
+              this.returnPath = this.$route.query["returnPath"]
+          }
 
           this.userID = this.$route.query["username"];
 

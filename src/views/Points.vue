@@ -32,7 +32,7 @@
                 {{shopItem.price}}
               </td>
               <td>
-                <button class="generic-button-dark less-wide" v-on:click="purchaseItem(shopItem.name, shopItem.price, shopItem._id)">Buy</button>
+                <button class="generic-button-dark less-wide" v-on:click="purchaseItem(shopItem.name, shopItem.price, shopItem._id)" :disabled="user.points.total < shopItem.price">{{user.points.total < shopItem.price ? 'Not Enough Points' : 'Buy'}}</button>
               </td>
             </tr>
           </table>

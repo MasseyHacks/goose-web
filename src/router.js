@@ -43,6 +43,7 @@ import Submissions from "./views/Submissions";
 import Swal from 'sweetalert2'
 import axios from 'axios'
 import {apiHost} from "./variables";
+import SubmissionsAdmin from "./views/SubmissionsAdmin";
 
 Vue.use(Router);
 
@@ -336,6 +337,14 @@ const router = new Router({
         {
           path: 'eventusers',
           component: EventAdminUsersView,
+          beforeEnter: isAuthorized,
+          meta: {
+            permissions: 'admin'
+          }
+        },
+        {
+          path: 'submissions',
+          component: SubmissionsAdmin,
           beforeEnter: isAuthorized,
           meta: {
             permissions: 'admin'

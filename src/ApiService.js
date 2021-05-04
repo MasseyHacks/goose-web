@@ -739,5 +739,41 @@ export default {
         AuthService.sendRequest('GET', apiHost + '/api/getSubmissions', {
             userID: userID
         }, callback);
+    },
+    getShopItem(itemID, callback) {
+        AuthService.sendRequest('GET', apiHost + '/api/getItemInfo', {
+            itemID: itemID
+        }, callback);
+    },
+    getItemOrders(itemID, callback) {
+        AuthService.sendRequest('GET', apiHost + '/api/getOrdersOfItem', {
+            itemID: itemID
+        }, callback);
+    },
+    setOrderCancelled(orderID, callback) {
+        AuthService.sendRequest('POST', apiHost + '/api/setOrderCancelled', {
+            orderID: orderID
+        }, callback)
+    },
+    setOrderFulfilled(orderID, callback) {
+        AuthService.sendRequest('POST', apiHost + '/api/setOrderFulfilled', {
+            orderID: orderID
+        }, callback)
+    },
+    createSubmissionBox(name, description, openDate, closeDate, callback) {
+        AuthService.sendRequest('POST', apiHost + '/api/createSubmissionBox', {
+            name, description, openDate, closeDate
+        }, callback)
+    },
+    updateSubmissionBox(submissionBoxID, name, description, openDate, closeDate, callback) {
+        AuthService.sendRequest('POST', apiHost + '/api/updateSubmissionBox', {
+            submissionBoxID, name, description, openDate, closeDate
+        }, callback)
+    },
+    awardSubmittedPoints(submissionBoxID, amount, notes, callback) {
+        AuthService.sendRequest('POST', apiHost + '/api/awardSubmittedPoints', {
+            submissionBoxID, amount, notes
+        }, callback)
     }
+
 };
