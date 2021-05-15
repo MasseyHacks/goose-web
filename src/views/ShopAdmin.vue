@@ -123,15 +123,15 @@ export default {
             '<label for="itemEdit-ordersOpenTime" class="text-left float-left">Orders Open Time</label>' +
             `<input type="text" class="form-control" id="itemEdit-ordersOpenTime" value="${moment(0).format('YYYY-MM-DDTHH:mm:ssZ')}">` +
 
-            '<label for="itemEdit-ordersClose" class="text-left float-left">Orders Close Time</label>' +
-            `<input type="text" class="form-control" id="itemEdit-ordersClose" value="${moment(Date.now()).format('YYYY-MM-DDTHH:mm:ssZ')}">`,
+            '<label for="itemEdit-ordersCloseTime" class="text-left float-left">Orders Close Time</label>' +
+            `<input type="text" class="form-control" id="itemEdit-ordersCloseTime" value="${moment(Date.now()).format('YYYY-MM-DDTHH:mm:ssZ')}">`,
         showCancelButton: true,
         cancelButtonColor: '#dd3333',
         focusConfirm: false,
         preConfirm: () => {
           return [document.getElementById('itemEdit-name').value, document.getElementById('itemEdit-description').value,
             document.getElementById('itemEdit-price').value, document.getElementById('itemEdit-maxOrders').value,
-            this.convertDateEditStringToDate(document.getElementById('itemEdit-ordersOpenTime').value), this.convertDateEditStringToDate(document.getElementById('itemEdit-ordersClose').value)];
+            this.convertDateEditStringToDate(document.getElementById('itemEdit-ordersOpenTime').value), this.convertDateEditStringToDate(document.getElementById('itemEdit-ordersCloseTime').value)];
         }
       }).then((info) => {
         if(info.value){
@@ -183,15 +183,15 @@ export default {
             '<label for="itemEdit-ordersOpenTime" class="text-left float-left">Orders Open</label>' +
             `<input type="text" class="form-control" id="itemEdit-ordersOpenTime" value="${moment(itemInfo.ordersOpenTime).format('YYYY-MM-DDTHH:mm:ssZ')}">` +
 
-            '<label for="itemEdit-ordersClose" class="text-left float-left">Orders Close</label>' +
-            `<input type="text" class="form-control" id="itemEdit-ordersClose" value="${itemInfo.ordersClose == -1 ? -1 : moment(itemInfo.ordersClose).format('YYYY-MM-DDTHH:mm:ssZ')}">`,
+            '<label for="itemEdit-ordersCloseTime" class="text-left float-left">Orders Close</label>' +
+            `<input type="text" class="form-control" id="itemEdit-ordersCloseTime" value="${itemInfo.ordersCloseTime == -1 ? -1 : moment(itemInfo.ordersCloseTime).format('YYYY-MM-DDTHH:mm:ssZ')}">`,
         showCancelButton: true,
         cancelButtonColor: '#dd3333',
         focusConfirm: false,
         preConfirm: () => {
           return [document.getElementById('itemEdit-name').value, document.getElementById('itemEdit-description').value,
             document.getElementById('itemEdit-price').value, document.getElementById('itemEdit-maxOrders').value,
-            this.convertDateEditStringToDate(document.getElementById('itemEdit-ordersOpenTime').value), this.convertDateEditStringToDate(document.getElementById('itemEdit-ordersClose').value)];
+            this.convertDateEditStringToDate(document.getElementById('itemEdit-ordersOpenTime').value), this.convertDateEditStringToDate(document.getElementById('itemEdit-ordersCloseTime').value)];
         }
       }).then((info) => {
         if(info.value){
