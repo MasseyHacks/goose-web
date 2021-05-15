@@ -51,7 +51,9 @@
                 <button class="generic-button-dark less-wide" v-on:click="editItem(shopItem._id)">Edit</button>
               </td>
               <td>
-                <router-link class="generic-button-dark less-wide" :to="{path: '/organizer/orders?itemID='+shopItem._id+'&returnPath=/organizer/shop'}">Orders</router-link>
+                <router-link :to="{path: '/organizer/orders?itemID='+shopItem._id+'&returnPath=/organizer/shop'}">
+                  <button class="generic-button-dark less-wide">Orders</button>
+                </router-link>
               </td>
             </tr>
           </table>
