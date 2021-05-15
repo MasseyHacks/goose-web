@@ -19,6 +19,7 @@
               <td>NAME</td>
               <td>DESCRIPTION</td>
               <td>PRICE</td>
+              <td>ORDERS CLOSE</td>
               <td>BUY</td>
             </tr>
             <tr v-for="shopItem in shopItems">
@@ -27,6 +28,9 @@
               </td>
               <td>
                 {{shopItem.description}}
+              </td>
+              <td>
+                {{moment(shopItem.ordersCloseTime)}}
               </td>
               <td>
                 {{shopItem.price}}
