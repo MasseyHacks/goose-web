@@ -18,8 +18,8 @@
             <tr class="table-header">
               <td>NAME</td>
               <td>DESCRIPTION</td>
-              <td>PRICE</td>
               <td>ORDERS CLOSE</td>
+              <td>PRICE</td>
               <td>BUY</td>
             </tr>
             <tr v-for="shopItem in shopItems">
